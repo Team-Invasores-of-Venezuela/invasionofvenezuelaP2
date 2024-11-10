@@ -7,4 +7,9 @@ import java.util.List;
 
 public interface RepositorioCurso extends MongoRepository<Curso, String> {
     List<Curso> findAll();
+
+    boolean existsByTitulo(String titulo);
+
+    Optional<Curso> findByTitulo(String titulo);
 }
+

@@ -1,5 +1,5 @@
 package com.example.backend_edunerd.Modelos;
-
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -7,18 +7,15 @@ import java.util.List;
 
 @Document(collection = "Cursos")
 public class Curso {
-
     @Id
-    private String id;
-
+    private ObjectId id;
     private String titulo;
     private String docente;
     private List<String> aprendizajes;
-    private String semestre;
-    private String ano;
+    private int semestre;
+    private int ano;
 
-    public Curso(String id, String titulo, String docente, List<String> aprendizajes, String semestre, String ano) {
-        this.id = id;
+    public Curso(String titulo, String docente, List<String> aprendizajes, int semestre, int ano) {
         this.titulo = titulo;
         this.docente = docente;
         this.aprendizajes = aprendizajes;
@@ -26,11 +23,14 @@ public class Curso {
         this.ano = ano;
     }
 
-    public String getId() {
+    public Curso() {
+    }
+
+    public ObjectId getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(ObjectId id) {
         this.id = id;
     }
 
@@ -58,19 +58,19 @@ public class Curso {
         this.aprendizajes = aprendizajes;
     }
 
-    public String getSemestre() {
+    public int getSemestre() {
         return semestre;
     }
 
-    public void setSemestre(String semestre) {
+    public void setSemestre(int semestre) {
         this.semestre = semestre;
     }
 
-    public String getAno() {
+    public int getAno() {
         return ano;
     }
 
-    public void setAno(String ano) {
+    public void setAno(int ano) {
         this.ano = ano;
     }
 }
