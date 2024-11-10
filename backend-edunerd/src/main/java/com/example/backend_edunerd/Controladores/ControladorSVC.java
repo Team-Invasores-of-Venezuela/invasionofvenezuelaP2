@@ -38,6 +38,24 @@ public class ControladorSVC {
         }
     }
 
+    @CrossOrigin(origins = "*")
+    @PostMapping("/importarEstudiantes")
+    public ResponseEntity<Map<String, Object>> importarEstudiantes(@RequestParam("file") MultipartFile archivoExcel) {
+        try {
+            servicioSVC.importarEstudiantesDesdeExcel(archivoExcel);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("ok", true);
+            response.put("mensaje", "Estudiantes importados correctamente");
+            return ResponseEntity.ok(response);
+        } catch (IOException e) {
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("ok", false);
+            errorResponse.put("error", "Error al procesar el archivo de estudiantes");
+            return ResponseEntity.status(500).body(errorResponse);
+        }
+    }
+
 
 
 }
