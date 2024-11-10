@@ -30,5 +30,4 @@ public class BackendEdunerdApplication {
 
 		return http.build();
 	}
-
 }
