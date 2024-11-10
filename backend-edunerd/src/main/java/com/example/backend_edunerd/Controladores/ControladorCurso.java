@@ -1,5 +1,6 @@
 package com.example.backend_edunerd.Controladores;
 
+import com.example.backend_edunerd.Dominio.CursoDTO2;
 import com.example.backend_edunerd.Modelos.Curso;
 import com.example.backend_edunerd.Servicios.ServicioCurso;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,8 @@ public class ControladorCurso {
 
     @CrossOrigin("origins")
     @GetMapping("getall")
-    public ResponseEntity<List<Curso>> getCursos() {
-        List<Curso> cursos = servicioCurso.getCursos();
+    public ResponseEntity<List<CursoDTO2>> getCursos() {
+        List<CursoDTO2> cursos = servicioCurso.getCursos();
         return ResponseEntity.ok(cursos);
     }
 }
