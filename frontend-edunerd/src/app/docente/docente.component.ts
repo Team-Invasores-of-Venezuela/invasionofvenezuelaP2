@@ -1,9 +1,13 @@
 import { Component } from '@angular/core';
+import {NgForOf, NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-docente',
   standalone: true,
-  imports: [],
+  imports: [
+    NgForOf,
+    NgIf
+  ],
   templateUrl: './docente.component.html',
   styleUrl: './docente.component.css'
 })
