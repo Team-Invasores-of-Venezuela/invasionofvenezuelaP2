@@ -7,7 +7,7 @@ import {LoginComponent} from './login/login.component';
   standalone: true,
   imports: [RouterOutlet, LoginComponent],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']  // Corrección en el nombre
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
   title = 'frontend-edunerd';

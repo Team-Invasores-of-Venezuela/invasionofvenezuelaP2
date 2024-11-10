@@ -45,6 +45,11 @@ export class LoginComponent {
           localStorage.setItem('isAdmin', response.admin.toString());
 
           console.log("Funcionó el login");
+          if (response.admin) {
+            this.router.navigate(['/administrador']); // Ruta para el administrador
+          } else {
+            this.router.navigate(['/docente']); // Ruta para el usuario regular
+          }
           //Aqui hay que poner la ruta a la pestaña que tiene que llevar el login
           //this.router.navigate(['/home']);
         } else {
