@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, HttpClientModule], // Asegúrate de importar HttpClientModule aquí
+  imports: [ReactiveFormsModule, CommonModule, HttpClientModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
@@ -16,16 +16,16 @@ export class LoginComponent {
   loginForm: FormGroup;
   errorMessage: string | null = null;
 
-  private apiUrl = 'http://localhost:8080/usuario/login';  // Asegúrate de que la URL esté correcta
+  private apiUrl = 'http://localhost:8080/usuario/login';
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private http: HttpClient  // Correcta inyección de HttpClient
+    private http: HttpClient
   ) {
     this.loginForm = this.fb.group({
-      email: [''],  // Define el control 'email' en el FormGroup
-      contrasena: ['']  // Define el control 'contrasena' en el FormGroup
+      email: [''],
+      contrasena: ['']
     });
   }
 
@@ -39,10 +39,14 @@ export class LoginComponent {
 
     this.http.post<any>(this.apiUrl, { email, contrasena }).subscribe(
       (response) => {
-        console.log('Respuesta del servidor:', response);  // Verifica la respuesta
+        console.log('Respuesta del servidor:', response);
         if (response) {
+          localStorage.setItem('userId', response.id);
+          localStorage.setItem('isAdmin', response.admin.toString());
+
+          console.log("Funcionó el login");
+          //Aqui hay que poner la ruta a la pestaña que tiene que llevar el login
           //this.router.navigate(['/home']);
-          console.log("Funciono coño");
         } else {
           this.errorMessage = 'Usuario o contraseña incorrectos';
         }
