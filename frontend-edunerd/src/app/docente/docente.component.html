@@ -1,0 +1,42 @@
+<!-- teacher-dashboard.component.html -->
+
+<div class="min-h-screen bg-lightGray flex flex-col">
+  <!-- Encabezado -->
+  <header class="bg-primary text-white p-4 flex items-center justify-between">
+    <h1 class="text-lightGray text-xl font-bold">Panel de Docente</h1>
+    <button class="text-dark text-white">Cerrar sesión</button>
+  </header>
+
+  <!-- Contenido principal -->
+  <div class="flex flex-1">
+    <!-- Sidebar (opcional) -->
+    <aside class="bg-secondary p-4 w-1/5 hidden lg:block">
+      <ul>
+        <li><a href="#" class="text-lightGray hover:text-primary">Mis Cursos</a></li>
+        <li><a href="#" class="text-lightGray hover:text-primary">Perfil</a></li>
+        <li><a href="#" class="text-lightGray hover:text-primary">Configuración</a></li>
+      </ul>
+    </aside>
+
+    <!-- Sección de cursos -->
+    <main class="flex-1 p-6">
+      <h2 class="text-2xl font-semibold text-dark mb-4">Mis Cursos</h2>
+
+      <!-- Tarjetas de cursos -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- tarjeta de curso -->
+      </div>
+
+      <div *ngIf="curso" class="mt-6 bg-white p-4 rounded shadow">
+        <h3 class="text-xl font-semibold text-dark">Estudiantes en {{ curso }}</h3>
+        <ul class="mt-2 space-y-2">
+          <li *ngFor="let estudiante of estudiantes" class="text-mediumGray">
+            {{ estudiante.name }}
+          </li>
+        </ul>
+        <button class="mt-4 text-primary" (click)="curso = null">Cerrar</button>
+      </div>
+    </main>
+  </div>
+</div>
+
