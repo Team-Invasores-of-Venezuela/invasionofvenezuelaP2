@@ -1,4 +1,5 @@
 import { Routes, RouterModule } from '@angular/router';
+// @ts-ignore
 import { LoginComponent } from './login/login.component';
 import { NgModule } from '@angular/core';
 
