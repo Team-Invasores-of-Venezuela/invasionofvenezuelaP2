@@ -29,5 +29,6 @@ public class BackendEdunerdApplication {
 				.logout((logout) -> logout.permitAll());
 
 		return http.build();
-	}
-}
+	}}
+
+	
