@@ -26,10 +26,8 @@ public class ControladorUsuario {
         Map<String, Object> response = new HashMap<>();
         Optional<Usuario> usuario = servicioUsuario.login(usuarioDTO.getEmail(), usuarioDTO.getContrasena());
         if (usuario.isPresent()) {
+            response.put("id", usuario.get().getId());
             response.put("admin", usuario.get().isAdmin());
-            response.put("contrasena", usuario.get().getContrasena());
-            response.put("email", usuario.get().getEmail());
-
 
             return ResponseEntity.ok(response);
         } else {
