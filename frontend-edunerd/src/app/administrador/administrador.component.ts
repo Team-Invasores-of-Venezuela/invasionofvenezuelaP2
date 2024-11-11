@@ -12,5 +12,15 @@ import {Router, RouterLink} from '@angular/router';
   styleUrl: './administrador.component.css'
 })
 export class AdministradorComponent {
-
+  constructor(private router: Router) {
+  }
+  navegarCursoAdmin() {
+    this.router.navigate(['/cursoadmin']);
+  }
+  navegarDocenteAdmin() {
+    this.router.navigate(['/docenteadmin']);
+  }
+  navegarEstudianteAdmin() {
+    this.router.navigate(['/estudianteadmin']);
+  }
 }

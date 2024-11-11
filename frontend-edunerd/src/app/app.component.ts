@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import {RouterModule} from '@angular/router';
 import {HttpClientModule} from '@angular/common/http';
 import {AdministradorComponent} from'./administrador/administrador.component'
+import {DocenteAdminComponent} from './docente-admin/docente-admin.component';
 
 @Component({
   selector: 'app-root',
