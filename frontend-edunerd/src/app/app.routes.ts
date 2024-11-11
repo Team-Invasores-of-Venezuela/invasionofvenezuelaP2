@@ -14,13 +14,11 @@ export const routes: Routes = [
   { path: 'administrador', component: AdministradorComponent },
   { path: 'docenteadmin', component: DocenteAdminComponent},
   { path: 'cursoadmin', component: CursoAdminComponent},
-  { path: 'estudianteadmin', component: EstudianteAdminComponent},];
+  { path: 'estudianteadmin', component: EstudianteAdminComponent},
   { path: 'login', component: LoginComponent },
   { path: 'docente', component: DocenteComponent},
   { path: '', component: LoginComponent },
   { path: '**', redirectTo: '' }
-
-
 ];
 
 @NgModule({
