@@ -11,7 +11,7 @@ import {DocenteAdminComponent} from './docente-admin/docente-admin.component';
   standalone: true,
   imports: [RouterOutlet,RouterModule,HttpClientModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css']  // Corrección en el nombre
 })
 export class AppComponent {
   title = 'frontend-edunerd';
