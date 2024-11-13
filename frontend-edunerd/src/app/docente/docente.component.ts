@@ -12,6 +12,7 @@ import {NgForOf, NgIf} from '@angular/common';
   styleUrl: './docente.component.css'
 })
 export class DocenteComponent {
+  docente: any[] | any;
   estudiantes: any [] | any;
   curso: string | null = null;
 

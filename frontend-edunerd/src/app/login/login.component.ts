@@ -3,7 +3,8 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
-import { CommonModule } from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {CommonModule, NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-login',
@@ -27,6 +28,12 @@ export class LoginComponent {
       email: [''],
       contrasena: ['']
     });
+  }
+
+  oscuro = false;
+
+  modoOscuro() {
+    this.oscuro = !this.oscuro;
   }
 
   onSubmit() {
@@ -62,4 +69,6 @@ export class LoginComponent {
       }
     );
   }
+
+
 }

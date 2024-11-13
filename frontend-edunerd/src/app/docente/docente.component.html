@@ -1,21 +1,14 @@
-<!-- teacher-dashboard.component.html -->
-<div class="min-h-screen bg-lightGray flex flex-col">
-  <!-- Encabezado -->
+
+<div class="min-h-screen bg-secondary flex flex-col">
+
   <header class="bg-primary text-white p-4 flex items-center justify-between">
-    <h1 class="text-lightGray text-xl font-bold">Panel de Docente</h1>
+    <h1 class="text-mediumGray text-xl font-bold">Bienvenido(a) </h1>
+    <h1 class="text-mediumGray text-xl font-bold">{{docente.name}} </h1>
     <button class="text-dark text-white">Cerrar sesión</button>
   </header>
 
-  <!-- Contenido principal -->
+
   <div class="flex flex-1">
-    <!-- Sidebar (opcional) -->
-    <aside class="bg-secondary p-4 w-1/5 hidden lg:block">
-      <ul>
-        <li><a href="#" class="text-lightGray hover:text-primary">Mis Cursos</a></li>
-        <li><a href="#" class="text-lightGray hover:text-primary">Perfil</a></li>
-        <li><a href="#" class="text-lightGray hover:text-primary">Configuración</a></li>
-      </ul>
-    </aside>
 
     <!-- Sección de cursos -->
     <main class="flex-1 p-6">
