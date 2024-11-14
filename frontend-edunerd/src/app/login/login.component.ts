@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
 import {CommonModule, NgIf} from '@angular/common';
+import {AuthService} from '../AuthService';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +23,8 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private authService: AuthService
   ) {
     this.loginForm = this.fb.group({
       email: [''],
@@ -35,6 +37,7 @@ export class LoginComponent {
   modoOscuro() {
     this.oscuro = !this.oscuro;
   }
+
 
   onSubmit() {
     const { email, contrasena } = this.loginForm.value;
