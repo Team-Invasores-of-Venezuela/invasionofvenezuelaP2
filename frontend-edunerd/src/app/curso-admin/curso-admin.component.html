@@ -1,0 +1,42 @@
+<body class="flex items-center justify-center min-h-screen">
+
+  <div class="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-8">
+    <h2 class="text-2xl font-semibold text-gray-700 mb-4">Cursos</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
+      <div *ngFor="let curso of cursos" class="max-w-sm rounded overflow-hidden shadow-lg">
+        <img
+          class="w-full"
+          [src]="curso.imagen"
+          alt="{{ curso.nombre }}"
+        />
+        <div class="px-6 py-4">
+          <div class="font-bold text-xl mb-2">{{ curso.nombre }}</div>
+          <p class="text-gray-700 text-base">{{ curso.descripcion }}</p>
+        </div>
+      </div>
+    </div>
+    <!-- Botón para abrir el modal -->
+    <button class=" self-center mt-10 px-20 py-4 text-lg font-semibold text-white transition transform bg-gray-400 rounded-full shadow-lg hover:bg-gray-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white" (click)="abrirModal()">
+      Subir Excel
+    </button>
+  </div>
+
+
+
+  <!-- Modal -->
+  <div *ngIf="visible" id="uploadModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div class="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
+      <h2 class="text-xl font-bold mb-4">Subir Archivo</h2>
+      <p class="mb-4">Seleccione un archivo Excel para cargar.</p>
+
+      <!-- Campo para seleccionar el archivo -->
+      <input type="file" accept=".xlsx, .xls" id="fileInput" class="block w-full text-sm text-gray-700 border border-gray-300 rounded-md p-2 mb-4" />
+
+      <!-- Botones de acción -->
+      <div class="flex justify-end space-x-4">
+        <button (click)="cerrarModal()" class="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400">Cancelar</button>
+        <button (click)="subirArchivo()" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Subir</button>
+      </div>
+    </div>
+  </div>
+</body>
