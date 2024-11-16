@@ -5,7 +5,9 @@ import com.example.backend_edunerd.Dominio.ProfesorDTO;
 import com.example.backend_edunerd.Dominio.ProfesorDTO2;
 import com.example.backend_edunerd.Modelos.Curso;
 import com.example.backend_edunerd.Modelos.Profesor;
+import com.example.backend_edunerd.Modelos.Usuario;
 import com.example.backend_edunerd.Repositorios.RepositorioProfesor;
+import com.example.backend_edunerd.Repositorios.RepositorioUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +21,8 @@ public class ServicioProfesor {
 
     @Autowired
     private RepositorioProfesor repositorioProfesor;
+    @Autowired
+    private RepositorioUsuario repositorioUsuario;
 
     @Transactional
     public Profesor createProfesor(ProfesorDTO profesorDTO){
@@ -26,6 +30,7 @@ public class ServicioProfesor {
         if(!profesor.isPresent()){
             Profesor profesorOpt = new Profesor(profesorDTO.getNombre(), profesorDTO.getCursos());
             repositorioProfesor.save(profesorOpt);
+            generarUsuarios(profesorOpt);
             return profesorOpt;
         } else {
             //Si el objeto ya se encuentra en la base de datos.
@@ -72,6 +77,23 @@ public class ServicioProfesor {
         } else {
             return null;
         }
+    }
+
+    public Usuario generarUsuarios(Profesor profesor){
+        String nombre = profesor.getNombre();
+
+        String nombreSplit = nombre.toLowerCase().replace(" ", "");
+
+        String email = nombreSplit + "@gmail.com";
+
+        if(!repositorioUsuario.existsByEmail(email)){
+            Usuario usuario = new Usuario(false, email, nombreSplit);
+            //System.out.println(usuario.toString());
+            repositorioUsuario.save(usuario);
+            System.out.println("Usuario generado");
+            return usuario;
+        }
+        return null;
     }
 
 

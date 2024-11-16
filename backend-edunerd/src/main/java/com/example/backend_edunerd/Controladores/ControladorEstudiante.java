@@ -18,8 +18,8 @@ public class ControladorEstudiante {
     @Autowired
     private ServicioEstudiante servicioEstudiante;
 
-    @CrossOrigin("origins")
-    @PostMapping("create")
+    @CrossOrigin(origins = "*")
+    @PostMapping("/create")
     public ResponseEntity<EstudianteDTO2> createEstudiante(@RequestBody EstudianteDTO estudianteDTO) {
         Estudiante estudiante = servicioEstudiante.createEstudiante(estudianteDTO);
         if (estudiante != null) {
@@ -30,15 +30,15 @@ public class ControladorEstudiante {
         }
     }
 
-    @CrossOrigin("origins")
-    @GetMapping("getall")
+    @CrossOrigin(origins = "*")
+    @GetMapping("/getall")
     public ResponseEntity<List<EstudianteDTO2>> getEstudiantes() {
         List<EstudianteDTO2> estudiantes = servicioEstudiante.getEstudiantes();
         return ResponseEntity.ok(estudiantes);
     }
 
-    @CrossOrigin("origins")
-    @GetMapping("get")
+    @CrossOrigin(origins = "*")
+    @GetMapping("/get")
     public ResponseEntity<Estudiante> getEstudiante(@RequestParam("id") String id) {
         Estudiante estudiante = servicioEstudiante.getEstudiante(id);
         if (estudiante != null) {
@@ -47,8 +47,8 @@ public class ControladorEstudiante {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
 
-    @CrossOrigin("origins")
-    @PostMapping("update")
+    @CrossOrigin(origins = "*")
+    @PostMapping("/update")
     public ResponseEntity<Estudiante> updateEstudiante(@RequestBody EstudianteDTO2 estudianteDTO2) {
         Estudiante estudiante = servicioEstudiante.updateEstudiante(estudianteDTO2);
         if (estudiante != null) {
@@ -58,8 +58,8 @@ public class ControladorEstudiante {
         }
     }
 
-    @CrossOrigin("origins")
-    @PostMapping("delete")
+    @CrossOrigin(origins = "*")
+    @PostMapping("/delete")
     public ResponseEntity<Estudiante> deleteEstudiante(@RequestParam("id") String id) {
         Estudiante estudiante = servicioEstudiante.deleteEstudiante(id);
         if (estudiante != null) {
