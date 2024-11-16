@@ -5,12 +5,11 @@ module.exports = {
   ],
   theme: {
     colors: {
-      primary: '#B6CAF2',    // celeste claro
-      secondary: '#F2F2F0',  // blanco
-      lightGray: '#CCD0CF',  // gris
-      mediumGray: '#5C8EF2', // celeste bonito
-      dark: '#06141B', // Títulos y texto oscuro
-      whitee: '#F2F2F0',
+      primary: '#11212D',     // fondo
+      secondary: '#253745',   // segunda capa
+      tertiary: '#9BA8AB',    // botones o cosas a destacar
+      white: '#CCD0CF'        // texto
+
     },
   },
   plugins: [],

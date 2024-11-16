@@ -1,41 +1,20 @@
 package com.example.backend_edunerd.Dominio;
 
-import com.example.backend_edunerd.Modelos.Curso;
-
 import java.util.List;
 
-public class CursoDTO2 {
-    private String id;
+public class CursoDTO {
     private String titulo;
     private String docente;
     private List<String> aprendizajes;
     private int semestre;
     private int ano;
 
-    public CursoDTO2(String id, String titulo, String docente, List<String> aprendizajes, int semestre, int ano) {
-        this.id = id;
+    public CursoDTO(String titulo, String docente, List<String> aprendizajes, int semestre, int ano) {
         this.titulo = titulo;
         this.docente = docente;
         this.aprendizajes = aprendizajes;
         this.semestre = semestre;
         this.ano = ano;
-    }
-
-    public CursoDTO2(Curso curso) {
-        this.id = curso.getId();
-        this.titulo = curso.getTitulo();
-        this.docente = curso.getDocente();
-        this.aprendizajes = curso.getAprendizajes();
-        this.semestre = curso.getSemestre();
-        this.ano = curso.getAno();
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getTitulo() {
