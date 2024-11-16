@@ -35,6 +35,11 @@ public class ServicioSVC {
     @Autowired
     private RepositorioCurso cursoRepository;
 
+    @Autowired
+    private RepositorioUsuario usuarioRepository;
+    @Autowired
+    private RepositorioUsuario repositorioUsuario;
+
     public void importarProfesoresDesdeExcel(MultipartFile file) throws IOException {
         List<Profesor> profesores = new ArrayList<>();
 
@@ -186,6 +191,22 @@ public class ServicioSVC {
 
 
         cursoRepository.saveAll(cursos);
+    }
+
+    public Usuario generarUsuarios(Profesor profesor){
+        String nombre = profesor.getNombre();
+
+        String nombreSplit = nombre.toLowerCase().replace(" ", "");
+
+        String email = nombreSplit + "@gmail.com";
+
+        if(!repositorioUsuario.existsByEmail(email)){
+            Usuario usuario = new Usuario(false, email, nombreSplit);
+            //System.out.println(usuario.toString());
+            repositorioUsuario.save(usuario);
+            return usuario;
+        }
+        return null;
     }
 
 }
