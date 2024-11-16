@@ -13,18 +13,29 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
   styleUrl: './estudiante-admin.component.css'
 })
 export class EstudianteAdminComponent {
+
+  visible = false;
+
   estudiantes = [
     { matricula: '2021407020',
       nombre: 'Gustavo Torres',
-      cursos: ['Construcción de Software','Redes de Computadores','Responsabilidad social','Ingeniería Comercial'] },
+      cursos: ['Construcción de Software','Redes de Computadores','Responsabilidad social','Ingeniería Comercial'],
+      mostrarAsignaturas: false },
 
     { matricula: '2021407019',
       nombre: 'Mapote Palote',
-      cursos:  ['Teoría de sistemas','Modelos discretos'] },
+      cursos:  ['Teoría de sistemas','Modelos discretos'],
+      mostrarAsignaturas: false },
 
     { matricula: '2020407020',
       nombre: 'Franco Bessolo',
-      cursos: ['Física General','Fundamentos de Administración','Construcción de Software','Redes de Computadores','Sistemas Operativos','Máquinas Abstractas'] },
+      cursos: ['Física General','Fundamentos de Administración','Construcción de Software','Redes de Computadores','Sistemas Operativos','Máquinas Abstractas'],
+      mostrarAsignaturas: false},
+
+    { matricula: '2022451016',
+      nombre: 'Anais Saavedra',
+      cursos: ['Derecho Penal','Derecho Administrativo','Derecho del Trabajo','Drechos Reales','Derecho Procesal','Contexto Cultural'],
+      mostrarAsignaturas: false},
   ];
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -45,5 +56,17 @@ export class EstudianteAdminComponent {
           console.error('Error al obtener los estudiantes', error);
         }
       );
+  }
+
+  navegarAdministrador() {
+    this.router.navigate(['/administrador']);
+  }
+
+  abrirModal() {
+    this.visible = true;
+  }
+
+  cerrarModal() {
+    this.visible = false;
   }
 }
