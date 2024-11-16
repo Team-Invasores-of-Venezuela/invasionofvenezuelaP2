@@ -40,6 +40,7 @@ export class LoginComponent {
 
 
   onSubmit() {
+    console.log("hola");
     const { email, contrasena } = this.loginForm.value;
 
     if (!email || !contrasena) {
@@ -53,7 +54,6 @@ export class LoginComponent {
         if (response) {
           localStorage.setItem('userId', response.id);
           localStorage.setItem('isAdmin', response.admin.toString());
-
           console.log("Funcionó el login");
           if (response.admin) {
             this.router.navigate(['/administrador']); // Ruta para el administrador

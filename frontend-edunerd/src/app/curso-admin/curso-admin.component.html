@@ -42,4 +42,20 @@
       </div>
     </div>
   </div>
+
+  <div class="mt-6 bg-white p-4 rounded shadow">
+    <h3 class="text-xl font-semibold text-dark">Agregar Curso</h3>
+    <form (ngSubmit)="agregarCurso()" class="space-y-4">
+      <div>
+        <label class="block text-mediumGray">Nombre del Curso</label>
+        <input type="text" [(ngModel)]="nuevoCurso.nombre" name="nombre" class="border rounded w-full p-2">
+      </div>
+      <div>
+        <label class="block text-mediumGray">Descripción</label>
+        <textarea [(ngModel)]="nuevoCurso.descripcion" name="descripcion" class="border rounded w-full p-2"></textarea>
+      </div>
+      <button type="submit" class="bg-primary text-white px-4 py-2 rounded">Agregar Curso</button>
+    </form>
+  </div>
+
 </div>
