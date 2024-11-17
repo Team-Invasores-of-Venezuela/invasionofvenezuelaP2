@@ -12,30 +12,53 @@ import {HttpClient, HttpClientModule} from '@angular/common/http';
   styleUrl: './curso-admin.component.css'
 })
 export class CursoAdminComponent {
+  cursoSeleccionadoId: string = '';
   archivo: File | null = null;
   cursosTotales: { titulo: string, docente: string,aprendizajes:string[], semestre:string,ano:string } = {titulo: '', docente: '', aprendizajes: [''], semestre: '', ano: ''};
-
   visible = false;
   abrirAgregarCurso = false;
-  private apiUrl = 'http://localhost:8080/curso/create';
-  constructor(private http: HttpClient) {
+  private apiUrlcrear = 'http://localhost:8080/curso/create';
+  private apiUrleliminar = 'http://localhost:8080/curso/delete';
+  abrireliminar=false;
+  private apiUrlGetCursos = 'http://localhost:8080/curso/getall';
+  mostrarCursos: { id: string, titulo: string, descripcion: string }[] = [];
+  slideBarvisible=false;
+  constructor(private http: HttpClient) {}
 
+  ngOnInit() {
+    this.obtenerCursos();
   }
 
-  cursos = [
+  obtenerCursos() {
+    this.http.get<any>(this.apiUrlGetCursos).subscribe({
+      next: (data) => {
+        this.mostrarCursos = data;
+      },
+      error: (error) => {
+        console.error('Error al obtener los cursos:', error);
+        alert('No se pudieron cargar los cursos. Intente nuevamente más tarde.');
+      },
+    });
+  }
+
+  cursos: { id: number; titulo: string; descripcion: string }[] = [
     {
+      id:1,
       titulo: 'Matemáticas Avanzadas',
       descripcion: 'Matemáticas Avanzadas ofrece formación especializada en áreas clave de las matemáticas, orientada a la investigación y al desarrollo de actividades científicas de alto nivel'
       },
 
     {
+      id:2,
      titulo: 'Proyecto de titulación ',
       descripcion: 'Proyecto de Titulación guía a los estudiantes en la elaboración de su trabajo final, aplicando los conocimientos adquiridos durante su carrera para desarrollar una investigación académica que demuestre su capacidad y creatividad1' },
 
     {
+      id:3,
       titulo: 'Pensamiento Computacional',
       descripcion: 'Pensamiento Computacional enseña a resolver problemas mediante la lógica y el razonamiento computacional, desarrollando habilidades como la descomposición, la abstracción y el diseño de algoritmos' },
   ];
+  protected title: string | undefined;
 
   agregarCurso() {
     if (this.cursosTotales.titulo.trim()) {
@@ -66,7 +89,7 @@ export class CursoAdminComponent {
           };
 
           // Enviar curso al backend
-          this.http.post(`${this.apiUrl}`, curso).subscribe({
+          this.http.post(`${this.apiUrlcrear}`, curso).subscribe({
             next: (response) => {
               alert('Curso agregado exitosamente');
               this.cursosTotales = {
@@ -94,14 +117,49 @@ export class CursoAdminComponent {
     }
   }
 
+  eliminarCurso() {
+    if (!this.cursoSeleccionadoId) {
+      alert('Por favor, selecciona un curso para eliminar.');
+      return;
+    }
+
+    const cursoSeleccionado = this.mostrarCursos.find((curso) => curso.id === this.cursoSeleccionadoId);
+    if (!cursoSeleccionado) {
+      alert('No se encontró el curso seleccionado.');
+      return;
+    }
+
+    // @ts-ignore
+    this.http.post<any>(`${this.apiUrleliminar}?id=${cursoSeleccionado.id}`).subscribe({
+      next: () => {
+        alert(`El curso "${cursoSeleccionado.titulo}" ha sido eliminado.`);
+        // Actualizar la lista de cursos después de la eliminación
+        this.mostrarCursos = this.mostrarCursos.filter((curso) => curso.id !== this.cursoSeleccionadoId);
+        this.cerrarFormularioEliminar(); // Cerrar el formulario/modal
+      },
+      error: (error) => {
+        console.error('Error al eliminar el curso:', error);
+        alert('Ocurrió un error al intentar eliminar el curso.');
+      },
+    });
+  }
 
 
 
 
 
-
-
-
+  abrirFormularioEliminar() {
+    this.abrireliminar=true;
+  }
+  cerrarFormularioEliminar() {
+    this.abrireliminar=false;
+  }
+  toggleSidebar(){
+    this.slideBarvisible=true;
+  }
+  CerrartoggleSidebar(){
+    this.slideBarvisible=false;
+  }
   abrirModal() {
     this.visible = true;
   }
