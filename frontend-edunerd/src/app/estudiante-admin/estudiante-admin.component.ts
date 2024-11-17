@@ -18,6 +18,10 @@ export class EstudianteAdminComponent implements OnInit{
   verManual = false;
   verExcel = false;
   estudiantes: any;
+  estudiante: any = {};
+
+
+
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
@@ -55,4 +59,20 @@ export class EstudianteAdminComponent implements OnInit{
     this.verExcel = !this.verExcel;
   }
 
+  onSubmit() {
+    const estudianteCreado = {
+      nombre: this.estudiante.nombre,
+      matricula: this.estudiante.matricula,
+      anoIngreso: this.estudiante.anoIngreso
+    };
+
+    this.http.post('http://localhost:8080/estudiante/create', estudianteCreado)
+      .subscribe(
+        (response: any) => {
+          console.log('Estudiante añadido exitosamente', response);
+        },
+        (error: any) => {
+          console.error('Error al crear estudiante', error);
+        });
+  }
 }

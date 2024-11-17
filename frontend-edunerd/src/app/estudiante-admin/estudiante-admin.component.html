@@ -1,11 +1,11 @@
 <body class="min-h-screen bg-primary font-sans">
 <header class="bg-secondary text-white p-4 w-full text-left">
-  <h2 class="text-2xl font-semibold text-white font-sans">Bienvenido Administrador</h2>
+  <h2 class="text-2xl font-semibold text-white font-sans">Administración de estudiantes</h2>
 </header>
   <h2 class="text-3xl text-white m-10 ml-64">Estudiantes</h2>
-  <ul role="list" class=" mx-96 rounded bg-primary shadow-2xl p-10">
+  <ul role="list" class="mx-96 rounded bg-primary shadow-2xl p-10">
 
-    <li *ngFor="let estudiante of estudiantes" class="flex justify-between border-b border-b-tertiary gap-x-6 p-5 ">
+    <li *ngFor="let estudiante of estudiantes" class="flex justify-between border-b border-b-tertiary gap-x-6 p-5">
       <div class="flex min-w-0 gap-x-4">
         <img class="size-10 flex-none bg-gray-50" src='https://res.cloudinary.com/ddwshn5tb/image/upload/v1731725951/perfil_v6tmdm.png' alt="">
         <div class="min-w-0 flex-auto">
@@ -14,23 +14,15 @@
         </div>
       </div>
 
-      <!-- Botón para mostrar asignaturas -->
-      <button class="mt-2 bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-10" (click)="estudiante.mostrarAsignaturas = !estudiante.mostrarAsignaturas">
-        Cursos
-      </button>
-
-      <!-- Menú desplegable
-      <ul *ngIf="estudiante.mostrarAsignaturas" class="mt-2 bg-primary text-white rounded p-4 w-60 font-sans shadow-2xl">
-        <li *ngFor="let curso of estudiante.cursos" class="py-1 border-gray-700 last:border-none font-sans">
-          {{ curso }}
-        </li>
-      </ul>-->
+      <!-- Mostrar Año de Ingreso -->
+      <div class="mt-2 text-white text-sm/13 font-sans">
+        Ingreso: {{estudiante.anoIngreso}}
+      </div>
     </li>
   </ul>
-
   <!-- Botón para añadir estudiante -->
   <div class="flex justify-center mt-12">
-    <button class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48" (click)="modalEleccion()">
+    <button class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48 mb-40" (click)="modalEleccion()">
       Añadir estudiante
     </button>
   </div>
@@ -38,7 +30,7 @@
   <!-- Modal para elegir el método para agregar estudiante/s -->
   <div *ngIf="verEleccion" id="eleccion" class="fixed inset-0 flex items-center justify-center bg-primary bg-opacity-50">
     <div class="bg-midSecondary h-40 w-auto shadow-2xl rounded p-10 flex flex-col items-center space-y-4">
-      <button class="bg-secondary text-white px-4 py-2 rounded hover:bg-secondary h-11 w-48 hover:scale-105" (click)="modalEleccion()">
+      <button class="bg-secondary text-white px-4 py-2 rounded hover:bg-secondary h-11 w-48 hover:scale-105" (click)="modalEleccion(); modalManual()">
         Añadir manual
       </button>
       <button class="bg-secondary text-white px-4 py-2 rounded hover:bg-secondary h-11 w-48 hover:scale-105" (click)="modalEleccion()">
@@ -48,6 +40,58 @@
   </div>
 
   <!-- Modal para agregar un estudiante manualmente -->
+<div *ngIf="verManual" id="manual" class="fixed inset-0 flex items-center justify-center bg-secondary bg-opacity-50 shadow-2xl">
+  <form (ngSubmit)="onSubmit()" class="w-1/4 mx-auto p-6 bg-primary shadow-lg rounded-lg space-y-6 text-white">
+    <!-- Campo: Nombre -->
+    <div>
+      <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre</label>
+      <input
+        id="nombre"
+        name="nombre"
+        [(ngModel)]="estudiante.nombre"
+        type="text"
+        required
+        class="mt-1 block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-accent focus:border-accent bg-secondary"
+        placeholder="Ingresa el nombre completo"
+      />
+    </div>
+
+    <!-- Campo: Número de matrícula -->
+    <div>
+      <label for="matricula" class="block text-sm font-medium text-gray-700">Número de Matrícula</label>
+      <input
+        id="matricula"
+        name="matricula"
+        [(ngModel)]="estudiante.matricula"
+        type="text"
+        required
+        class="mt-1 block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-accent focus:border-accent bg-secondary"
+        placeholder="Ingresa el número de matrícula"
+      />
+    </div>
+
+    <!-- Campo: Año de ingreso -->
+    <div>
+      <label for="anioIngreso" class="block text-sm font-medium text-gray-700">Año de Ingreso</label>
+      <input
+        id="anioIngreso"
+        name="anioIngreso"
+        [(ngModel)]="estudiante.anoIngreso"
+        type="number"
+        required
+        class="mt-1 block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-accent focus:border-accent bg-secondary"
+        placeholder="Ingresa el año de ingreso del estudiante"
+      />
+    </div>
+
+    <!-- Botón: Enviar -->
+    <div class="text-center">
+      <button type="submit" class="bg-midSecondary text-white px-6 py-2 rounded-lg hover:bg-accent-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent" (click)="modalManual()">
+        Agregar Estudiante
+      </button>
+    </div>
+  </form>
+</div>
 
   <!-- Modal para agregar estudiantes a través de un excel -->
   <div *ngIf="verExcel" id="uploadModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
