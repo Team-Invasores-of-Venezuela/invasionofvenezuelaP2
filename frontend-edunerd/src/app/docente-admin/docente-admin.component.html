@@ -7,7 +7,7 @@
 
   <!-- Botón para cargar docentes -->
   <div class="flex justify-center mt-12">
-    <button class="bg-blue-600 text-white px-4 py-2 rounded-2xl hover:bg-blue-700 h-11 w-48" (click)="abrirModal()">
+    <button class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48" (click)="abrirModal()">
       Cargar Docentes
     </button>
   </div>
@@ -41,24 +41,25 @@
 
   <!-- Botón para eliminar los docentes seleccionados -->
   <div class="flex justify-center mt-12">
-    <button class="bg-red-600 text-white px-4 py-2 rounded-2xl hover:bg-red-700 h-11 w-48" (click)="eliminarDocentes()" *ngIf="modoEliminacion">
+    <button class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-15 w-48" (click)="eliminarDocentes()" *ngIf="modoEliminacion">
       Eliminar Docentes Seleccionados
     </button>
   </div>
 
   <!-- Botón para activar el modo de eliminación -->
   <div class="flex justify-center mt-12">
-    <button class="bg-yellow-600 text-white px-4 py-2 rounded-2xl hover:bg-yellow-700 h-11 w-48" (click)="activarModoEliminacion()" *ngIf="!modoEliminacion">
-      Activar Modo Eliminación
+    <button class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48" (click)="activarModoEliminacion()" *ngIf="!modoEliminacion">
+      Eliminar Docente
     </button>
   </div>
 
   <!-- Botón para volver al estado normal -->
-  <div class="flex justify-center mt-12">
-    <button class="bg-gray-600 text-white px-4 py-2 rounded-2xl hover:bg-gray-700 h-11 w-48" (click)="volverModoNormal()" *ngIf="modoEliminacion">
-      Volver a la opción normal
+  <div class="flex justify-center mt-4">
+    <button class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48" (click)="volverModoNormal()" *ngIf="modoEliminacion">
+      Volver
     </button>
   </div>
+
 
   <!-- Modal para elegir la forma de cargar docentes -->
   <div *ngIf="visible" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10">
@@ -73,8 +74,8 @@
 
       <!-- Botones de acción -->
       <div class="flex justify-end space-x-4">
-        <button (click)="cerrarModal()" class="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400">Cancelar</button>
-        <button (click)="subirArchivo()" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Subir</button>
+        <button (click)="cerrarModal()" class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48">Cancelar</button>
+        <button (click)="subirArchivo()" class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48">Subir</button>
       </div>
     </div>
   </div>
