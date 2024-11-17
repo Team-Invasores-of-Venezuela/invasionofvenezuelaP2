@@ -5,7 +5,6 @@
 
 <h2 class="text-3xl text-white m-10 ml-64">Estudiantes</h2>
 
-<!-- Lista de estudiantes -->
 <ul role="list" class="mx-96 rounded bg-primary shadow-2xl p-10 flex-grow">
   <li *ngFor="let estudiante of estudiantes" class="flex justify-between border-b border-b-tertiary gap-x-6 p-5">
     <div class="flex min-w-0 gap-x-4">
@@ -16,13 +15,13 @@
       </div>
     </div>
 
-    <button class="mt-2 bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-10" (click)="estudiante.mostrarAsignaturas = !estudiante.mostrarAsignaturas">
-      Cursos
+
+    <button class="mt-2 bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-10" (click)="abrirEditarEstudianteModal(estudiante)">
+      Editar
     </button>
   </li>
 </ul>
 
-<!-- Botones -->
 <div class="flex justify-center mt-12 gap-4 mb-8">
   <button class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48" (click)="modalEleccion()">
     Añadir estudiante
@@ -32,7 +31,35 @@
   </button>
 </div>
 
-<!-- Modal para elegir el método para agregar estudiante/s -->
+<!-- Modal de edición -->
+<div *ngIf="verEditarEstudianteModal" id="editarModal" class="fixed inset-0 flex items-center justify-center bg-primary bg-opacity-50">
+  <div class="bg-midSecondary h-auto w-auto shadow-2xl rounded p-10 flex flex-col items-center space-y-4 relative">
+    <button class="absolute top-2 right-2 text-white bg-red-500 rounded-full h-8 w-8 flex items-center justify-center" (click)="cerrarEditarEstudianteModal()">×</button>
+
+    <h2 class="text-xl font-bold text-white">Editar Estudiante</h2>
+
+    <!-- Formulario de edición -->
+    <form (ngSubmit)="editarEstudiante()">
+      <div class="mb-4">
+        <label for="nombre" class="block text-white">Nombre:</label>
+        <input id="nombre" [(ngModel)]="estudianteEditado.nombre" name="nombre" class="mt-1 p-2 w-64 rounded" required />
+      </div>
+      <div class="mb-4">
+        <label for="matricula" class="block text-white">Matrícula:</label>
+        <input id="matricula" [(ngModel)]="estudianteEditado.matricula" name="matricula" class="mt-1 p-2 w-64 rounded" required />
+      </div>
+      <div class="mb-4">
+        <label for="anoIngreso" class="block text-white">Año de Ingreso:</label>
+        <input id="anoIngreso" [(ngModel)]="estudianteEditado.anoIngreso" name="anoIngreso" class="mt-1 p-2 w-64 rounded" required />
+      </div>
+
+      <button type="submit" class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light w-48" (click)="editarEstudiante()">
+        Guardar cambios
+      </button>
+    </form>
+  </div>
+</div>
+
 <div *ngIf="verEleccion" id="eleccion" class="fixed inset-0 flex items-center justify-center bg-primary bg-opacity-50">
   <div class="bg-midSecondary h-40 w-auto shadow-2xl rounded p-10 flex flex-col items-center space-y-4 relative">
     <button class="absolute top-2 right-2 text-white bg-red-500 rounded-full h-8 w-8 flex items-center justify-center" (click)="cerrarModalEleccion()">×</button>
@@ -42,26 +69,11 @@
   </div>
 </div>
 
-<!-- Modal para subir archivo Excel -->
-<div *ngIf="verExcel" id="uploadModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-  <div class="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
-    <h2 class="text-xl font-bold mb-4">Subir Archivo</h2>
-    <p class="mb-4">Seleccione un archivo Excel para cargar.</p>
-    <input type="file" accept=".xlsx, .xls" id="fileInput" class="block w-full text-sm text-gray-700 border border-gray-300 rounded-md p-2 mb-4" />
-    <div class="flex justify-end space-x-4">
-      <button (click)="modalExcel()" class="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400">Cancelar</button>
-    </div>
-  </div>
-</div>
-
-
-<!-- Modal para eliminar estudiante -->
 <div *ngIf="verEliminarEstudianteModal" id="eliminarModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-20">
   <div class="bg-midSecondary shadow-lg p-6 max-w-md w-full rounded-lg">
     <h2 class="text-xl font-bold mb-4 text-white">Eliminar Estudiante</h2>
     <p class="mb-4 text-white" >Seleccione un estudiante para eliminar:</p>
 
-    <!-- Lista de estudiantes con scroll y formato de tabla -->
     <div class="max-h-60 overflow-y-auto">
       <table class="min-w-full table-auto border-collapse">
         <thead>
@@ -90,7 +102,6 @@
       </table>
     </div>
 
-    <!-- Botón para eliminar los estudiantes seleccionados -->
     <button
       class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 mt-4 w-full"
       [disabled]="estudiantesSeleccionados.length === 0"
@@ -98,7 +109,6 @@
       Eliminar Estudiantes
     </button>
 
-    <!-- Botón para cerrar el modal -->
     <button
       (click)="cerrarEliminarEstudianteModal()"
       class="bg-secondary text-tertiary px-4 py-2 rounded-lg hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 mt-2 w-full">

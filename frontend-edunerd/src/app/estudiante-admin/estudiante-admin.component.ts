@@ -18,6 +18,8 @@ export class EstudianteAdminComponent implements OnInit {
   verExcel = false;
   estudiantes: any[] = [];
   estudiantesSeleccionados: any[] = [];
+  verEditarEstudianteModal = false;
+  estudianteEditado: any = {};
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -102,5 +104,39 @@ export class EstudianteAdminComponent implements OnInit {
 
   cerrarModalExcel() {
     this.verExcel = !this.verExcel;
+  }
+
+
+  abrirEditarEstudianteModal(estudiante: any): void {
+    this.estudianteEditado = { ...estudiante };  // Cargar los datos del estudiante a editar
+    this.verEditarEstudianteModal = true;
+  }
+
+  cerrarEditarEstudianteModal(): void {
+    this.verEditarEstudianteModal = false;
+  }
+
+  editarEstudiante(): void {
+    const estudianteModificado = this.estudianteEditado;
+
+    const estudianteDTO2 = {
+      id: estudianteModificado.id,
+      matricula: estudianteModificado.matricula,
+      nombre: estudianteModificado.nombre,
+      anoIngreso: estudianteModificado.anoIngreso
+    };
+
+    // Realizamos la llamada POST al endpoint de actualización
+    this.http.post('http://localhost:8080/estudiante/update', estudianteDTO2)
+      .subscribe(
+        (response) => {
+          this.getEstudiantes();
+          this.cerrarEditarEstudianteModal();
+          this.router.navigate(['/estudianteadmin']);
+        },
+        error => {
+          console.error('Error al actualizar el estudiante:', error);
+        }
+      );
   }
 }
