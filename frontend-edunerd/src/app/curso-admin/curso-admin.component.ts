@@ -14,7 +14,7 @@ import {HttpClient, HttpClientModule} from '@angular/common/http';
 export class CursoAdminComponent {
   cursoSeleccionadoId: string = '';
   archivo: File | null = null;
-  cursosTotales: { titulo: string, docente: string,aprendizajes:string[], semestre:string,ano:string } = {titulo: '', docente: '', aprendizajes: [''], semestre: '', ano: ''};
+  cursosTotales: { titulo: string, docente: string,aprendizajes:string[], semestre:number,ano:number } = {titulo: '', docente: '', aprendizajes: [''], semestre: 0, ano: 0};
   visible = false;
   abrirAgregarCurso = false;
   private apiUrlcrear = 'http://localhost:8080/curso/create';
@@ -23,7 +23,9 @@ export class CursoAdminComponent {
   private apiUrlGetCursos = 'http://localhost:8080/curso/getall';
   mostrarCursos: { id: string, titulo: string, docente: string, aprendizajes:string[],ano:number,semestre:number }[] = [];
   slideBarvisible=false;
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router:RouterModule) {}
+  verEditarEstudianteModal = false;
+  protected cursoEditado: any = {};
 
   ngOnInit() {
     this.obtenerCursos();
@@ -45,7 +47,7 @@ export class CursoAdminComponent {
 
   agregarCurso() {
     if (this.cursosTotales.titulo.trim()) {
-      if (this.cursosTotales.ano.trim()) {
+      if (this.cursosTotales.ano.toString().trim()) {
         if (this.cursosTotales.docente.trim()) {
           let aprendizajesProcesados: string[] = [];
 
@@ -77,8 +79,8 @@ export class CursoAdminComponent {
                 titulo: '',
                 docente: '',
                 aprendizajes: [''], // Reinicia el campo de aprendizajes
-                semestre: '',
-                ano: '',
+                semestre:0,
+                ano:0,
               };
               this.abrirAgregarCurso = false; // Cierra el modal
             },
@@ -125,10 +127,41 @@ export class CursoAdminComponent {
     });
   }
 
+  editarCurso(): void {
+    const cursoModificado = this.cursoEditado;
+
+    const curso = {
+      id: this.cursoEditado.id,
+      titulo: this.cursoEditado.titulo,
+      docente: this.cursoEditado.docente,
+      aprendizajes:this.cursoEditado.aprendizajes,
+      semestre:this.cursoEditado.semestre,
+      ano:this.cursoEditado.ano
+    };
+
+    // Realizamos la llamada POST al endpoint de actualización
+    this.http.post('http://localhost:8080/curso/update',curso)
+      .subscribe(
+        (response) => {
+
+          this.obtenerCursos();
+          this.cerrarEditarCursoModal();
+        },
+        error => {
+          console.error('Error al actualizar el curso:', error);
+        }
+      );
+  }
 
 
 
-
+  cerrarEditarCursoModal() {
+    this.verEditarEstudianteModal=false;
+  }
+  abrirEditarCurso(curso: any) {
+    this.cursoEditado = { ...curso }; // Copia los datos del curso para editar
+    this.verEditarEstudianteModal = true; // Abre el modal
+  }
   abrirFormularioEliminar() {
     this.abrireliminar=true;
   }
