@@ -1,9 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {Router, RouterLink, RouterModule} from '@angular/router';
-import {FormsModule} from '@angular/forms';
-import {CommonModule, NgIf, NgOptimizedImage} from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { Router, RouterLink, RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { CommonModule, NgIf, NgOptimizedImage } from '@angular/common';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-
 
 @Component({
   selector: 'app-estudiante-admin',
@@ -12,25 +11,24 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
   templateUrl: './estudiante-admin.component.html',
   styleUrl: './estudiante-admin.component.css'
 })
-export class EstudianteAdminComponent implements OnInit{
-
+export class EstudianteAdminComponent implements OnInit {
+  verEliminarEstudianteModal: boolean = false;
   verEleccion = false;
   verManual = false;
   verExcel = false;
-  estudiantes: any;
+  estudiantes: any[] = [];
+  estudiantesSeleccionados: any[] = [];
+
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
-      this.getEstudiantes();
-      console.log('Estudiantes: ',this.estudiantes);
+    this.getEstudiantes();
   }
 
   getEstudiantes(): void {
     this.http.get<any[]>('http://localhost:8080/estudiante/getall')
       .subscribe(
         (data: any[]) => {
-          console.log('Estudiantes obtenidos', data);
-
           this.estudiantes = data;
         },
         (error: any) => {
@@ -39,8 +37,55 @@ export class EstudianteAdminComponent implements OnInit{
       );
   }
 
+  abrirEliminarEstudianteModal(): void {
+    this.verEliminarEstudianteModal = true;
+  }
+
+  cerrarEliminarEstudianteModal(): void {
+    this.verEliminarEstudianteModal = false;
+    this.estudiantesSeleccionados = [];
+  }
+
+  seleccionarEstudiante(estudiante: any): void {
+    const index = this.estudiantesSeleccionados.findIndex(e => e.id === estudiante.id);
+    if (index === -1) {
+      this.estudiantesSeleccionados.push(estudiante);
+    } else {
+      this.estudiantesSeleccionados = this.estudiantesSeleccionados.filter(e => e.id !== estudiante.id);
+    }
+  }
+
+  eliminarEstudiante(): void {
+    if (this.estudiantesSeleccionados.length > 0) {
+      this.estudiantesSeleccionados.forEach(estudiante => {
+        const id = estudiante.id;
+        this.http.post<any>(`http://localhost:8080/estudiante/delete?id=${id}`, null)
+          .subscribe(
+            (response) => {
+              console.log('Estudiante eliminado:', response);
+              this.estudiantes = this.estudiantes.filter(est => est.id !== id);
+            },
+            (error) => {
+              console.error('Error al eliminar el estudiante:', error);
+            }
+          );
+      });
+    }
+
+
+    this.estudiantesSeleccionados = [];
+    this.cerrarEliminarEstudianteModal();
+  }
+
+
+
+
   navegarAdministrador() {
     this.router.navigate(['/administrador']);
+  }
+
+  cerrarModalEleccion() {
+    this.verEleccion = false;
   }
 
   modalEleccion() {
@@ -55,4 +100,7 @@ export class EstudianteAdminComponent implements OnInit{
     this.verExcel = !this.verExcel;
   }
 
+  cerrarModalExcel() {
+    this.verExcel = !this.verExcel;
+  }
 }
