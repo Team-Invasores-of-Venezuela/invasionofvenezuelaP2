@@ -27,6 +27,10 @@ export class DocenteAdminComponent {
   nuevoDocenteNombre: string = '';
   nuevoDocenteCursos: string = '';
   showModal: boolean = false;
+  idEditar: string = '';
+  nombreEditar: string = '';
+  cursosEditar: string = '';
+  nuevoDocente: any = { nombre: '', id: '' };
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -101,6 +105,7 @@ export class DocenteAdminComponent {
     this.selectedFile = null;
   }
 
+
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
   }
@@ -148,8 +153,7 @@ export class DocenteAdminComponent {
     this.selectedDocentes.clear();
   }
 
-  // Nuevos métodos para registrar un docente
-  nuevoDocente: any;
+  docente={id: ""};
   mostrarFormularioRegistro(): void {
     this.nuevoDocenteVisible = true;
   }
@@ -182,5 +186,72 @@ export class DocenteAdminComponent {
           alert('Ocurrió un error al registrar el docente.');
         }
       );
+  }
+
+  abrirModalEditar(docente: Docente): void {
+    if (docente) {
+      this.idEditar = docente.id;
+      this.nombreEditar = docente.nombre;
+      this.cursosEditar = docente.cursos.join(', ');
+      this.showModal = true;  // Mostrar el modal
+    } else {
+      console.error('Docente no encontrado');
+    }
+  }
+
+  guardarEdicion(): void {
+    const idEditarCadena = this.idEditar.toString().trim();
+
+    if (!idEditarCadena) {
+      alert('Por favor, ingrese un ID válido.');
+      return;
+    }
+
+    const docenteExistente = this.docentes.find(docente => docente.id === idEditarCadena);
+
+    if (!docenteExistente) {
+      alert('No se encontró un docente con el ID ingresado.');
+      return;
+    }
+
+    const nombre = this.nombreEditar?.trim();
+    console.log('Nombre recibido:', nombre);
+
+    if (!nombre) {
+      alert('Debe ingresar un nombre.');
+      return;
+    }
+
+    const cursos = this.nuevoDocenteCursos.split(',').map(curso => curso.trim()).filter(curso => curso.length > 0);
+    console.log('Cursos procesados:', cursos);
+
+    if (cursos.length === 0) {
+      alert('Debe ingresar al menos un curso.');
+      return;
+    }
+
+    const docenteActualizado: Docente = {
+      nombre: nombre,
+      id: idEditarCadena,
+      cursos: cursos
+    };
+
+    this.http.post('http://localhost:8080/profesor/update', docenteActualizado).subscribe(
+      (response) => {
+        alert('Docente actualizado con éxito.');
+        this.getDocentes();
+        this.cerrarModal();
+      },
+      (error) => {
+        console.error('Error al actualizar el docente:', error);
+        alert('Ocurrió un error al actualizar el docente.');
+      }
+    );
+  }
+
+  cerrarModalEditar() {
+    this.showModal = false;
+    // @ts-ignore
+    this.docente = {};
   }
 }

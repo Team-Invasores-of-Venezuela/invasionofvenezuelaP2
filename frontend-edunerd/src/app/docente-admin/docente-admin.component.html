@@ -36,6 +36,11 @@
       <button (click)="eliminarDocente(docente.id)" class="ml-4 bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600" *ngIf="modoEliminacion">
         Eliminar
       </button>
+
+      <!-- Botón para editar docente -->
+      <button (click)="abrirModalEditar(docente)" class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48">
+        Editar Docente
+      </button>
     </li>
   </ul>
 
@@ -52,7 +57,7 @@
       Eliminar Docente
     </button>
 
-    <button class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-green-600" (click)="mostrarFormularioRegistro()">
+    <button class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-green-600 h-15 w-48" (click)="mostrarFormularioRegistro()">
       Registrar Nuevo Docente
     </button>
   </div>
@@ -83,43 +88,18 @@
     </div>
   </div>
 
-  <!-- Modal para registrar un docente manualmente -->
-  <div *ngIf="showModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10">
-    <div class="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
-      <h2 class="text-xl font-bold mb-4">Registrar Docente</h2>
-
-      <!-- Campos del formulario -->
-      <form>
-        <div class="mb-4">
-          <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre del docente</label>
-          <input type="text" id="nombre" [(ngModel)]="nuevoDocente.nombre" class="block w-full text-sm text-gray-700 border border-gray-300 rounded-md p-2">
-        </div>
-        <div class="mb-4">
-          <label for="id" class="block text-sm font-medium text-gray-700">ID del docente</label>
-          <input type="text" id="id" [(ngModel)]="nuevoDocente.id" class="block w-full text-sm text-gray-700 border border-gray-300 rounded-md p-2">
-        </div>
-      </form>
-
-      <!-- Botones del modal -->
-      <div class="flex justify-end space-x-4">
-        <button (click)="cerrarModal()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-2xl hover:bg-gray-400">Cancelar</button>
-        <button (click)="registrarDocente()" class="bg-primary text-white px-4 py-2 rounded-2xl hover:bg-primary-light">Registrar</button>
-      </div>
-    </div>
-  </div>
-
-
-
-  <!-- Modal para agregar docente -->
+  <!-- Modal para registrar nuevo docente -->
   <div *ngIf="nuevoDocenteVisible" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
     <div class="bg-white p-6 rounded-lg shadow-md w-1/4">
       <h3 class="text-lg font-semibold mb-4">Registrar Nuevo Docente</h3>
       <label class="block mb-2">Nombre:</label>
-      <input type="text" [(ngModel)]="nuevoDocenteNombre" class="w-full border rounded px-3 py-2 mb-4" />
+      <input type="text" [(ngModel)]="nuevoDocenteNombre" name="nuevoDocenteNombre" class="w-full border rounded px-3 py-2 mb-4" />
+
       <label class="block mb-2">Cursos (separados por comas):</label>
-      <input type="text" [(ngModel)]="nuevoDocenteCursos" class="w-full border rounded px-3 py-2 mb-4" />
+      <input type="text" [(ngModel)]="nuevoDocenteCursos" name="nuevoDocenteCursos" class="w-full border rounded px-3 py-2 mb-4" />
+
       <div class="flex justify-end space-x-4">
-        <button class="bg-secondary text-white-800 px-4 py-2 rounded hover:bg-gray-400" (click)="ocultarFormularioRegistro()">
+        <button class="bg-secondary text-gray-800 px-4 py-2 rounded hover:bg-gray-400" (click)="ocultarFormularioRegistro()">
           Cancelar
         </button>
         <button class="bg-secondary text-white px-4 py-2 rounded hover:bg-green-600" (click)="registrarDocente()">
@@ -128,4 +108,28 @@
       </div>
     </div>
   </div>
+
+  <!-- Modal para editar docente existente -->
+  <div *ngIf="showModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10">
+    <div class="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
+      <h2 class="text-xl font-bold mb-4">Editar Docente</h2>
+
+      <label for="idEditar" class="block text-sm font-medium text-gray-700">ID del docente</label>
+      <input type="text" id="idEditar" [(ngModel)]="idEditar" name="idEditar" class="block w-full text-sm text-gray-700 border border-gray-300 rounded-md p-2">
+
+      <label for="nombreEditar" class="block text-sm font-medium text-gray-700">Nuevo nombre del docente</label>
+      <input type="text" [(ngModel)]="nombreEditar" id="nombreEditar" name="nombreEditar" class="block w-full text-sm text-gray-700 border border-gray-300 rounded-md p-2">
+
+
+      <label for="cursosEditar" class="block text-sm font-medium text-gray-700">Nuevos cursos (separados por comas)</label>
+      <input type="text" id="cursosEditar" [(ngModel)]="nuevoDocenteCursos" name="cursosEditar" class="block w-full text-sm text-gray-700 border border-gray-300 rounded-md p-2 mb-4">
+
+
+      <div class="flex justify-end space-x-4">
+        <button (click)="cerrarModalEditar()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-2xl hover:bg-gray-400">Cancelar</button>
+        <button (click)="guardarEdicion()" class="bg-primary text-white px-4 py-2 rounded-2xl hover:bg-primary-light">Guardar</button>
+      </div>
+    </div>
+  </div>
+
 </div>
