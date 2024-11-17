@@ -47,10 +47,18 @@ public class ServicioProfesor {
     public Profesor updateProfesor(ProfesorDTO2 profesorDTO2){
         Optional<Profesor> profesor = repositorioProfesor.findById(profesorDTO2.getId());
         if(profesor.isPresent()){
-            profesor.get().setNombre(profesorDTO2.getNombre());
-            profesor.get().setCursos(profesorDTO2.getCursos());
-            repositorioProfesor.save(profesor.get());
-            return profesor.get();
+            repositorioProfesor.delete(profesor.get());
+            if(!repositorioProfesor.existsByNombre(profesorDTO2.getNombre())){
+                profesor.get().setId(profesorDTO2.getId());
+                profesor.get().setNombre(profesorDTO2.getNombre());
+                profesor.get().setCursos(profesorDTO2.getCursos());
+                repositorioProfesor.save(profesor.get());
+                return profesor.get();
+            } else {
+                repositorioProfesor.save(profesor.get());
+                System.out.println("Profesor Repetido");
+                return null;
+            }
         } else {
             return null;
         }
