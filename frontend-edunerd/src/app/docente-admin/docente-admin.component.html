@@ -1,1 +1,52 @@
-<p>docente-admin works!</p>
+<div class="min-h-screen bg-primary font-sans">
+  <header class="bg-secondary text-white p-4 w-full text-left">
+    <h2 class="text-2xl font-semibold">Gestión de Docentes</h2>
+  </header>
+
+  <h2 class="text-3xl text-white m-10 ml-64">Docentes</h2>
+
+  <!-- Lista de docentes -->
+  <ul role="list" class="mx-96 rounded bg-primary shadow-2xl p-10">
+    <li *ngFor="let docente of docentes" class="flex justify-between border-b border-b-tertiary gap-x-6 p-5">
+      <div class="flex min-w-0 gap-x-4">
+        <img class="size-10 flex-none bg-gray-50" src="https://res.cloudinary.com/ddwshn5tb/image/upload/v1731725951/perfil_v6tmdm.png" alt="Perfil Docente">
+        <div class="min-w-0 flex-auto">
+          <p class="text-sm font-semibold text-white">{{ docente.nombre }}</p>
+          <p class="mt-1 truncate text-xs text-white">{{ docente.id }}</p>
+        </div>
+      </div>
+
+      <ul class="mt-2 bg-primary text-white rounded p-4 w-60 font-sans shadow-2xl">
+        <li *ngFor="let curso of docente.cursos" class="py-1 border-gray-700 last:border-none">
+          {{ curso }}
+        </li>
+      </ul>
+    </li>
+  </ul>
+
+  <!-- Botón para cargar docentes -->
+  <div class="flex justify-center mt-12">
+    <button class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48" (click)="abrirModal()">
+      Cargar Docentes
+    </button>
+  </div>
+
+  <!-- Modal para elegir la forma de cargar docentes -->
+  <div *ngIf="visible" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div class="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
+      <h2 class="text-xl font-bold mb-4">Subir Archivo</h2>
+      <p class="mb-4">Seleccione un archivo Excel para cargar docentes.</p>
+
+      <!-- Campo para seleccionar el archivo -->
+      <input type="file" accept=".xlsx, .xls" id="fileInput"
+             class="block w-full text-sm text-gray-700 border border-gray-300 rounded-md p-2 mb-4"
+             (change)="onFileSelected($event)" />
+
+      <!-- Botones de acción -->
+      <div class="flex justify-end space-x-4">
+        <button (click)="cerrarModal()" class="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400">Cancelar</button>
+        <button (click)="subirArchivo()" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Subir</button>
+      </div>
+    </div>
+  </div>
+</div>
