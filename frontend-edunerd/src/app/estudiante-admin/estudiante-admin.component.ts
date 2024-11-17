@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { CommonModule } from '@angular/common'; // Asegúrate de que esto esté importado
+import { CommonModule } from '@angular/common';
 
-// Definimos la interfaz para los estudiantes
 interface Estudiante {
   nombre: string;
   matricula: string;
@@ -14,13 +13,13 @@ interface Estudiante {
 @Component({
   selector: 'app-estudiante-admin',
   templateUrl: './estudiante-admin.component.html',
-  standalone: true, // Lo dejamos como standalone
+  standalone: true,
   styleUrls: ['./estudiante-admin.component.css'],
-  imports: [CommonModule]  // Asegúrate de que CommonModule esté importado
+  imports: [CommonModule]
 })
 export class EstudianteAdminComponent {
   visible = false;
-  estudiantes: Estudiante[] = [];  // Usamos la interfaz Estudiante
+  estudiantes: Estudiante[] = [];
   selectedFile: File | null = null;
 
   // Estudiantes hardcodeados
@@ -35,8 +34,8 @@ export class EstudianteAdminComponent {
 
   ngOnInit(): void {
     console.log('Estudiantes hardcodeados: ', this.estudiantesHardcodeados);
-    this.estudiantes = [...this.estudiantesHardcodeados];  // Agregar estudiantes hardcodeados
-    this.getEstudiantes();  // Llamar al backend para obtener los estudiantes y agregarlos a la lista
+    this.estudiantes = [...this.estudiantesHardcodeados];
+    this.getEstudiantes();
   }
 
   getEstudiantes(): void {
@@ -44,7 +43,7 @@ export class EstudianteAdminComponent {
       .subscribe(
         (data: Estudiante[]) => {
           console.log('Estudiantes obtenidos', data);
-          this.estudiantes = [...this.estudiantesHardcodeados, ...data]; // Agregar los estudiantes obtenidos por el backend a los hardcodeados
+          this.estudiantes = [...this.estudiantesHardcodeados, ...data];
         },
         (error: any) => {
           console.error('Error al obtener los estudiantes', error);
@@ -62,7 +61,7 @@ export class EstudianteAdminComponent {
 
   cerrarModal() {
     this.visible = false;
-    this.selectedFile = null; // Reiniciar la selección del archivo al cerrar el modal
+    this.selectedFile = null;
   }
 
   onFileSelected(event: any) {

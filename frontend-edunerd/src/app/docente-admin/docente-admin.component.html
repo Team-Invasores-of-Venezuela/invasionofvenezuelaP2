@@ -5,7 +5,14 @@
 
   <h2 class="text-3xl text-white m-10 ml-64">Docentes</h2>
 
-  <!-- Lista de docentes -->
+  <!-- Botón para cargar docentes -->
+  <div class="flex justify-center mt-12">
+    <button class="bg-blue-600 text-white px-4 py-2 rounded-2xl hover:bg-blue-700 h-11 w-48" (click)="abrirModal()">
+      Cargar Docentes
+    </button>
+  </div>
+
+  <!-- Lista de docentes con checkboxes -->
   <ul role="list" class="mx-96 rounded bg-primary shadow-2xl p-10">
     <li *ngFor="let docente of docentes" class="flex justify-between border-b border-b-tertiary gap-x-6 p-5">
       <div class="flex min-w-0 gap-x-4">
@@ -21,18 +28,40 @@
           {{ curso }}
         </li>
       </ul>
+
+      <!-- Checkbox para seleccionar el docente (solo visible en modo de eliminación) -->
+      <input type="checkbox" [checked]="isChecked(docente.id)" (change)="onCheckboxChange(docente.id, $event)" *ngIf="modoEliminacion">
+
+      <!-- Botón para eliminar docente individualmente (visible solo en modo eliminación) -->
+      <button (click)="eliminarDocente(docente.id)" class="ml-4 bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600" *ngIf="modoEliminacion">
+        Eliminar
+      </button>
     </li>
   </ul>
 
-  <!-- Botón para cargar docentes -->
+  <!-- Botón para eliminar los docentes seleccionados -->
   <div class="flex justify-center mt-12">
-    <button class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48" (click)="abrirModal()">
-      Cargar Docentes
+    <button class="bg-red-600 text-white px-4 py-2 rounded-2xl hover:bg-red-700 h-11 w-48" (click)="eliminarDocentes()" *ngIf="modoEliminacion">
+      Eliminar Docentes Seleccionados
+    </button>
+  </div>
+
+  <!-- Botón para activar el modo de eliminación -->
+  <div class="flex justify-center mt-12">
+    <button class="bg-yellow-600 text-white px-4 py-2 rounded-2xl hover:bg-yellow-700 h-11 w-48" (click)="activarModoEliminacion()" *ngIf="!modoEliminacion">
+      Activar Modo Eliminación
+    </button>
+  </div>
+
+  <!-- Botón para volver al estado normal -->
+  <div class="flex justify-center mt-12">
+    <button class="bg-gray-600 text-white px-4 py-2 rounded-2xl hover:bg-gray-700 h-11 w-48" (click)="volverModoNormal()" *ngIf="modoEliminacion">
+      Volver a la opción normal
     </button>
   </div>
 
   <!-- Modal para elegir la forma de cargar docentes -->
-  <div *ngIf="visible" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+  <div *ngIf="visible" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10">
     <div class="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
       <h2 class="text-xl font-bold mb-4">Subir Archivo</h2>
       <p class="mb-4">Seleccione un archivo Excel para cargar docentes.</p>

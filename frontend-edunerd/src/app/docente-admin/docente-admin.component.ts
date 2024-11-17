@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { CommonModule } from '@angular/common'; // Asegúrate de importar CommonModule
+import { CommonModule } from '@angular/common';
 
-// Definir la interfaz para los docentes
 interface Docente {
   nombre: string;
   id: string;
@@ -19,19 +18,20 @@ interface Docente {
 })
 export class DocenteAdminComponent {
 
-  docentes: Docente[] = [];  // Usar la interfaz Docente
-  visible = false;  // Controlar la visibilidad del modal
-  selectedFile: File | null = null;  // Archivo seleccionado para subir
+  docentes: Docente[] = [];
+  selectedDocentes: Set<string> = new Set();
+  visible = false;
+  selectedFile: File | null = null;
+  modoEliminacion = false;
 
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
-    this.getDocentes();  // Llamar a la función para obtener docentes al cargar el componente
+    this.getDocentes();
   }
 
-  // Función para obtener los docentes desde el backend
   getDocentes(): void {
-    this.http.get<Docente[]>('http://localhost:8080/profesor/getall')  // Asegúrate de tener el endpoint correcto
+    this.http.get<Docente[]>('http://localhost:8080/profesor/getall')
       .subscribe(
         (data: Docente[]) => {
           console.log('Docentes obtenidos', data);
@@ -43,23 +43,64 @@ export class DocenteAdminComponent {
       );
   }
 
-  // Abrir modal para cargar archivo
+  onCheckboxChange(docenteId: string, isChecked: Event): void {
+    if (isChecked) {
+      this.selectedDocentes.add(docenteId);
+    } else {
+      this.selectedDocentes.delete(docenteId);
+    }
+  }
+
+  eliminarDocentes(): void {
+    if (this.selectedDocentes.size === 0) {
+      alert('Por favor, seleccione al menos un docente para eliminar.');
+      return;
+    }
+
+    this.selectedDocentes.forEach(docenteId => {
+      this.http.post(`http://localhost:8080/profesor/delete?id=${docenteId}`, {})
+        .subscribe(
+          (response) => {
+            console.log(`Docente ${docenteId} eliminado`, response);
+            this.getDocentes();
+            alert('Docentes eliminados con éxito');
+          },
+          (error) => {
+            console.error('Error al eliminar el docente:', error);
+            alert('Ocurrió un error al eliminar los docentes.');
+          }
+        );
+    });
+  }
+
+  eliminarDocente(docenteId: string): void {
+    this.http.post(`http://localhost:8080/profesor/delete?id=${docenteId}`, {})
+      .subscribe(
+        (response) => {
+          console.log(`Docente ${docenteId} eliminado`, response);
+          this.getDocentes();
+          alert('Docente eliminado con éxito');
+        },
+        (error) => {
+          console.error('Error al eliminar el docente:', error);
+          alert('Ocurrió un error al eliminar el docente.');
+        }
+      );
+  }
+
   abrirModal() {
     this.visible = true;
   }
 
-  // Cerrar modal
   cerrarModal() {
     this.visible = false;
-    this.selectedFile = null;  // Reiniciar el archivo seleccionado
+    this.selectedFile = null;
   }
 
-  // Capturar el archivo seleccionado
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
   }
 
-  // Subir archivo de docentes
   subirArchivo() {
     if (!this.selectedFile) {
       alert('Por favor, seleccione un archivo antes de subirlo.');
@@ -69,18 +110,37 @@ export class DocenteAdminComponent {
     const formData = new FormData();
     formData.append('file', this.selectedFile);
 
-    this.http.post('http://localhost:8080/svc/importarProfesores', formData)  // Asegúrate de tener el endpoint correcto
+    this.http.post('http://localhost:8080/svc/importarProfesores', formData)
       .subscribe(
         (response) => {
           console.log('Archivo subido exitosamente:', response);
           alert('Archivo subido con éxito.');
-          this.cerrarModal();  // Cerrar el modal después de subir el archivo
-          this.getDocentes();  // Volver a obtener la lista de docentes
+          this.cerrarModal();
+          this.getDocentes();
         },
         (error) => {
           console.error('Error al subir el archivo:', error);
           alert('Ocurrió un error al subir el archivo.');
         }
       );
+  }
+
+  isChecked(docenteId: string): boolean {
+    return this.selectedDocentes.has(docenteId);
+  }
+
+  toggleModoEliminacion(): void {
+    this.modoEliminacion = !this.modoEliminacion;
+    this.selectedDocentes.clear(); // Limpiar selección de docentes cuando se cambia de modo
+  }
+
+  volverModoNormal(): void {
+    this.modoEliminacion = false;
+    this.selectedDocentes.clear();
+  }
+
+  activarModoEliminacion(): void {
+    this.modoEliminacion = true;
+    this.selectedDocentes.clear();
   }
 }
