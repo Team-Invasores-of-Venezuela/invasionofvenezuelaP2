@@ -21,7 +21,7 @@ export class CursoAdminComponent {
   private apiUrleliminar = 'http://localhost:8080/curso/delete';
   abrireliminar=false;
   private apiUrlGetCursos = 'http://localhost:8080/curso/getall';
-  mostrarCursos: { id: string, titulo: string, descripcion: string }[] = [];
+  mostrarCursos: { id: string, titulo: string, docente: string, aprendizajes:string[],ano:number,semestre:number }[] = [];
   slideBarvisible=false;
   constructor(private http: HttpClient) {}
 
@@ -41,23 +41,6 @@ export class CursoAdminComponent {
     });
   }
 
-  cursos: { id: number; titulo: string; descripcion: string }[] = [
-    {
-      id:1,
-      titulo: 'Matemáticas Avanzadas',
-      descripcion: 'Matemáticas Avanzadas ofrece formación especializada en áreas clave de las matemáticas, orientada a la investigación y al desarrollo de actividades científicas de alto nivel'
-      },
-
-    {
-      id:2,
-     titulo: 'Proyecto de titulación ',
-      descripcion: 'Proyecto de Titulación guía a los estudiantes en la elaboración de su trabajo final, aplicando los conocimientos adquiridos durante su carrera para desarrollar una investigación académica que demuestre su capacidad y creatividad1' },
-
-    {
-      id:3,
-      titulo: 'Pensamiento Computacional',
-      descripcion: 'Pensamiento Computacional enseña a resolver problemas mediante la lógica y el razonamiento computacional, desarrollando habilidades como la descomposición, la abstracción y el diseño de algoritmos' },
-  ];
   protected title: string | undefined;
 
   agregarCurso() {
@@ -66,16 +49,14 @@ export class CursoAdminComponent {
         if (this.cursosTotales.docente.trim()) {
           let aprendizajesProcesados: string[] = [];
 
-          // Verificar el tipo de 'aprendizajes' y asegurarse de que siempre sea un arreglo de cadenas
           if (Array.isArray(this.cursosTotales.aprendizajes)) {
-            // Si 'aprendizajes' ya es un arreglo, procesamos cada elemento
+
             aprendizajesProcesados = this.cursosTotales.aprendizajes.map((item: string) => item.trim());
           } else if (typeof this.cursosTotales.aprendizajes === 'string') {
-            // Si 'aprendizajes' es un string, lo dividimos en un arreglo
             // @ts-ignore
             aprendizajesProcesados = this.cursosTotales.aprendizajes.split(',').map((item: string) => item.trim());
           } else {
-            // Si 'aprendizajes' no es ni un arreglo ni un string, dejamos un arreglo vacío
+
             console.warn('El campo de aprendizajes no tiene un formato válido');
             aprendizajesProcesados = [];
           }

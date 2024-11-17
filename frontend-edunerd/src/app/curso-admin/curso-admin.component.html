@@ -2,39 +2,37 @@
 
   <div *ngIf="slideBarvisible" class="fixed inset-0 flex z-50 right-full">
     <div class="bg-black bg-opacity-50 w-full h-full" (click)="toggleSidebar()"></div>
-    <div class="bg-white w-4xl h-full p-4 shadow-lg transform transition-all duration-300 ease-in-out" [ngClass]="{'translate-x-0': slideBarvisible, 'translate-x-[-100%]': !slideBarvisible}">
+    <div class="bg-primary min-w-60 h-full p-4 shadow-lg transform transition-all duration-300 ease-in-out" [ngClass]="{'translate-x-0': slideBarvisible, 'translate-x-[-100%]': !slideBarvisible}">
 
-      <!-- Botón de cerrar (X) -->
-      <button class="absolute top-4 right-4 text-2xl font-bold text-gray-700 hover:text-gray-900" (click)="CerrartoggleSidebar()">✖</button>
+      <button class="absolute top-4 right-4 text-2xl font-bold text-primary hover:text-white" (click)="CerrartoggleSidebar()">✖</button>
 
-      <h2 class="text-2xl font-semibold text-gray-700 mb-4">Opciones</h2>
-      <button class="w-60 px-4 py-2 text-lg font-semibold text-white transition transform bg-secondary rounded-full shadow-lg hover:bg-gray-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white mb-4" (click)="abrirModal()">
+      <h2 class="text-2xl font-semibold text-white mb-4">Opciones</h2>
+      <button class="w-full px-4 py-2 text-lg font-semibold text-primary transition transform bg-tertiary rounded-full shadow-lg hover:bg-gray-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white mb-4" (click)="abrirModal()">
         Subir Excel
       </button>
-      <button class="w-full px-4 py-2 text-lg font-semibold text-white transition transform bg-secondary rounded-full shadow-lg hover:bg-gray-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white mb-4" (click)="abrir()">
+      <button class="w-full px-4 py-2 text-lg font-semibold text-primary transition transform bg-tertiary rounded-full shadow-lg hover:bg-gray-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white mb-4" (click)="abrir()">
         Agregar curso de forma manual
       </button>
-      <button class="bg-primary w-full px-4 py-2 text-lg font-semibold text-white transition transform bg-red-500 rounded-full shadow-lg hover:bg-red-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white" (click)="abrirFormularioEliminar()">
+      <button class="bg-white w-full px-4 py-2 text-lg font-semibold text-primary transition transform bg-red-500 rounded-full shadow-lg hover:bg-red-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white" (click)="abrirFormularioEliminar()">
         Eliminar Curso
       </button>
     </div>
   </div>
 
 
-  <!-- Botón para abrir el sidebar, ahora en la derecha -->
   <button  class="absolute top-4 left-4 px-4 py-2 text-lg font-semibold text-white transition transform bg-primary rounded-full shadow-lg hover:bg-gray-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white" (click)="toggleSidebar()">
     ☰
   </button>
 
-  <!-- Contenido principal con espacio izquierdo -->
   <div class="ml-64 max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-8">
     <h2 class="text-2xl font-semibold text-gray-700 mb-4">Cursos</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
-      <div *ngFor="let curso of cursos" class="max-w-sm rounded overflow-hidden shadow-lg bg-white">
+      <div *ngFor="let curso of mostrarCursos" class="w-90 h-50 rounded overflow-hidden shadow-lg bg-tertiary">
+        <div class="ml-5 mt-2"> {{curso.ano}} - {{curso.semestre}} </div>
         <img class="w-full" alt="{{ curso.titulo }}" />
         <div class="px-6 py-4">
-          <div class="font-bold text-xl mb-2">{{ curso.titulo }}</div>
-          <p class="text-gray-700 text-base">{{ curso.descripcion }}</p>
+          <div class="font-extrabold text-xl mb-2">{{ curso.titulo }} <div class="font-medium font-semibold">{{ curso.docente }}</div> </div>
+          <p class="text-gray-700 text-base">{{ curso.aprendizajes }}</p>
         </div>
       </div>
     </div>
