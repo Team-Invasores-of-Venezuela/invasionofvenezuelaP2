@@ -85,6 +85,7 @@ public class ServicioSVC {
                     Profesor profesor = new Profesor();
                     profesor.setNombre(nombre);
                     profesor.setCursos(cursos);
+                    generarUsuarios(profesor);
                     profesores.add(profesor);
                 }
             }
