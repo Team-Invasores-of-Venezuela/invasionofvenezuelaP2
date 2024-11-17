@@ -16,7 +16,7 @@ interface Estudiante {
   templateUrl: './estudiante-admin.component.html',
   standalone: true,
   styleUrls: ['./estudiante-admin.component.css'],
-  imports: [CommonModule]
+  imports: [CommonModule, FormsModule]
 })
 export class EstudianteAdminComponent implements OnInit{
 
@@ -64,6 +64,10 @@ export class EstudianteAdminComponent implements OnInit{
     this.verEleccion = !this.verEleccion;
   }
 
+  modalManual() {
+    this.verManual = !this.verManual;
+  }
+
   cerrarModal() {
     this.visible = false;
     this.selectedFile = null;
@@ -102,6 +106,10 @@ export class EstudianteAdminComponent implements OnInit{
 
   modalExcel() {
     this.verExcel = !this.verExcel;
+  }
+
+  abrirExcelModal() {
+    this.verExcel = true;
   }
 
   abrirEliminarEstudianteModal(): void {

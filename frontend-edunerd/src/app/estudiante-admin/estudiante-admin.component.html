@@ -24,6 +24,27 @@
     </button>
   </li>
 </ul>
+
+<!-- Modal para agregar estudiantes a través de un excel -->
+<div *ngIf="verExcel" id="uploadModal" class="fixed inset-0 flex items-center justify-center bg-primary bg-opacity-50">
+  <div class="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
+    <h2 class="text-xl font-bold mb-4">Subir Archivo</h2>
+    <p class="mb-4">Seleccione un archivo Excel para cargar.</p>
+
+    <!-- Campo para seleccionar el archivo -->
+    <input type="file" accept=".xlsx, .xls" id="fileInput"
+           class="block w-full text-sm text-gray-700 border border-gray-300 rounded-md p-2 mb-4"
+           (change)="onFileSelected($event)" />
+
+    <!-- Botones de acción -->
+    <div class="flex justify-end space-x-4">
+      <button (click)="cerrarModal();abrirExcelModal()" class="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400">Cancelar</button>
+      <button (click)="subirArchivo()" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Subir</button>
+    </div>
+  </div>
+</div>
+
+
 <!-- Botón para añadir estudiante -->
 <div class="flex justify-center mt-12 gap-4 mb-8">
   <button class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48 mb-40" (click)="modalEleccion()">
@@ -40,7 +61,7 @@
     <button class="bg-secondary text-white px-4 py-2 rounded hover:bg-secondary h-11 w-48 hover:scale-105" (click)="modalEleccion(); modalManual()">
       Añadir manual
     </button>
-    <button class="bg-secondary text-white px-4 py-2 rounded hover:bg-secondary h-11 w-48 hover:scale-105" (click)="modalEleccion()">
+    <button class="bg-secondary text-white px-4 py-2 rounded hover:bg-secondary h-11 w-48 hover:scale-105" (click)="modalExcel()">
       Subir excel
     </button>
   </div>
@@ -100,33 +121,19 @@
   </form>
 </div>
 
-<!-- Modal para agregar estudiantes a través de un excel -->
-<div *ngIf="verExcel" id="uploadModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-  <div class="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
-    <h2 class="text-xl font-bold mb-4">Subir Archivo</h2>
-    <p class="mb-4">Seleccione un archivo Excel para cargar.</p>
 
-    <!-- Campo para seleccionar el archivo -->
-    <input type="file" accept=".xlsx, .xls" id="fileInput"
-           class="block w-full text-sm text-gray-700 border border-gray-300 rounded-md p-2 mb-4"
-           (change)="onFileSelected($event)" />
 
-    <!-- Botones de acción -->
-    <div class="flex justify-end space-x-4">
-      <button (click)="cerrarModal()" class="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400">Cancelar</button>
-      <button (click)="subirArchivo()" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Subir</button>
-    </div>
-  </div>
-</div>
 </body>
-    <input type="file" accept=".xlsx, .xls" id="fileInput" class="block w-full text-sm text-gray-700 border border-gray-300 rounded-md p-2 mb-4" />
 
-    <!-- Botones de acción -->
+
+<input type="file" accept=".xlsx, .xls" id="file-upload" class="block w-full text-sm text-gray-700 border border-gray-300 rounded-md p-2 mb-4" />
+
+
+
+<!-- Botones de acción -->
     <div class="flex justify-end space-x-4">
       <button (click)="modalExcel()" class="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400">Cancelar</button>
     </div>
-  </div>
-</div>
 
 <!-- Modal para eliminar un estudiante -->
 <div *ngIf="verEliminarEstudianteModal" id="eliminarModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-20">
@@ -205,3 +212,4 @@
     </form>
   </div>
 </div>
+
