@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 interface Docente {
   nombre: string;
@@ -12,17 +13,20 @@ interface Docente {
 @Component({
   selector: 'app-docente-admin',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './docente-admin.component.html',
   styleUrls: ['./docente-admin.component.css'],
 })
 export class DocenteAdminComponent {
-
   docentes: Docente[] = [];
   selectedDocentes: Set<string> = new Set();
   visible = false;
   selectedFile: File | null = null;
   modoEliminacion = false;
+  nuevoDocenteVisible = false;
+  nuevoDocenteNombre: string = '';
+  nuevoDocenteCursos: string = '';
+  showModal: boolean = false;
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -131,7 +135,7 @@ export class DocenteAdminComponent {
 
   toggleModoEliminacion(): void {
     this.modoEliminacion = !this.modoEliminacion;
-    this.selectedDocentes.clear(); // Limpiar selección de docentes cuando se cambia de modo
+    this.selectedDocentes.clear();
   }
 
   volverModoNormal(): void {
@@ -142,5 +146,41 @@ export class DocenteAdminComponent {
   activarModoEliminacion(): void {
     this.modoEliminacion = true;
     this.selectedDocentes.clear();
+  }
+
+  // Nuevos métodos para registrar un docente
+  nuevoDocente: any;
+  mostrarFormularioRegistro(): void {
+    this.nuevoDocenteVisible = true;
+  }
+
+  ocultarFormularioRegistro(): void {
+    this.nuevoDocenteVisible = false;
+    this.nuevoDocenteNombre = '';
+    this.nuevoDocenteCursos = '';
+  }
+
+  registrarDocente(): void {
+    if (!this.nuevoDocenteNombre || !this.nuevoDocenteCursos) {
+      alert('Por favor, complete todos los campos.');
+      return;
+    }
+
+    const cursos = this.nuevoDocenteCursos.split(',').map(curso => curso.trim());
+    const nuevoDocente: Docente = { nombre: this.nuevoDocenteNombre, id: '', cursos };
+
+    this.http.post<Docente>('http://localhost:8080/profesor/create', nuevoDocente)
+      .subscribe(
+        (response: Docente) => {
+          console.log('Docente registrado exitosamente', response);
+          alert('Docente registrado con éxito.');
+          this.getDocentes();
+          this.ocultarFormularioRegistro();
+        },
+        (error) => {
+          console.error('Error al registrar el docente:', error);
+          alert('Ocurrió un error al registrar el docente.');
+        }
+      );
   }
 }
