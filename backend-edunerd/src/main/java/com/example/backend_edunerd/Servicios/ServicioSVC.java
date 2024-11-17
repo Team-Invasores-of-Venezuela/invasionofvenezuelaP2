@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,19 +46,46 @@ public class ServicioSVC {
             Workbook workbook = new XSSFWorkbook(inputStream);
             Sheet sheet = workbook.getSheetAt(0);
 
+
+            Row headerRow = sheet.getRow(0);
+            int nombreIndex = -1;
+            int cursosIndex = -1;
+
+            for (int i = 0; i < headerRow.getPhysicalNumberOfCells(); i++) {
+                String header = headerRow.getCell(i).getStringCellValue().toLowerCase();
+                if (header.contains("nombre")) {
+                    nombreIndex = i;
+                } else if (header.contains("cursos")) {
+                    cursosIndex = i;
+                }
+            }
+
+            if (nombreIndex == -1 || cursosIndex == -1) {
+                throw new IllegalArgumentException("No se encontraron las columnas 'nombre' o 'cursos' en el archivo Excel.");
+            }
+
             for (Row row : sheet) {
                 if (row.getRowNum() == 0) {
                     continue;
                 }
 
-                String nombre = row.getCell(0) != null ? row.getCell(0).getStringCellValue() : "";
-                String cursosStr = row.getCell(1) != null ? row.getCell(1).getStringCellValue() : "";
-                List<String> cursos = Arrays.asList(cursosStr.split(","));
+                String nombre = row.getCell(nombreIndex) != null ? row.getCell(nombreIndex).getStringCellValue().trim() : "";
+                String cursosStr = row.getCell(cursosIndex) != null ? row.getCell(cursosIndex).getStringCellValue().trim() : "";
 
-                if (!nombre.isEmpty() && !cursosStr.isEmpty()&& !profesorRepository.existsByNombre(nombre)) {
+                // EL METODO TRIM BORRA LOS ESPACIOS VACIOS AL INICIO Y AL FINAL DE UN STRING
+                nombre = nombre.replaceAll("\\s{2,}", " ");
+                cursosStr = cursosStr.replaceAll("\\s{2,}", " ");
+
+                if (!nombre.isEmpty() && !cursosStr.isEmpty() && !profesorRepository.existsByNombre(nombre)) {
+                    List<String> cursos = Arrays.stream(cursosStr.split(","))
+                            .map(String::trim) // Eliminar espacios en cada curso
+                            .filter(curso -> !curso.isEmpty()) // Ignorar cursos vacíos
+                            .collect(Collectors.toList());
+
                     Profesor profesor = new Profesor();
                     profesor.setNombre(nombre);
                     profesor.setCursos(cursos);
+                    generarUsuarios(profesor);
                     profesores.add(profesor);
                 }
             }
@@ -75,14 +103,14 @@ public class ServicioSVC {
             Workbook workbook = new XSSFWorkbook(inputStream);
             Sheet sheet = workbook.getSheetAt(0);
 
-
             Row headerRow = sheet.getRow(0);
             int nombreIndex = -1;
             int matriculaIndex = -1;
             int anoIngresoIndex = -1;
 
+
             for (int i = 0; i < headerRow.getPhysicalNumberOfCells(); i++) {
-                String header = headerRow.getCell(i).getStringCellValue().toLowerCase();
+                String header = headerRow.getCell(i).getStringCellValue().toLowerCase().trim();
                 if (header.contains("nombre")) {
                     nombreIndex = i;
                 } else if (header.contains("matricula")) {
@@ -92,21 +120,29 @@ public class ServicioSVC {
                 }
             }
 
+            if (nombreIndex == -1 || matriculaIndex == -1 || anoIngresoIndex == -1) {
+                throw new IllegalArgumentException("El archivo Excel no contiene las columnas requeridas.");
+            }
 
             for (Row row : sheet) {
                 if (row.getRowNum() == 0) {
                     continue;
                 }
 
-                Estudiante estudiante = new Estudiante();
+
+                String nombre = row.getCell(nombreIndex).getStringCellValue().trim();
+                String matricula = String.valueOf((int) row.getCell(matriculaIndex).getNumericCellValue()).trim();
+                int anoIngreso = (int) row.getCell(anoIngresoIndex).getNumericCellValue();
 
 
-                estudiante.setNombre(row.getCell(nombreIndex).getStringCellValue());
-                double matricula = row.getCell(matriculaIndex).getNumericCellValue();
-                estudiante.setMatricula(String.valueOf((int) matricula));
-                estudiante.setAnoIngreso((int) row.getCell(anoIngresoIndex).getNumericCellValue());
+                if (!estudianteRepository.existsByMatricula(matricula)) {
+                    Estudiante estudiante = new Estudiante();
+                    estudiante.setNombre(nombre);
+                    estudiante.setMatricula(matricula);
+                    estudiante.setAnoIngreso(anoIngreso);
 
-                estudiantes.add(estudiante);
+                    estudiantes.add(estudiante);
+                }
             }
         }
 
@@ -128,7 +164,7 @@ public class ServicioSVC {
             int anoIndex = -1;
 
             for (int i = 0; i < headerRow.getPhysicalNumberOfCells(); i++) {
-                String header = headerRow.getCell(i).getStringCellValue().toLowerCase();
+                String header = headerRow.getCell(i).getStringCellValue().toLowerCase().trim();
                 if (header.contains("titulo")) {
                     tituloIndex = i;
                 } else if (header.contains("docente")) {
@@ -142,42 +178,39 @@ public class ServicioSVC {
                 }
             }
 
-
             for (Row row : sheet) {
                 if (row.getRowNum() == 0) {
                     continue;
                 }
 
-                String titulo = row.getCell(tituloIndex).getStringCellValue();
-
+                // Limpiar el titulo y docente, asegurándose de eliminar espacios innecesarios
+                String titulo = row.getCell(tituloIndex).getStringCellValue().trim().replaceAll("\\s+", " ");
                 if (cursoRepository.existsByTitulo(titulo)) {
-                    continue; 
+                    continue;
                 }
 
-                String docente = row.getCell(docenteIndex).getStringCellValue();
-                String aprendizajesStr = row.getCell(aprendizajesIndex).getStringCellValue();
+                String docente = row.getCell(docenteIndex).getStringCellValue().trim().replaceAll("\\s+", " ");
+                String aprendizajesStr = row.getCell(aprendizajesIndex).getStringCellValue().trim().replaceAll("\\s+", " ");
                 int semestre = (int) row.getCell(semestreIndex).getNumericCellValue();
                 int ano = (int) row.getCell(anoIndex).getNumericCellValue();
-
 
                 if (semestre < 1 || semestre > 2) {
                     System.out.println("Semestre inválido en la fila " + row.getRowNum() + ", debe ser 1 o 2");
                     continue;
                 }
 
-
+                // Limpiar y separar los aprendizajes
                 List<String> aprendizajes = new ArrayList<>();
-                if (aprendizajesStr != null && !aprendizajesStr.isEmpty()) {
-
+                if (!aprendizajesStr.isEmpty()) {
                     String[] aprendizajesArray = aprendizajesStr.split(",");
-
                     for (String aprendizaje : aprendizajesArray) {
-                        aprendizajes.add(aprendizaje.trim()); // .trim() para quitar espacios extra
+                        aprendizajes.add(aprendizaje.trim().replaceAll("\\s+", " "));  // Limpiar cada aprendizaje
                     }
                 }
 
-
+                // Crear el objeto Curso y agregar los datos limpiados
                 Curso curso = new Curso();
+                System.out.println("agregando " + titulo);
                 curso.setTitulo(titulo);
                 curso.setDocente(docente);
                 curso.setAprendizajes(aprendizajes);

@@ -3,14 +3,14 @@
 
   <header class="bg-primary text-white p-4 flex items-center justify-between">
     <h1 class="text-mediumGray text-xl font-bold">Bienvenido(a) </h1>
-    <h1 class="text-mediumGray text-xl font-bold">{{docente.name}} </h1>
-    <button class="text-dark text-white">Cerrar sesión</button>
+    <div *ngIf="docente?.name"> <!-- Asegúrate de que user esté definido -->
+      <p>{{ docente.name }}</p>
+    </div>
+    <button (click)="cerrarSesion()" class="text-dark text-white">Cerrar sesión</button>
   </header>
-
 
   <div class="flex flex-1">
 
-    <!-- Sección de cursos -->
     <main class="flex-1 p-6">
       <h2 class="text-2xl font-semibold text-dark mb-4">Mis Cursos</h2>
 
