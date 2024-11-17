@@ -36,8 +36,15 @@
   </div>
 
   <!-- Modal para elegir el método para agregar estudiante/s -->
-  <div *ngIf="verEleccion" id="eleccion" class="flex justify-center bg-opacity-50 shadow-2xl h-20 w-20">
-
+  <div *ngIf="verEleccion" id="eleccion" class="fixed inset-0 flex items-center justify-center bg-primary bg-opacity-50">
+    <div class="bg-midSecondary h-40 w-auto shadow-2xl rounded p-10 flex flex-col items-center space-y-4">
+      <button class="bg-secondary text-white px-4 py-2 rounded hover:bg-secondary h-11 w-48 hover:scale-105" (click)="modalEleccion()">
+        Añadir manual
+      </button>
+      <button class="bg-secondary text-white px-4 py-2 rounded hover:bg-secondary h-11 w-48 hover:scale-105" (click)="modalEleccion()">
+        Subir excel
+      </button>
+    </div>
   </div>
 
   <!-- Modal para agregar un estudiante manualmente -->
