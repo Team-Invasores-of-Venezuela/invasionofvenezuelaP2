@@ -87,10 +87,15 @@ public class ServicioProfesor {
         String email = nombreSplit + "@gmail.com";
 
         if(!repositorioUsuario.existsByEmail(email)){
-            Usuario usuario = new Usuario(false, email, nombreSplit);
+            Usuario usuario = new Usuario(false, nombreSplit, nombre, nombre);
             //System.out.println(usuario.toString());
             repositorioUsuario.save(usuario);
             System.out.println("Usuario generado");
+            System.out.println(usuario.isAdmin());
+            System.out.println(usuario.getEmail());
+            System.out.println(usuario.getContrasena());
+            System.out.println(usuario.getNombre());
+
             return usuario;
         }
         return null;
