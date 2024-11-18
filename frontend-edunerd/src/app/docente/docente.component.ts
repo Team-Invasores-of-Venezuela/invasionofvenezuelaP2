@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {NgForOf, NgIf} from '@angular/common';
 import {Router} from '@angular/router';
 import {AuthService} from '../AuthService';
@@ -15,13 +15,14 @@ import {Observable} from 'rxjs';
   templateUrl: './docente.component.html',
   styleUrl: './docente.component.css'
 })
-export class DocenteComponent {
+export class DocenteComponent implements OnInit{
   docente: { id: string, nombre: string, cursos: string[] } = { id: '', nombre: '', cursos: [] };
   estudiantes: any [] | any;
   mostrarCursos: { id: string, titulo: string, docente: string, aprendizajes:string[],ano:number,semestre:number }[] = [];
   private apiUrlGetCursos = 'http://localhost:8080/curso/getall';
   private apiUrldocente = 'http://localhost:8080/usuario/';
-
+  docenteId = localStorage.getItem('userId');
+  nombre= localStorage.getItem('nombre');
 
 constructor(private router: Router, private authService: AuthService, private http: HttpClient) {
 
@@ -34,28 +35,15 @@ constructor(private router: Router, private authService: AuthService, private ht
   }
 
   cargarDatosDocente() {
-    const docenteId = localStorage.getItem('userId');
-    console.log('ID del docente desde localStorage:', docenteId);  // Verificar el valor
-    if (!docenteId) {
-      console.error('No se encontró el ID del docente en el almacenamiento local.');
-      return;
-    }
-    this.http.get<any>(`${this.apiUrldocente}get?id=${docenteId}`)
-      .subscribe({
-        next: (response) => {
-          this.docente = response;
-          console.log('Datos del docente:', this.docente);
-        },
-        error: (error) => {
-          console.error('Error al obtener datos del docente:', error);
-        },
-      });
+
+    console.log('ID del docente desde localStorage:', this.docenteId);  // Verificar el valor
 
     this.http.get<any[]>(this.apiUrlGetCursos).subscribe({
 
       next: (data) => {
-
-        this.mostrarCursos = data.filter(curso => curso.user?.id === docenteId);
+        console.log(this.nombre);
+        console.log('Datos:', data);
+        this.mostrarCursos = data.filter(curso => curso.docente === this.nombre);
       },
       error: (error) => {
         console.error('Error al obtener los cursos:', error);
