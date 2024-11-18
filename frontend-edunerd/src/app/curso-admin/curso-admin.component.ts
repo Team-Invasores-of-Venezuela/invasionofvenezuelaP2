@@ -24,6 +24,7 @@ export class CursoAdminComponent implements OnInit{
   private apiUrlGetCursos = 'http://localhost:8080/curso/getall';
   private apiUrlSubirArchivo = 'http://localhost:8080/svc/importarCursos';
   private apiUrlcrear = 'http://localhost:8080/curso/create';
+  private apiUrleliminar = 'http://localhost:8080/curso/delete';
 
   constructor(private http: HttpClient, private router:RouterModule) {}
   mostrarCursos: { id: string, titulo: string, docente: string, aprendizajes:string[],ano:number,semestre:number }[] = [];
