@@ -140,6 +140,7 @@ export class EstudianteAdminComponent implements OnInit{
         (error: any) => {
           console.error('Error al crear estudiante', error);
         });
+
   }
 
   seleccionarEstudiante(estudiante: any): void {
