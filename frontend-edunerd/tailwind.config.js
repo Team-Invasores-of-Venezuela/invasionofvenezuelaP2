@@ -5,11 +5,12 @@ module.exports = {
   ],
   theme: {
     colors: {
-      primary: '#F20505',    // Rojo brillante (botón)
-      secondary: '#F27272',  // Fondo de la tarjeta de bienvenida (rosa fuerte)
-      lightGray: '#F2F2F2',  // Fondo general
-      mediumGray: '#8C8C8C', // Texto de estudiantes
-      dark: '#0D0D0D',       // Títulos y texto oscuro
+      primary: '#11212D',       // fondo
+      secondary: '#253745',     // segunda capa
+      midSecondary: '#4A5C6A',  // intermedio entre secundario y terciario
+      tertiary: '#9BA8AB',      // botones o cosas a destacar
+      white: '#CCD0CF'          // texto
+
     },
   },
   plugins: [],

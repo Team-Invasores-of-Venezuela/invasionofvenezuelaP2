@@ -1,39 +1,41 @@
-<!-- teacher-dashboard.component.html -->
-<div class="min-h-screen bg-lightGray flex flex-col">
-  <!-- Encabezado -->
+
+<div class="min-h-screen bg-secondary flex flex-col">
+
   <header class="bg-primary text-white p-4 flex items-center justify-between">
-    <h1 class="text-lightGray text-xl font-bold">Panel de Docente</h1>
-    <button class="text-dark text-white">Cerrar sesión</button>
+    <h1 class="text-white text-xl font-extrabold">Bienvenido(a) </h1>
+    <div *ngIf="docente?.nombre">
+      <p class="text-white">{{ docente.nombre }}</p>
+    </div>
+    <button (click)="cerrarSesion()" class=" font-medium text-tertiary">Cerrar sesión</button>
   </header>
 
-  <!-- Contenido principal -->
-  <div class="flex flex-1">
-    <!-- Sidebar (opcional) -->
-    <aside class="bg-secondary p-4 w-1/5 hidden lg:block">
-      <ul>
-        <li><a href="#" class="text-lightGray hover:text-primary">Mis Cursos</a></li>
-        <li><a href="#" class="text-lightGray hover:text-primary">Perfil</a></li>
-        <li><a href="#" class="text-lightGray hover:text-primary">Configuración</a></li>
-      </ul>
-    </aside>
+  <div class="flex flex-1 bg-tertiary">
 
-    <!-- Sección de cursos -->
-    <main class="flex-1 p-6">
-      <h2 class="text-2xl font-semibold text-dark mb-4">Mis Cursos</h2>
+    <main class="flex-1 p-6 w-60">
+      <h2 class="text-2xl font-semibold text-primary mb-4">Mis Cursos</h2>
 
-      <!-- Tarjetas de cursos -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- tarjeta de curso -->
+      <div class=" w-90 max-w-5xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-8">
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 gap-4">
+          <div *ngFor="let curso of mostrarCursos" class="w-100 h-50 rounded overflow-hidden shadow-lg bg-tertiary">
+            <div class="ml-5 mt-2"> {{curso.ano}} - {{curso.semestre}} </div>
+            <img class="w-full" alt="{{ curso.titulo }}" />
+            <div class="px-6 py-4">
+              <div class="font-extrabold text-xl mb-2">{{ curso.titulo }} <div class="font-medium">{{ curso.docente }}</div> </div>
+              <p class="text-secondary text-base">{{ curso.aprendizajes }}</p>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div *ngIf="curso" class="mt-6 bg-white p-4 rounded shadow">
-        <h3 class="text-xl font-semibold text-dark">Estudiantes en {{ curso }}</h3>
+      <div *ngIf="mostrarCursos" class="mt-6 bg-white p-4 rounded shadow">
+        <h3 class="text-xl font-semibold text-primary">Estudiantes en {{ mostrarCursos}}</h3>
         <ul class="mt-2 space-y-2">
-          <li *ngFor="let estudiante of estudiantes" class="text-mediumGray">
+          <li *ngFor="let estudiante of estudiantes" class="text-tertiary">
             {{ estudiante.name }}
           </li>
         </ul>
-        <button class="mt-4 text-primary" (click)="curso = null">Cerrar</button>
+        <button class="mt-4 text-primary" (click)="mostrarCursos">Cerrar</button>
       </div>
     </main>
   </div>

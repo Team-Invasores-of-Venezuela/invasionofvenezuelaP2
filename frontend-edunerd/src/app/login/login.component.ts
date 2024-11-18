@@ -3,7 +3,9 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
-import { CommonModule } from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {CommonModule, NgIf} from '@angular/common';
+import {AuthService} from '../AuthService';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +23,8 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private authService: AuthService
   ) {
     this.loginForm = this.fb.group({
       email: [''],
@@ -29,7 +32,15 @@ export class LoginComponent {
     });
   }
 
+  oscuro = false;
+
+  modoOscuro() {
+    this.oscuro = !this.oscuro;
+  }
+
+
   onSubmit() {
+    console.log("hola");
     const { email, contrasena } = this.loginForm.value;
 
     if (!email || !contrasena) {
@@ -43,7 +54,8 @@ export class LoginComponent {
         if (response) {
           localStorage.setItem('userId', response.id);
           localStorage.setItem('isAdmin', response.admin.toString());
-
+          localStorage.setItem('nombre',response.nombre);
+          console.log(response.nombre);
           console.log("Funcionó el login");
           if (response.admin) {
             this.router.navigate(['/administrador']); // Ruta para el administrador
@@ -62,4 +74,6 @@ export class LoginComponent {
       }
     );
   }
+
+
 }

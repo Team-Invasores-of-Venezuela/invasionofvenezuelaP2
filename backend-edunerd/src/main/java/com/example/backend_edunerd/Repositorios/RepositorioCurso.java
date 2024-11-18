@@ -12,5 +12,11 @@ public interface RepositorioCurso extends MongoRepository<Curso, String> {
     boolean existsByTitulo(String titulo);
 
     Optional<Curso> findByTitulo(String titulo);
+
+    Optional<Curso> findById(String id);
+
+    boolean existsByAno(int ano);
+
+    boolean existsBySemestre(int semestre);
 }
 

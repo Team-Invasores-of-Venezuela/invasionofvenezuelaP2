@@ -8,15 +8,16 @@ import { LoginComponent } from './login/login.component';
 import { NgModule } from '@angular/core';
 import {AppComponent} from './app.component';
 import {DocenteComponent} from './docente/docente.component';
+import {AuthGuard} from './auth.guard';
 
 
 export const routes: Routes = [
-  { path: 'administrador', component: AdministradorComponent },
-  { path: 'docenteadmin', component: DocenteAdminComponent},
-  { path: 'cursoadmin', component: CursoAdminComponent},
-  { path: 'estudianteadmin', component: EstudianteAdminComponent},
+  { path: 'administrador', component: AdministradorComponent, canActivate: [AuthGuard]  },
+  { path: 'docenteadmin', component: DocenteAdminComponent, canActivate: [AuthGuard] },
+  { path: 'cursoadmin', component: CursoAdminComponent, canActivate: [AuthGuard]},
+  { path: 'estudianteadmin', component: EstudianteAdminComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
-  { path: 'docente', component: DocenteComponent},
+  { path: 'docente', component: DocenteComponent, canActivate: [AuthGuard] },
   { path: '', component: LoginComponent },
   { path: '**', redirectTo: '' }
 ];
