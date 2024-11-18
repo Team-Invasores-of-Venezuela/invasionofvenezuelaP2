@@ -232,10 +232,14 @@ public class ServicioSVC {
         String email = nombreSplit + "@gmail.com";
 
         if(!repositorioUsuario.existsByEmail(email)){
-            Usuario usuario = new Usuario(false, nombreSplit, email);
+            Usuario usuario = new Usuario(false, nombreSplit, email, nombre);
             //System.out.println(usuario.toString());
             System.out.println("Usuario generado");
             repositorioUsuario.save(usuario);
+            System.out.println(usuario.isAdmin());
+            System.out.println(usuario.getEmail());
+            System.out.println(usuario.getContrasena());
+            System.out.println(usuario.getNombre());
             return usuario;
         }
         System.out.println("Usuario ya en la base de datos");

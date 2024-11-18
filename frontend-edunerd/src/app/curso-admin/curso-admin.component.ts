@@ -15,6 +15,7 @@ export class CursoAdminComponent {
   cursoSeleccionadoId: string = '';
   archivo: File | null = null;
   cursos: { id: string; titulo: string; descripcion: string }[] = [];
+  cursosTotales: { titulo: string, docente: string,aprendizajes:string[], semestre:number,ano:number } = {titulo: '', docente: '', aprendizajes: [''], semestre: 0, ano: 0};
   visible = false;
   abrirAgregarCurso = false;
   abrireliminar = false;
@@ -22,8 +23,12 @@ export class CursoAdminComponent {
 
   private apiUrlGetCursos = 'http://localhost:8080/curso/getall';
   private apiUrlSubirArchivo = 'http://localhost:8080/svc/importarCursos';
+  private apiUrlcrear = 'http://localhost:8080/curso/create';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router:RouterModule) {}
+  mostrarCursos: { id: string, titulo: string, docente: string, aprendizajes:string[],ano:number,semestre:number }[] = [];
+  verEditarEstudianteModal = false;
+  protected cursoEditado: any = {};
 
   ngOnInit() {
     this.obtenerCursos();
@@ -41,6 +46,136 @@ export class CursoAdminComponent {
     });
   }
 
+  protected title: string | undefined;
+
+  agregarCurso() {
+    if (this.cursosTotales.titulo.trim()) {
+      if (this.cursosTotales.ano.toString().trim()) {
+        if (this.cursosTotales.docente.trim()) {
+          let aprendizajesProcesados: string[] = [];
+
+          if (Array.isArray(this.cursosTotales.aprendizajes)) {
+
+            aprendizajesProcesados = this.cursosTotales.aprendizajes.map((item: string) => item.trim());
+          } else if (typeof this.cursosTotales.aprendizajes === 'string') {
+            // @ts-ignore
+            aprendizajesProcesados = this.cursosTotales.aprendizajes.split(',').map((item: string) => item.trim());
+          } else {
+
+            console.warn('El campo de aprendizajes no tiene un formato válido');
+            aprendizajesProcesados = [];
+          }
+
+          const curso = {
+            titulo: this.cursosTotales.titulo,
+            docente: this.cursosTotales.docente,
+            aprendizajes: aprendizajesProcesados,
+            semestre: this.cursosTotales.semestre,
+            ano: this.cursosTotales.ano,
+          };
+
+          // Enviar curso al backend
+          this.http.post(`${this.apiUrlcrear}`, curso).subscribe({
+            next: (response) => {
+              alert('Curso agregado exitosamente');
+              this.cursosTotales = {
+                titulo: '',
+                docente: '',
+                aprendizajes: [''], // Reinicia el campo de aprendizajes
+                semestre:0,
+                ano:0,
+              };
+              this.abrirAgregarCurso = false; // Cierra el modal
+            },
+            error: (error) => {
+              console.error('Error al agregar el curso:', error);
+              alert('Ocurrió un error al intentar agregar el curso.');
+            },
+          });
+        } else {
+          alert('Por favor, complete todos los campos del formulario.');
+        }
+      } else {
+        alert('Por favor, complete todos los campos del formulario.');
+      }
+    } else {
+      alert('Por favor, complete todos los campos del formulario.');
+    }
+  }
+
+  eliminarCurso() {
+    if (!this.cursoSeleccionadoId) {
+      alert('Por favor, selecciona un curso para eliminar.');
+      return;
+    }
+
+    const cursoSeleccionado = this.mostrarCursos.find((curso) => curso.id === this.cursoSeleccionadoId);
+    if (!cursoSeleccionado) {
+      alert('No se encontró el curso seleccionado.');
+      return;
+    }
+
+    // @ts-ignore
+    this.http.post<any>(`${this.apiUrleliminar}?id=${cursoSeleccionado.id}`).subscribe({
+      next: () => {
+        alert(`El curso "${cursoSeleccionado.titulo}" ha sido eliminado.`);
+        // Actualizar la lista de cursos después de la eliminación
+        this.mostrarCursos = this.mostrarCursos.filter((curso) => curso.id !== this.cursoSeleccionadoId);
+        this.cerrarFormularioEliminar(); // Cerrar el formulario/modal
+      },
+      error: (error) => {
+        console.error('Error al eliminar el curso:', error);
+        alert('Ocurrió un error al intentar eliminar el curso.');
+      },
+    });
+  }
+
+  editarCurso(): void {
+    const cursoModificado = this.cursoEditado;
+
+    const curso = {
+      id: this.cursoEditado.id,
+      titulo: this.cursoEditado.titulo,
+      docente: this.cursoEditado.docente,
+      aprendizajes:this.cursoEditado.aprendizajes,
+      semestre:this.cursoEditado.semestre,
+      ano:this.cursoEditado.ano
+    };
+
+    // Realizamos la llamada POST al endpoint de actualización
+    this.http.post('http://localhost:8080/curso/update',curso)
+      .subscribe(
+        (response) => {
+
+          this.obtenerCursos();
+          this.cerrarEditarCursoModal();
+        },
+        error => {
+          console.error('Error al actualizar el curso:', error);
+        }
+      );
+  }
+
+
+
+  cerrarEditarCursoModal() {
+    this.verEditarEstudianteModal=false;
+  }
+  abrirEditarCurso(curso: any) {
+    this.cursoEditado = { ...curso }; // Copia los datos del curso para editar
+    this.verEditarEstudianteModal = true; // Abre el modal
+  }
+  abrirFormularioEliminar() {
+    this.abrireliminar=true;
+  }
+  cerrarFormularioEliminar() {
+    this.abrireliminar=false;
+  }
+  
+  CerrartoggleSidebar(){
+    this.slideBarvisible=false;
+  }
+  
   abrir() {
     this.abrirAgregarCurso = true;
   }
