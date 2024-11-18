@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { RouterLink, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, NgIf } from '@angular/common';
@@ -11,7 +11,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
   templateUrl: './curso-admin.component.html',
   styleUrls: ['./curso-admin.component.css']
 })
-export class CursoAdminComponent {
+export class CursoAdminComponent implements OnInit{
   cursoSeleccionadoId: string = '';
   archivo: File | null = null;
   cursos: { id: string; titulo: string; descripcion: string }[] = [];
@@ -37,7 +37,7 @@ export class CursoAdminComponent {
   obtenerCursos() {
     this.http.get<any>(this.apiUrlGetCursos).subscribe({
       next: (data) => {
-        this.cursos = data;
+        this.mostrarCursos = data;
       },
       error: (error) => {
         console.error('Error al obtener los cursos:', error);
@@ -171,11 +171,11 @@ export class CursoAdminComponent {
   cerrarFormularioEliminar() {
     this.abrireliminar=false;
   }
-  
+
   CerrartoggleSidebar(){
     this.slideBarvisible=false;
   }
-  
+
   abrir() {
     this.abrirAgregarCurso = true;
   }
