@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router, RouterLink, RouterModule} from '@angular/router';
 import {FormsModule} from '@angular/forms';
 import {CommonModule, NgIf, NgOptimizedImage} from '@angular/common';
@@ -12,36 +12,26 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
   templateUrl: './estudiante-admin.component.html',
   styleUrl: './estudiante-admin.component.css'
 })
-export class EstudianteAdminComponent {
+export class EstudianteAdminComponent implements OnInit{
 
-  visible = false;
+  verEleccion = false;
+  verManual = false;
+  verExcel = false;
+  estudiantes: any;
+  estudiante: any = {};
 
-  estudiantes = [
-    { matricula: '2021407020',
-      nombre: 'Gustavo Torres',
-      cursos: ['Construcción de Software','Redes de Computadores','Responsabilidad social','Ingeniería Comercial'],
-      mostrarAsignaturas: false },
+  verEliminarEstudianteModal = false;
+  estudiantesSeleccionados: any[] = [];
+  estudianteEditado: any = {};
+  verEditarEstudianteModal = false;
 
-    { matricula: '2021407019',
-      nombre: 'Mapote Palote',
-      cursos:  ['Teoría de sistemas','Modelos discretos'],
-      mostrarAsignaturas: false },
 
-    { matricula: '2020407020',
-      nombre: 'Franco Bessolo',
-      cursos: ['Física General','Fundamentos de Administración','Construcción de Software','Redes de Computadores','Sistemas Operativos','Máquinas Abstractas'],
-      mostrarAsignaturas: false},
 
-    { matricula: '2022451016',
-      nombre: 'Anais Saavedra',
-      cursos: ['Derecho Penal','Derecho Administrativo','Derecho del Trabajo','Drechos Reales','Derecho Procesal','Contexto Cultural'],
-      mostrarAsignaturas: false},
-  ];
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
-      //this.getEstudiantes();
-      console.log('Estudiantes: ',this.estudiantes);
+    this.getEstudiantes();
+    console.log('Estudiantes: ',this.estudiantes);
   }
 
   getEstudiantes(): void {
@@ -62,11 +52,102 @@ export class EstudianteAdminComponent {
     this.router.navigate(['/administrador']);
   }
 
-  abrirModal() {
-    this.visible = true;
+  modalEleccion() {
+    this.verEleccion = !this.verEleccion;
   }
 
-  cerrarModal() {
-    this.visible = false;
+  modalManual() {
+    this.verManual = !this.verManual;
   }
+
+  modalExcel() {
+    this.verExcel = !this.verExcel;
+  }
+
+  abrirEliminarEstudianteModal(): void {
+    this.verEliminarEstudianteModal = true;
+  }
+
+  abrirEditarEstudianteModal(estudiante: any): void {
+    this.estudianteEditado = { ...estudiante };  // Cargar los datos del estudiante a editar
+    this.verEditarEstudianteModal = true;
+  }
+
+  cerrarEditarEstudianteModal(): void {
+    this.verEditarEstudianteModal = false;
+  }
+
+  onSubmit() {
+    const estudianteCreado = {
+      nombre: this.estudiante.nombre,
+      matricula: this.estudiante.matricula,
+      anoIngreso: this.estudiante.anoIngreso
+    };
+
+    this.http.post('http://localhost:8080/estudiante/create', estudianteCreado)
+      .subscribe(
+        (response: any) => {
+          console.log('Estudiante añadido exitosamente', response);
+        },
+        (error: any) => {
+          console.error('Error al crear estudiante', error);
+        });
+  }
+
+  seleccionarEstudiante(estudiante: any): void {
+    const index = this.estudiantesSeleccionados.findIndex(e => e.id === estudiante.id);
+    if (index === -1) {
+      this.estudiantesSeleccionados.push(estudiante);
+    } else {
+      this.estudiantesSeleccionados = this.estudiantesSeleccionados.filter(e => e.id !== estudiante.id);
+    }
+  }
+
+  eliminarEstudiante(): void {
+    if (this.estudiantesSeleccionados.length > 0) {
+      this.estudiantesSeleccionados.forEach(estudiante => {
+        const id = estudiante.id;
+        this.http.post<any>(`http://localhost:8080/estudiante/delete?id=${id}`, null)
+          .subscribe(
+            (response) => {
+              console.log('Estudiante eliminado:', response);
+              this.estudiantes = this.estudiantes.filter((est: { id: any; }) => est.id !== id);
+            },
+            (error) => {
+              console.error('Error al eliminar el estudiante:', error);
+            }
+          );
+      });
+    }
+  }
+
+  cerrarEliminarEstudianteModal(): void {
+    this.verEliminarEstudianteModal = false;
+    this.estudiantesSeleccionados = [];
+  }
+
+  editarEstudiante(): void {
+    const estudianteModificado = this.estudianteEditado;
+
+    const estudianteDTO2 = {
+      id: estudianteModificado.id,
+      matricula: estudianteModificado.matricula,
+      nombre: estudianteModificado.nombre,
+      anoIngreso: estudianteModificado.anoIngreso
+    };
+
+    // Realizamos la llamada POST al endpoint de actualización
+    this.http.post('http://localhost:8080/estudiante/update', estudianteDTO2)
+      .subscribe(
+        (response) => {
+          this.getEstudiantes();
+          this.cerrarEditarEstudianteModal();
+          this.router.navigate(['/estudianteadmin']);
+        },
+        error => {
+          console.error('Error al actualizar el estudiante:', error);
+        }
+      );
+  }
+
 }
