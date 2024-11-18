@@ -54,6 +54,8 @@ export class LoginComponent {
         if (response) {
           localStorage.setItem('userId', response.id);
           localStorage.setItem('isAdmin', response.admin.toString());
+          localStorage.setItem('nombre',response.nombre);
+          console.log(response.nombre);
           console.log("Funcionó el login");
           if (response.admin) {
             this.router.navigate(['/administrador']); // Ruta para el administrador

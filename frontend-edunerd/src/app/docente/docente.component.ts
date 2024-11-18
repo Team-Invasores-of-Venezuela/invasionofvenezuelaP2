@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {NgForOf, NgIf} from '@angular/common';
 import {Router} from '@angular/router';
 import {AuthService} from '../AuthService';
@@ -15,32 +15,44 @@ import {Observable} from 'rxjs';
   templateUrl: './docente.component.html',
   styleUrl: './docente.component.css'
 })
-export class DocenteComponent {
-  docente: any[] | any;
+export class DocenteComponent implements OnInit{
+  docente: { id: string, nombre: string, cursos: string[] } = { id: '', nombre: '', cursos: [] };
   estudiantes: any [] | any;
-  curso: string | null = null;
+  mostrarCursos: { id: string, titulo: string, docente: string, aprendizajes:string[],ano:number,semestre:number }[] = [];
+  private apiUrlGetCursos = 'http://localhost:8080/curso/getall';
+  private apiUrldocente = 'http://localhost:8080/usuario/';
+  docenteId = localStorage.getItem('userId');
+  nombre= localStorage.getItem('nombre');
 
-
-  constructor(private router: Router, private authService: AuthService, private http: HttpClient) {
+constructor(private router: Router, private authService: AuthService, private http: HttpClient) {
 
   }
-  private apiUrl = 'http://localhost:8080/usuario/'
+
 
   ngOnInit() {
-    const docenteId = localStorage.getItem('userId');
-    if (docenteId) {
-      this.http.get<any>(`${this.apiUrl}docente/${docenteId}`)
-        .subscribe(
-          (response) => {
-            this.docente = response;
-            console.log('Datos del docente:', this.docente);
-          },
-          (error) => {
-            console.error('Error al obtener datos del docente:', error);
-          }
-        );
-    }
+    this.cargarDatosDocente();
+
   }
+
+  cargarDatosDocente() {
+
+    console.log('ID del docente desde localStorage:', this.docenteId);  // Verificar el valor
+
+    this.http.get<any[]>(this.apiUrlGetCursos).subscribe({
+
+      next: (data) => {
+        console.log(this.nombre);
+        console.log('Datos:', data);
+        this.mostrarCursos = data.filter(curso => curso.docente === this.nombre);
+      },
+      error: (error) => {
+        console.error('Error al obtener los cursos:', error);
+        alert('No se pudieron cargar los cursos. Intente nuevamente más tarde.');
+      },
+    });
+  }
+
+
 
 
   cerrarSesion() {
@@ -52,7 +64,6 @@ export class DocenteComponent {
     this.router.navigate(['/login']);
   }
 
-  viewStudents(nombreCurso: string) {
-    this.curso = nombreCurso;
-  }
+
+
 }
