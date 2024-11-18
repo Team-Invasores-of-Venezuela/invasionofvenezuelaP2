@@ -10,11 +10,13 @@ public class Usuario {
     private String email;
     private String contrasena;
     private boolean admin;
+    private String nombre;
 
-    public Usuario(boolean admin, String contrasena, String email) {
+    public Usuario(boolean admin, String contrasena, String email, String nombre) {
         this.admin = admin;
         this.contrasena = contrasena;
         this.email = email;
+        this.nombre = nombre;
     }
 
     public String getId() {
@@ -47,5 +49,13 @@ public class Usuario {
 
     public void setAdmin(boolean admin) {
         this.admin = admin;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 }

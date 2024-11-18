@@ -2,44 +2,72 @@
 <header class="bg-secondary text-white p-4 w-full text-left">
   <h2 class="text-2xl font-semibold text-white font-sans">Administración de estudiantes</h2>
 </header>
-  <h2 class="text-3xl text-white m-10 ml-64">Estudiantes</h2>
-  <ul role="list" class="mx-96 rounded bg-primary shadow-2xl p-10">
-
-    <li *ngFor="let estudiante of estudiantes" class="flex justify-between border-b border-b-tertiary gap-x-6 p-5">
-      <div class="flex min-w-0 gap-x-4">
-        <img class="size-10 flex-none bg-gray-50" src='https://res.cloudinary.com/ddwshn5tb/image/upload/v1731725951/perfil_v6tmdm.png' alt="">
-        <div class="min-w-0 flex-auto">
-          <p class="text-sm/13 font-semibold text-white font-sans">{{estudiante.nombre}}</p>
-          <p class="mt-1 truncate text-xs/5 text-white font-sans">{{estudiante.matricula}}</p>
-        </div>
+<h2 class="text-3xl text-white m-10 ml-64">Estudiantes</h2>
+<ul role="list" class="mx-96 rounded bg-primary shadow-2xl p-10">
+  <li *ngFor="let estudiante of estudiantes" class="flex justify-between border-b border-b-tertiary gap-x-6 p-5">
+    <div class="flex min-w-0 gap-x-4">
+      <img class="size-10 flex-none bg-gray-50" src='https://res.cloudinary.com/ddwshn5tb/image/upload/v1731725951/perfil_v6tmdm.png' alt="">
+      <div class="min-w-0 flex-auto">
+        <p class="text-sm/13 font-semibold text-white font-sans w-60">{{estudiante.nombre}}</p>
+        <p class="mt-1 truncate text-xs/5 text-white font-sans">{{estudiante.matricula}}</p>
       </div>
+    </div>
 
-      <!-- Mostrar Año de Ingreso -->
-      <div class="mt-2 text-white text-sm/13 font-sans">
-        Ingreso: {{estudiante.anoIngreso}}
-      </div>
-    </li>
-  </ul>
-  <!-- Botón para añadir estudiante -->
-  <div class="flex justify-center mt-12">
-    <button class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48 mb-40" (click)="modalEleccion()">
-      Añadir estudiante
+    <!-- Mostrar Año de Ingreso -->
+    <div class="mt-2 text-white text-sm/13 font-sans">
+      Ingreso: {{estudiante.anoIngreso}}
+    </div>
+
+    <!-- Botón para editar estudiante  -->
+    <button class="mt-2 bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-10" (click)="abrirEditarEstudianteModal(estudiante)">
+      Editar
     </button>
-  </div>
+  </li>
+</ul>
 
-  <!-- Modal para elegir el método para agregar estudiante/s -->
-  <div *ngIf="verEleccion" id="eleccion" class="fixed inset-0 flex items-center justify-center bg-primary bg-opacity-50">
-    <div class="bg-midSecondary h-40 w-auto shadow-2xl rounded p-10 flex flex-col items-center space-y-4">
-      <button class="bg-secondary text-white px-4 py-2 rounded hover:bg-secondary h-11 w-48 hover:scale-105" (click)="modalEleccion(); modalManual()">
-        Añadir manual
-      </button>
-      <button class="bg-secondary text-white px-4 py-2 rounded hover:bg-secondary h-11 w-48 hover:scale-105" (click)="modalEleccion()">
-        Subir excel
-      </button>
+<!-- Modal para agregar estudiantes a través de un excel -->
+<div *ngIf="verExcel" id="uploadModal" class="fixed inset-0 flex items-center justify-center bg-primary bg-opacity-50">
+  <div class="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
+    <h2 class="text-xl font-bold mb-4">Subir Archivo</h2>
+    <p class="mb-4">Seleccione un archivo Excel para cargar.</p>
+
+    <!-- Campo para seleccionar el archivo -->
+    <input type="file" accept=".xlsx, .xls" id="fileInput"
+           class="block w-full text-sm text-gray-700 border border-gray-300 rounded-md p-2 mb-4"
+           (change)="onFileSelected($event)" />
+
+    <!-- Botones de acción -->
+    <div class="flex justify-end space-x-4">
+      <button (click)="cerrarModal();abrirExcelModal()" class="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400">Cancelar</button>
+      <button (click)="subirArchivo()" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Subir</button>
     </div>
   </div>
+</div>
 
-  <!-- Modal para agregar un estudiante manualmente -->
+
+<!-- Botón para añadir estudiante -->
+<div class="flex justify-center mt-12 gap-4">
+  <button class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48 mb-40" (click)="modalEleccion()">
+    Añadir estudiante
+  </button>
+  <button class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48" (click)="abrirEliminarEstudianteModal()">
+    Eliminar estudiante
+  </button>
+</div>
+
+<!-- Modal para elegir el método para agregar estudiante/s -->
+<div *ngIf="verEleccion" id="eleccion" class="fixed inset-0 flex items-center justify-center bg-primary bg-opacity-50">
+  <div class="bg-midSecondary h-40 w-auto shadow-2xl rounded p-10 flex flex-col items-center space-y-4">
+    <button class="bg-secondary text-white px-4 py-2 rounded hover:bg-secondary h-11 w-48 hover:scale-105" (click)="modalEleccion(); modalManual()">
+      Añadir manual
+    </button>
+    <button class="bg-secondary text-white px-4 py-2 rounded hover:bg-secondary h-11 w-48 hover:scale-105" (click)="modalExcel(); modalEleccion();">
+      Subir excel
+    </button>
+  </div>
+</div>
+
+<!-- Modal para agregar un estudiante manualmente -->
 <div *ngIf="verManual" id="manual" class="fixed inset-0 flex items-center justify-center bg-secondary bg-opacity-50 shadow-2xl">
   <form (ngSubmit)="onSubmit()" class="w-1/4 mx-auto p-6 bg-primary shadow-lg rounded-lg space-y-6 text-white">
     <!-- Campo: Nombre -->
@@ -93,20 +121,83 @@
   </form>
 </div>
 
-  <!-- Modal para agregar estudiantes a través de un excel -->
-  <div *ngIf="verExcel" id="uploadModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-    <div class="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
-      <h2 class="text-xl font-bold mb-4">Subir Archivo</h2>
-      <p class="mb-4">Seleccione un archivo Excel para cargar.</p>
 
-      <!-- Campo para seleccionar el archivo -->
-      <input type="file" accept=".xlsx, .xls" id="fileInput" class="block w-full text-sm text-gray-700 border border-gray-300 rounded-md p-2 mb-4" />
+<!-- Modal para eliminar un estudiante -->
+<div *ngIf="verEliminarEstudianteModal" id="eliminarModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-20">
+  <div class="bg-midSecondary shadow-lg p-6 max-w-md w-full rounded-lg">
+    <h2 class="text-xl font-bold mb-4 text-white">Eliminar Estudiante</h2>
+    <p class="mb-4 text-white" >Seleccione un estudiante para eliminar:</p>
 
-      <!-- Botones de acción -->
-      <div class="flex justify-end space-x-4">
-        <button (click)="modalExcel()" class="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400">Cancelar</button>
-      </div>
+    <div class="max-h-60 overflow-y-auto">
+      <table class="min-w-full table-auto border-collapse">
+        <thead>
+        <tr class="bg-gray-100">
+          <th class="px-4 py-2 text-left font-medium text-sm text-gray-600">Seleccionar</th>
+          <th class="px-4 py-2 text-left font-medium text-sm text-gray-600">Nombre</th>
+          <th class="px-4 py-2 text-left font-medium text-sm text-gray-600">Matrícula</th>
+          <th class="px-4 py-2 text-left font-medium text-sm text-gray-600">Año Ingreso</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let estudiante of estudiantes" class="border-b hover:bg-gray-50">
+          <td class="px-4 py-2">
+            <input
+              type="checkbox"
+              [checked]="estudiantesSeleccionados.includes(estudiante)"
+              (change)="seleccionarEstudiante(estudiante)"
+              class="mr-2"
+            />
+          </td>
+          <td class="px-4 py-2 text-sm text-white">{{ estudiante.nombre }}</td>
+          <td class="px-4 py-2 text-sm text-white">{{ estudiante.matricula }}</td>
+          <td class="px-4 py-2 text-sm text-white">{{ estudiante.anoIngreso }}</td>
+        </tr>
+        </tbody>
+      </table>
     </div>
+
+    <button
+      class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 mt-4 w-full"
+      [disabled]="estudiantesSeleccionados.length === 0"
+      (click)="eliminarEstudiante()">
+      Eliminar Estudiantes
+    </button>
+
+    <button
+      (click)="cerrarEliminarEstudianteModal()"
+      class="bg-secondary text-tertiary px-4 py-2 rounded-lg hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 mt-2 w-full">
+      Cerrar
+    </button>
   </div>
+</div>
+
+<!-- Modal de edición -->
+<div *ngIf="verEditarEstudianteModal" id="editarModal" class="fixed inset-0 flex items-center justify-center bg-primary bg-opacity-50">
+  <div class="bg-midSecondary h-auto w-auto shadow-2xl rounded p-10 flex flex-col items-center space-y-4 relative">
+    <button class="absolute top-2 right-2 text-white bg-red-500 rounded-full h-8 w-8 flex items-center justify-center" (click)="cerrarEditarEstudianteModal()">×</button>
+
+    <h2 class="text-xl font-bold text-white">Editar Estudiante</h2>
+
+    <!-- Formulario de edición -->
+    <form (ngSubmit)="editarEstudiante()">
+      <div class="mb-4">
+        <label for="nombre" class="block text-white">Nombre:</label>
+        <input id="nombre1" [(ngModel)]="estudianteEditado.nombre" name="nombre" class="mt-1 p-2 w-64 rounded" required />
+      </div>
+      <div class="mb-4">
+        <label for="matricula" class="block text-white">Matrícula:</label>
+        <input id="matricula1" [(ngModel)]="estudianteEditado.matricula" name="matricula" class="mt-1 p-2 w-64 rounded" required />
+      </div>
+      <div class="mb-4">
+        <label for="anoIngreso" class="block text-white">Año de Ingreso:</label>
+        <input id="anoIngreso" [(ngModel)]="estudianteEditado.anoIngreso" name="anoIngreso" class="mt-1 p-2 w-64 rounded" required />
+      </div>
+
+      <button type="submit" class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light w-48" (click)="editarEstudiante()">
+        Guardar cambios
+      </button>
+    </form>
+  </div>
+</div>
 
 </body>

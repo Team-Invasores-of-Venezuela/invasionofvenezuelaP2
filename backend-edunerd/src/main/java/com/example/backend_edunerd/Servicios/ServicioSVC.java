@@ -183,7 +183,7 @@ public class ServicioSVC {
                     continue;
                 }
 
-                // Limpiar el titulo y docente, asegurándose de eliminar espacios innecesarios
+
                 String titulo = row.getCell(tituloIndex).getStringCellValue().trim().replaceAll("\\s+", " ");
                 if (cursoRepository.existsByTitulo(titulo)) {
                     continue;
@@ -199,7 +199,7 @@ public class ServicioSVC {
                     continue;
                 }
 
-                // Limpiar y separar los aprendizajes
+
                 List<String> aprendizajes = new ArrayList<>();
                 if (!aprendizajesStr.isEmpty()) {
                     String[] aprendizajesArray = aprendizajesStr.split(",");
@@ -208,7 +208,7 @@ public class ServicioSVC {
                     }
                 }
 
-                // Crear el objeto Curso y agregar los datos limpiados
+
                 Curso curso = new Curso();
                 System.out.println("agregando " + titulo);
                 curso.setTitulo(titulo);
@@ -232,10 +232,14 @@ public class ServicioSVC {
         String email = nombreSplit + "@gmail.com";
 
         if(!repositorioUsuario.existsByEmail(email)){
-            Usuario usuario = new Usuario(false, nombreSplit, email);
+            Usuario usuario = new Usuario(false, nombreSplit, email, nombre);
             //System.out.println(usuario.toString());
             System.out.println("Usuario generado");
             repositorioUsuario.save(usuario);
+            System.out.println(usuario.isAdmin());
+            System.out.println(usuario.getEmail());
+            System.out.println(usuario.getContrasena());
+            System.out.println(usuario.getNombre());
             return usuario;
         }
         System.out.println("Usuario ya en la base de datos");

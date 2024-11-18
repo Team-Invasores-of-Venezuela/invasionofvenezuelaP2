@@ -52,13 +52,22 @@ public class ServicioCurso {
     public Curso updateCurso(CursoDTO2 cursoDTO2){
         Optional<Curso> curso = repositorioCurso.findById(cursoDTO2.getId());
         if(curso.isPresent()){
-            curso.get().setTitulo(cursoDTO2.getTitulo());
-            curso.get().setDocente(cursoDTO2.getDocente());
-            curso.get().setAprendizajes(cursoDTO2.getAprendizajes());
-            curso.get().setSemestre(cursoDTO2.getSemestre());
-            curso.get().setAno(cursoDTO2.getAno());
-            repositorioCurso.save(curso.get());
-            return curso.get();
+            if(!repositorioCurso.existsByTitulo(cursoDTO2.getTitulo())){
+                if(cursoDTO2.getSemestre() == 1 | cursoDTO2.getSemestre() == 2) {
+                    curso.get().setTitulo(cursoDTO2.getTitulo());
+                    curso.get().setDocente(cursoDTO2.getDocente());
+                    curso.get().setAprendizajes(cursoDTO2.getAprendizajes());
+                    curso.get().setSemestre(cursoDTO2.getSemestre());
+                    curso.get().setAno(cursoDTO2.getAno());
+                    repositorioCurso.save(curso.get());
+                    return curso.get();
+                } else {
+                    System.out.println("Semestre no valido");
+                    return null;
+                }
+            }
+            System.out.println("Curso repetido");
+            return null;
         } else {
             return null;
         }
