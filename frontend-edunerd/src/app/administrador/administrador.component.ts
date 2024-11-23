@@ -23,4 +23,13 @@ export class AdministradorComponent {
   navegarEstudianteAdmin() {
     this.router.navigate(['/estudianteadmin']);
   }
+
+  cerrarSesion() {
+    // Elimina los datos almacenados de sesión
+    localStorage.removeItem('userId');
+    localStorage.removeItem('isAdmin');
+
+    // Redirige al usuario a la página de login
+    this.router.navigate(['/login']);
+  }
 }

@@ -7,21 +7,99 @@
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-primary">
-<header class="bg-midSecondary text-white p-4 w-full text-left">
+<header class="bg-midSecondary text-white p-4 w-full flex items-center justify-between">
   <h2 class="text-2xl font-semibold">Bienvenido Administrador</h2>
+  <button (click)="cerrarSesion()" class="font-medium text-white">Cerrar sesión</button>
 </header>
-<div class="flex items-center justify-center min-h-screen">
-  <div class="space-x-52">
-    <button (click)="navegarCursoAdmin()" class="px-20 py-4 text-lg font-semibold text-white transition transform bg-midSecondary rounded-full shadow-lg hover:bg-gray-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white">
-      Cursos
+<h2 class="text-4xl text-white m-10 ml-48 mt-24">Seleccione categoría que desea administrar</h2>
+<div class="flex items-center justify-center min-h-screen -mt-40">
+  <div class="flex space-x-20">
+    <!-- Botón para navegar a cursos -->
+    <button
+      (click)="navegarCursoAdmin()"
+      class="group relative w-80 h-96 p-6 text-left rounded-lg bg-midSecondary shadow-lg transition transform hover:bg-gray-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white"
+    >
+      <!-- Imagen de fondo con superposición -->
+      <div
+        class="absolute inset-0 w-full h-full bg-cover bg-center rounded-lg transition-all duration-300 group-hover:blur-sm"
+        style="background-image: url('https://w.wallhaven.cc/full/nk/wallhaven-nkd1ed.jpg');"
+      >
+        <!-- Superposición oscura -->
+        <div
+          class="absolute inset-0 bg-black bg-opacity-60 group-hover:bg-opacity-50 rounded-lg transition-all duration-300"
+        ></div>
+      </div>
+
+      <!-- Contenido del botón -->
+      <div class="relative z-10">
+        <h3 class="mb-4 text-4xl font-bold text-white font-sans ">Cursos</h3>
+        <ul class="space-y-2 text-lg text-gray-200 font-sans">
+          <li>Ver cursos</li>
+          <li>Crear cursos</li>
+          <li>Editar cursos</li>
+          <li>Eliminar cursos</li>
+        </ul>
+      </div>
     </button>
-    <button (click)="navegarDocenteAdmin()" class="px-20 py-4 text-lg font-semibold text-white transition transform bg-midSecondary rounded-full shadow-lg hover:bg-gray-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white">
-      Docentes
+
+    <!-- Botón para navegar a docentes -->
+    <button
+      (click)="navegarDocenteAdmin()"
+      class="group relative w-80 h-96 p-6 text-left rounded-lg bg-midSecondary shadow-lg transition transform hover:bg-gray-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white"
+    >
+      <!-- Imagen de fondo con superposición -->
+      <div
+        class="absolute inset-0 w-full h-full bg-cover bg-center rounded-lg transition-all duration-300 group-hover:blur-sm"
+        style="background-image: url('https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/blogs/2147503633/images/22af86c-42bc-03d2-6141-0b8b1fb4b60_AdobeStock_104938952.jpeg');"
+      >
+        <!-- Superposición oscura -->
+        <div
+          class="absolute inset-0 bg-black bg-opacity-60 group-hover:bg-opacity-50 rounded-lg transition-all duration-300"
+        ></div>
+      </div>
+
+      <!-- Contenido del botón -->
+      <div class="relative z-10">
+        <h3 class="mb-4 text-4xl font-bold text-white font-sans">Docentes</h3>
+        <ul class="space-y-2 text-lg text-gray-200 font-sans">
+          <li>Ver docentes</li>
+          <li>Crear docentes</li>
+          <li>Editar docentes</li>
+          <li>Eliminar docentes</li>
+        </ul>
+      </div>
     </button>
-    <button (click)="navegarEstudianteAdmin()" class="px-20 py-4 text-lg font-semibold text-white transition transform bg-midSecondary rounded-full shadow-lg hover:bg-gray-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white">
-      Estudiantes
+
+    <!-- Botón para navegar a estudiantes -->
+    <button
+      (click)="navegarEstudianteAdmin()"
+      class="group relative w-80 h-96 p-6 text-left rounded-lg bg-midSecondary shadow-lg transition transform hover:bg-gray-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white"
+    >
+      <!-- Imagen de fondo con superposición -->
+      <div
+        class="absolute inset-0 w-full h-full bg-cover bg-center rounded-lg transition-all duration-300 group-hover:blur-sm"
+        style="background-image: url('https://img.freepik.com/fotos-premium/longitud-total-estudiantes-universitarios-felices-caminando-juntos-campus_763111-5348.jpg');"
+      >
+        <!-- Superposición oscura -->
+        <div
+          class="absolute inset-0 bg-black bg-opacity-60 group-hover:bg-opacity-50 rounded-lg transition-all duration-300"
+        ></div>
+      </div>
+
+      <!-- Contenido del botón -->
+      <div class="relative z-10">
+        <h3 class="mb-4 text-4xl font-bold text-white drop-shadow-xl font-sans">Estudiantes</h3>
+        <ul class="space-y-2 text-lg text-gray-200 drop-shadow-xl font-sans">
+          <li>Ver estudiantes</li>
+          <li>Crear estudiantes</li>
+          <li>Editar estudiantes</li>
+          <li>Eliminar estudiantes</li>
+        </ul>
+      </div>
     </button>
   </div>
 </div>
+
+
 </body>
 </html>

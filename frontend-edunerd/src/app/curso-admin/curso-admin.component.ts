@@ -225,4 +225,6 @@ export class CursoAdminComponent implements OnInit{
       alert('Por favor, seleccione un archivo antes de subir.');
     }
   }
+
+
 }
