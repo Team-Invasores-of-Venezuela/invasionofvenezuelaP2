@@ -18,6 +18,7 @@ public class ServicioEstudiante {
     @Autowired
     private RepositorioEstudiante repositorioEstudiante;
 
+    /*
     @Transactional
     public Estudiante createEstudiante(EstudianteDTO estudianteDTO) {
         Optional<Estudiante> estudiante = repositorioEstudiante.findByMatricula(estudianteDTO.getMatricula());
@@ -78,4 +79,6 @@ public class ServicioEstudiante {
             return null;
         }
     }
+
+     */
 }

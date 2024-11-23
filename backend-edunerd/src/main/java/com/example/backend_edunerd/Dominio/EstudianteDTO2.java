@@ -16,12 +16,15 @@ public class EstudianteDTO2 {
         this.anoIngreso = anoIngreso;
     }
 
+    /*
     public EstudianteDTO2(Estudiante estudiante) {
         this.id = estudiante.getId();
         this.nombre = estudiante.getNombre();
         this.matricula = estudiante.getMatricula();
         this.anoIngreso = estudiante.getAnoIngreso();
     }
+
+     */
 
     public String getId() {
         return id;

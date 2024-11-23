@@ -7,13 +7,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RepositorioProfesor extends MongoRepository<Profesor, String> {
-    boolean existsByNombre(String nombre);
-
     Optional<Profesor> findById(String id);
 
     List<Profesor> findAll();
 
-    Optional<Profesor> findByNombre(String nombre);
-
-    boolean existsByRut(String rut);
+    Optional<Profesor> findByRut(String rut);
 }

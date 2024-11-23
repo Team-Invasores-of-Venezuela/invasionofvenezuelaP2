@@ -21,6 +21,7 @@ public class CursoDTO2 {
         this.ano = ano;
     }
 
+    /*
     public CursoDTO2(Curso curso) {
         this.id = curso.getId();
         this.titulo = curso.getTitulo();
@@ -29,6 +30,8 @@ public class CursoDTO2 {
         this.semestre = curso.getSemestre();
         this.ano = curso.getAno();
     }
+
+     */
 
     public String getId() {
         return id;

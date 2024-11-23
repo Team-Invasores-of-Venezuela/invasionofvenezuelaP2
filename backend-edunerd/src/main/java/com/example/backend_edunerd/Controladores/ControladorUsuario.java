@@ -41,11 +41,4 @@ public class ControladorUsuario {
         }
     }
 
-    @CrossOrigin(origins = "*")
-    @PostMapping("/ola")
-    public ResponseEntity<Usuario> ola(@RequestBody ProfesorDTO profesorDTO) {
-        Profesor profesor = new Profesor(profesorDTO.getNombre(), profesorDTO.getCursos());
-        Usuario usuario = servicioSVC.generarUsuarios(profesor);
-        return ResponseEntity.ok().body(usuario);
-    }
 }

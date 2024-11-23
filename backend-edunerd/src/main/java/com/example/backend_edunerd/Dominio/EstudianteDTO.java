@@ -14,11 +14,14 @@ public class EstudianteDTO {
         this.anoIngreso = anoIngreso;
     }
 
+    /*
     public EstudianteDTO(Estudiante estudiante) {
         this.nombre = estudiante.getNombre();
         this.matricula = estudiante.getMatricula();
         this.anoIngreso = estudiante.getAnoIngreso();
     }
+
+     */
 
     public String getNombre() {
         return nombre;

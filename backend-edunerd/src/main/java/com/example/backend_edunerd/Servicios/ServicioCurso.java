@@ -18,6 +18,7 @@ public class ServicioCurso {
     @Autowired
     private RepositorioCurso repositorioCurso;
 
+    /*
     public List<CursoDTO2> getCursos(){
         List<Curso> cursos = repositorioCurso.findAll();
         List<CursoDTO2> cursoDTOS = new ArrayList<>();
@@ -29,6 +30,7 @@ public class ServicioCurso {
         }
         return cursoDTOS;
     }
+
 
     @Transactional
     public Curso createCurso(CursoDTO cursoDTO){
@@ -84,4 +86,5 @@ public class ServicioCurso {
             return null;
         }
     }
+    */
 }

@@ -16,6 +16,7 @@ public class ControladorSVC {
     @Autowired
     private ServicioSVC servicioSVC;
 
+    /*
     @CrossOrigin(origins = "*")
     @PostMapping("/importarProfesores")
     public ResponseEntity<Map<String, Object>> importarDatos(@RequestParam("file") MultipartFile archivoCSV) {
@@ -75,6 +76,8 @@ public class ControladorSVC {
             return ResponseEntity.status(500).body(errorResponse);
         }
     }
+
+     */
 
 
 
