@@ -21,36 +21,47 @@
     ☰
   </button>
 
-  <div class="dark:bg-azulClaro ml-64 max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-8">
-    <h2 class="text-2xl font-semibold text-secondary mb-4 dark:text-azxul">Cursos</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
-      <div *ngFor="let curso of mostrarCursos" class="dark:bg-claro w-90 h-50 rounded overflow-hidden shadow-lg bg-tertiary">
+  <div class="flex items-center justify-center p-10">
+    <div class="dark:bg-azulClaro mx-auto p-6 bg-white shadow-lg rounded-lg mt-8 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-semibold text-secondary mb-4 dark:text-azul">Cursos</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div *ngFor="let curso of mostrarCursos" class="dark:bg-claro rounded overflow-hidden shadow-lg bg-tertiary">
+          <div class="ml-5 mt-2 dark:text-azul flex justify-between">
+            <span>{{curso.ano}} - {{curso.semestre}}</span>
+            <div class="flex items-center">
+              <button class="text-secondary rounded focus:bg-white mr-2" (click)="abrirEditarCurso(curso)">
+                Editar |
+              </button>
+              <button (click)="confirmarEliminacion(curso)">
+                <img width="25" height="25" src="https://img.icons8.com/sf-regular/48/003064/trash.png" alt="trash" />
+              </button>
 
-        <div class="ml-5 mt-2 dark:text-azul flex  mt-2">
-          {{curso.ano}} - {{curso.semestre}}
-
-            <button class=" ml-64 justify-end text-secondary rounded focus:bg-white" (click)="abrirEditarCurso(curso)">
-              Editar  |
-            </button>
-            <button  (click)="eliminarCurso()" >
-              <img  width="25" height="25" src="https://img.icons8.com/sf-regular/48/003064/trash.png" alt="trash"/>
-            </button>
-
-        </div>
-
-
-        <div class="px-6 py-4">
-          <div class="font-extrabold text-xl mb-2">
-            {{ curso.titulo }}
-            <div class="font-medium ">{{ curso.docente }}</div>
+            </div>
           </div>
-          <p class="text-secondary text-base">{{ curso.aprendizajes }}</p>
+          <div class="px-6 py-4">
+            <div class="font-extrabold text-xl mb-2">
+              {{ curso.titulo }}
+              <div class="font-medium">{{ curso.docente }}</div>
+            </div>
+            <p class="text-secondary text-base">{{ curso.aprendizajes }}</p>
+          </div>
         </div>
-
       </div>
-
     </div>
   </div>
+
+  <!-- Modal de confirmación para eliminar curso -->
+  <div *ngIf="mostrarConfirmacionEliminar" class="fixed inset-0 flex items-center justify-center bg-primary bg-opacity-20 dark:bg-azul dark:bg-opacity-60">
+    <div class="dark:bg-claro bg-white rounded-lg shadow-lg p-6 max-w-sm w-full">
+      <h2 class="text-xl font-semibold mb-4 dark:text-azul">Confirmar Eliminación</h2>
+      <p class="mb-4 dark:text-azul">¿Estás seguro de que deseas eliminar el curso <strong>{{ cursoAEliminar?.titulo }}</strong>?</p>
+      <div class="flex justify-end space-x-4">
+        <button (click)="cancelarEliminacion()" class="dark:bg-transparent dark:text-primary bg-tertiary text-secondary px-4 py-2 rounded">Cancelar</button>
+        <button (click)="eliminarCurso()" class="dark:bg-celeste bg-secondary text-white px-4 py-2 rounded">Eliminar</button>
+      </div>
+    </div>
+  </div>
+
 
   <!-- Modal de subir archivo -->
   <div *ngIf="visible" id="uploadModal" class=" fixed inset-0 flex items-center justify-center bg-primary bg-opacity-20 dark:bg-azul dark:bg-opacity-60">
@@ -136,4 +147,6 @@
       </form>
     </div>
   </div>
+
+
 </div>
