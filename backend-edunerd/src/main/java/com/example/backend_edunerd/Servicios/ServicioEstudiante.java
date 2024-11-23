@@ -20,7 +20,7 @@ public class ServicioEstudiante {
 
     @Transactional
     public Estudiante createEstudiante(EstudianteDTO estudianteDTO) {
-        Optional<Estudiante> estudiante = repositorioEstudiante.findByNombre(estudianteDTO.getNombre());
+        Optional<Estudiante> estudiante = repositorioEstudiante.findByMatricula(estudianteDTO.getMatricula());
         if (!estudiante.isPresent()) {
             Estudiante estudianteOpt = new Estudiante(estudianteDTO.getNombre(), estudianteDTO.getMatricula(), estudianteDTO.getAnoIngreso());
             repositorioEstudiante.save(estudianteOpt);
@@ -39,11 +39,19 @@ public class ServicioEstudiante {
     public Estudiante updateEstudiante(EstudianteDTO2 estudianteDTO2) {
         Optional<Estudiante> estudiante = repositorioEstudiante.findById(estudianteDTO2.getId());
         if (estudiante.isPresent()) {
-            estudiante.get().setNombre(estudianteDTO2.getNombre());
-            estudiante.get().setMatricula(estudianteDTO2.getMatricula());
-            estudiante.get().setAnoIngreso(estudianteDTO2.getAnoIngreso());
-            repositorioEstudiante.save(estudiante.get());
-            return estudiante.get();
+            repositorioEstudiante.delete(estudiante.get());
+            if(!repositorioEstudiante.existsByMatricula(estudianteDTO2.getMatricula())) {
+                estudiante.get().setId(estudianteDTO2.getId());
+                estudiante.get().setNombre(estudianteDTO2.getNombre());
+                estudiante.get().setMatricula(estudianteDTO2.getMatricula());
+                estudiante.get().setAnoIngreso(estudianteDTO2.getAnoIngreso());
+                repositorioEstudiante.save(estudiante.get());
+                return estudiante.get();
+            } else {
+                repositorioEstudiante.save(estudiante.get());
+                System.out.println("Estudiante Repetido");
+                return null;
+            }
         } else {
             return null;
         }
