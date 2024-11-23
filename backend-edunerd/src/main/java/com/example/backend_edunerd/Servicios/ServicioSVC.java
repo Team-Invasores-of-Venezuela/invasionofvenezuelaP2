@@ -46,45 +46,62 @@ public class ServicioSVC {
             Workbook workbook = new XSSFWorkbook(inputStream);
             Sheet sheet = workbook.getSheetAt(0);
 
-
             Row headerRow = sheet.getRow(0);
-            int nombreIndex = -1;
-            int cursosIndex = -1;
+            int nombresIndex = -1;
+            int apellidoPaternoIndex = -1;
+            int apellidoMaternoIndex = -1;
+            int rutIndex = -1;
+            int tituloIndex = -1;
+            int gradoMaximoIndex = -1;
 
+            // Buscar las columnas en la cabecera
             for (int i = 0; i < headerRow.getPhysicalNumberOfCells(); i++) {
                 String header = headerRow.getCell(i).getStringCellValue().toLowerCase();
-                if (header.contains("nombre")) {
-                    nombreIndex = i;
-                } else if (header.contains("cursos")) {
-                    cursosIndex = i;
+                if (header.contains("nombres")) {
+                    nombresIndex = i;
+                } else if (header.contains("apellido paterno")) {
+                    apellidoPaternoIndex = i;
+                } else if (header.contains("apellido materno")) {
+                    apellidoMaternoIndex = i;
+                } else if (header.contains("rut")) {
+                    rutIndex = i;
+                } else if (header.contains("titulo")) {
+                    tituloIndex = i;
+                } else if (header.contains("grado maximo")) {
+                    gradoMaximoIndex = i;
                 }
             }
 
-            if (nombreIndex == -1 || cursosIndex == -1) {
-                throw new IllegalArgumentException("No se encontraron las columnas 'nombre' o 'cursos' en el archivo Excel.");
+            // Validar que se encontraron todas las columnas
+            if (nombresIndex == -1 || apellidoPaternoIndex == -1 || apellidoMaternoIndex == -1 ||
+                    rutIndex == -1 || tituloIndex == -1 || gradoMaximoIndex == -1) {
+                throw new IllegalArgumentException("No se encontraron todas las columnas necesarias en el archivo Excel.");
             }
 
+            // Iterar sobre las filas del Excel
             for (Row row : sheet) {
                 if (row.getRowNum() == 0) {
-                    continue;
+                    continue; // Saltar la fila de cabecera
                 }
 
-                String nombre = row.getCell(nombreIndex) != null ? row.getCell(nombreIndex).getStringCellValue().trim() : "";
-                String cursosStr = row.getCell(cursosIndex) != null ? row.getCell(cursosIndex).getStringCellValue().trim() : "";
+                String nombres = obtenerCelda(row, nombresIndex);
+                String apellidoPaterno = obtenerCelda(row, apellidoPaternoIndex);
+                String apellidoMaterno = obtenerCelda(row, apellidoMaternoIndex);
+                String rut = obtenerCelda(row, rutIndex);
+                String titulo = obtenerCelda(row, tituloIndex);
+                String gradoMaximo = obtenerCelda(row, gradoMaximoIndex);
 
-                // EL METODO TRIM BORRA LOS ESPACIOS VACIOS AL INICIO Y AL FINAL DE UN STRING
-                nombre = nombre.replaceAll("\\s{2,}", " ");
-                cursosStr = cursosStr.replaceAll("\\s{2,}", " ");
-
-                if (!nombre.isEmpty() && !cursosStr.isEmpty() && !profesorRepository.existsByNombre(nombre)) {
-                    List<String> cursos = Arrays.stream(cursosStr.split(","))
-                            .map(String::trim) // Eliminar espacios en cada curso
-                            .filter(curso -> !curso.isEmpty()) // Ignorar cursos vacíos
-                            .collect(Collectors.toList());
-
+                // Crear el objeto Profesor si los datos son válidos
+                if (!nombres.isEmpty() && !rut.isEmpty() && !profesorRepository.existsByRut(rut)) {
                     Profesor profesor = new Profesor();
-                    profesor.setNombre(nombre);
-                    profesor.setCursos(cursos);
+                    profesor.setNombre(nombres);
+                    profesor.setApellidoPaterno(apellidoPaterno);
+                    profesor.setApellidoMaterno(apellidoMaterno);
+                    profesor.setRut(rut);
+                    profesor.setTitulo(titulo);
+                    profesor.setGradoMax(gradoMaximo);
+
+                    // Opcionalmente, genera usuarios asociados al profesor
                     generarUsuarios(profesor);
                     profesores.add(profesor);
                 }
@@ -245,5 +262,15 @@ public class ServicioSVC {
         System.out.println("Usuario ya en la base de datos");
         return null;
     }
+
+    // Método auxiliar para obtener el valor de una celda como String
+    private String obtenerCelda(Row row, int index) {
+        if (row.getCell(index) != null) {
+            return row.getCell(index).getStringCellValue().trim().replaceAll("\\s{2,}", " ");
+        }
+        return "";
+    }
+
+
 
 }

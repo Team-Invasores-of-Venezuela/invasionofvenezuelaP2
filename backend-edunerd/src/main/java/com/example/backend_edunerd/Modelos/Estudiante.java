@@ -8,15 +8,63 @@ public class Estudiante {
     @Id
     private String id;
     private String nombre;
+    private String apellidoPaterno;
+    private String apellidoMaterno;
+    private String rut;
     private String matricula;
-    private int anoIngreso;
+    private String fechaNacimiento;
+    private String fechaIngreso;
+    private String urlfoto;
 
     public Estudiante() {}
 
-    public Estudiante(String nombre, String matricula, int anoIngreso) {
-        this.nombre = nombre;
-        this.matricula = matricula;
-        this.anoIngreso = anoIngreso;
+
+    public String getApellidoPaterno() {
+        return apellidoPaterno;
+    }
+
+    public void setApellidoPaterno(String apellidoPaterno) {
+        this.apellidoPaterno = apellidoPaterno;
+    }
+
+    public String getApellidoMaterno() {
+        return apellidoMaterno;
+    }
+
+    public void setApellidoMaterno(String apellidoMaterno) {
+        this.apellidoMaterno = apellidoMaterno;
+    }
+
+    public String getRut() {
+        return rut;
+    }
+
+    public void setRut(String rut) {
+        this.rut = rut;
+    }
+
+    public String getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(String fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public String getFechaIngreso() {
+        return fechaIngreso;
+    }
+
+    public void setFechaIngreso(String fechaIngreso) {
+        this.fechaIngreso = fechaIngreso;
+    }
+
+    public String getUrlfoto() {
+        return urlfoto;
+    }
+
+    public void setUrlfoto(String urlfoto) {
+        this.urlfoto = urlfoto;
     }
 
     public String getId() {
@@ -43,11 +91,5 @@ public class Estudiante {
         this.matricula = matricula;
     }
 
-    public int getAnoIngreso() {
-        return anoIngreso;
-    }
 
-    public void setAnoIngreso(int anoIngreso) {
-        this.anoIngreso = anoIngreso;
-    }
 }

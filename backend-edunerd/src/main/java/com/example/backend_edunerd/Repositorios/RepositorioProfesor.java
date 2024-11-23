@@ -14,4 +14,6 @@ public interface RepositorioProfesor extends MongoRepository<Profesor, String> {
     List<Profesor> findAll();
 
     Optional<Profesor> findByNombre(String nombre);
+
+    boolean existsByRut(String rut);
 }

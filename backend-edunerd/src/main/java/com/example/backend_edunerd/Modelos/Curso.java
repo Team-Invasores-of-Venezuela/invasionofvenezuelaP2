@@ -9,19 +9,16 @@ import java.util.List;
 public class Curso {
     @Id
     private String id;
-    private String titulo;
-    private String docente;
-    private List<String> aprendizajes;
-    private int semestre;
+    private String carrera;
+    private String nombre;
     private int ano;
+    private int semestre;
+    private char seccion;
+    private List<String> alumnos;
+    private String profesor;
 
-    public Curso(String titulo, String docente, List<String> aprendizajes, int semestre, int ano) {
-        this.titulo = titulo;
-        this.docente = docente;
-        this.aprendizajes = aprendizajes;
-        this.semestre = semestre;
-        this.ano = ano;
-    }
+
+
 
     public Curso() {
     }
@@ -34,28 +31,29 @@ public class Curso {
         this.id = id;
     }
 
-    public String getTitulo() {
-        return titulo;
+
+    public String getCarrera() {
+        return carrera;
     }
 
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
+    public void setCarrera(String carrera) {
+        this.carrera = carrera;
     }
 
-    public String getDocente() {
-        return docente;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setDocente(String docente) {
-        this.docente = docente;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public List<String> getAprendizajes() {
-        return aprendizajes;
+    public char getSeccion() {
+        return seccion;
     }
 
-    public void setAprendizajes(List<String> aprendizajes) {
-        this.aprendizajes = aprendizajes;
+    public void setSeccion(char seccion) {
+        this.seccion = seccion;
     }
 
     public int getSemestre() {
@@ -68,6 +66,22 @@ public class Curso {
 
     public int getAno() {
         return ano;
+    }
+
+    public List<String> getAlumnos() {
+        return alumnos;
+    }
+
+    public void setAlumnos(List<String> alumnos) {
+        this.alumnos = alumnos;
+    }
+
+    public String getProfesor() {
+        return profesor;
+    }
+
+    public void setProfesor(String profesor) {
+        this.profesor = profesor;
     }
 
     public void setAno(int ano) {
