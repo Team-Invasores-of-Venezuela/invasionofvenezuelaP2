@@ -30,6 +30,7 @@ export class DocenteAdminComponent {
   idEditar: string = '';
   nombreEditar: string = '';
   cursosEditar: string = '';
+  modoEliminar: boolean = false;
   nuevoDocente: any = { nombre: '', id: '' };
 
   constructor(private http: HttpClient, private router: Router) {}
@@ -94,6 +95,13 @@ export class DocenteAdminComponent {
           alert('Ocurrió un error al eliminar el docente.');
         }
       );
+  }
+  ActivarModoEliminacion(): void {
+    this.modoEliminar = true;
+  }
+
+  VolverModoNormal(): void {
+    this.modoEliminar = false;
   }
 
   abrirModal() {

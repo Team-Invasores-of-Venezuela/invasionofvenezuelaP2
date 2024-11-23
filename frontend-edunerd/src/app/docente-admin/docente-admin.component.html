@@ -19,7 +19,6 @@
         <img class="size-10 flex-none bg-gray-50" src="https://res.cloudinary.com/ddwshn5tb/image/upload/v1731725951/perfil_v6tmdm.png" alt="Perfil Docente">
         <div class="min-w-0 flex-auto">
           <p class="text-sm font-semibold text-white">{{ docente.nombre }}</p>
-          <p class="mt-1 truncate text-xs text-white">{{ docente.id }}</p>
         </div>
       </div>
 
@@ -32,41 +31,43 @@
       <!-- Checkbox para seleccionar el docente (solo visible en modo de eliminación) -->
       <input type="checkbox" [checked]="isChecked(docente.id)" (change)="onCheckboxChange(docente.id, $event)" *ngIf="modoEliminacion">
 
-      <!-- Botón para eliminar docente individualmente (visible solo en modo eliminación) -->
-      <button (click)="eliminarDocente(docente.id)" class="ml-4 bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600" *ngIf="modoEliminacion">
-        Eliminar
-      </button>
-
       <!-- Botón para editar docente -->
-      <button (click)="abrirModalEditar(docente)" class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48">
+      <button
+        (click)="abrirModalEditar(docente)"
+        class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48"
+        [disabled]="modoEliminacion">
         Editar Docente
       </button>
     </li>
   </ul>
-
-  <!-- Botón para eliminar los docentes seleccionados -->
-  <div class="flex justify-center mt-12">
-    <button class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-15 w-48" (click)="eliminarDocentes()" *ngIf="modoEliminacion">
-      Eliminar Docentes Seleccionados
-    </button>
-  </div>
-
   <!-- Botón para activar el modo de eliminación -->
   <div class="flex justify-center mt-12">
-    <button class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48" (click)="activarModoEliminacion()" *ngIf="!modoEliminacion">
+    <button
+      class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-green-600 h-15 w-48"
+      (click)="mostrarFormularioRegistro()" style="margin-right: 25px"
+      [disabled]="modoEliminacion">
+    Registrar Nuevo Docente
+    </button>
+
+    <button
+      class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48"
+      (click)="activarModoEliminacion()" style="margin-right: 25px"
+      *ngIf="!modoEliminacion">
       Eliminar Docente
     </button>
 
-    <button class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-green-600 h-15 w-48" (click)="mostrarFormularioRegistro()">
-      Registrar Nuevo Docente
+    <button class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-15 w-48"
+            (click)="eliminarDocentes()" style="margin-right: 25px"
+            *ngIf="modoEliminacion">
+      Eliminar Docentes Seleccionados
     </button>
-  </div>
 
-  <!-- Botón para volver al estado normal -->
-  <div class="flex justify-center mt-4">
-    <button class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48" (click)="volverModoNormal()" *ngIf="modoEliminacion">
+    <button class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48"
+            (click)="volverModoNormal()" style="margin-right: 25px"
+            *ngIf="modoEliminacion">
       Volver
     </button>
+
   </div>
 
   <!-- Modal para elegir la forma de cargar docentes -->
@@ -99,7 +100,7 @@
       <input type="text" [(ngModel)]="nuevoDocenteCursos" name="nuevoDocenteCursos" class="w-full border rounded px-3 py-2 mb-4" />
 
       <div class="flex justify-end space-x-4">
-        <button class="bg-secondary text-gray-800 px-4 py-2 rounded hover:bg-gray-400" (click)="ocultarFormularioRegistro()">
+        <button class="bg-secondary text-white px-4 py-2 rounded hover:bg-gray-400" (click)="ocultarFormularioRegistro()">
           Cancelar
         </button>
         <button class="bg-secondary text-white px-4 py-2 rounded hover:bg-green-600" (click)="registrarDocente()">
@@ -126,7 +127,7 @@
 
 
       <div class="flex justify-end space-x-4">
-        <button (click)="cerrarModalEditar()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-2xl hover:bg-gray-400">Cancelar</button>
+        <button (click)="cerrarModalEditar()" class="bg-primary text-white px-4 py-2 rounded-2xl hover:bg-gray-400">Cancelar</button>
         <button (click)="guardarEdicion()" class="bg-primary text-white px-4 py-2 rounded-2xl hover:bg-primary-light">Guardar</button>
       </div>
     </div>
