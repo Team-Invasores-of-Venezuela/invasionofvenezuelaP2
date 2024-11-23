@@ -3,7 +3,7 @@ import {NgForOf, NgIf} from '@angular/common';
 import {Router} from '@angular/router';
 import {AuthService} from '../AuthService';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
-import {Observable} from 'rxjs';
+
 
 @Component({
   selector: 'app-docente',
@@ -17,7 +17,6 @@ import {Observable} from 'rxjs';
 })
 export class DocenteComponent implements OnInit{
   docente: { id: string, nombre: string, cursos: string[] } = { id: '', nombre: '', cursos: [] };
-  estudiantes: any [] | any;
   mostrarCursos: { id: string, titulo: string, docente: string, aprendizajes:string[],ano:number,semestre:number }[] = [];
   private apiUrlGetCursos = 'http://localhost:8080/curso/getall';
   private apiUrldocente = 'http://localhost:8080/usuario/';
@@ -25,7 +24,6 @@ export class DocenteComponent implements OnInit{
   nombre= localStorage.getItem('nombre');
 
 constructor(private router: Router, private authService: AuthService, private http: HttpClient) {
-
   }
 
 

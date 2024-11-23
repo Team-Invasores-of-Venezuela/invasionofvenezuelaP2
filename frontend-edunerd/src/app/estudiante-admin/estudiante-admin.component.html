@@ -1,36 +1,36 @@
-<body class="min-h-screen bg-primary font-sans">
-<header class="bg-secondary text-white p-4 w-full text-left">
-  <h2 class="text-2xl font-semibold text-white font-sans">Administración de estudiantes</h2>
+<body class="min-h-screen  dark:bg-claro bg-primary font-sans">
+<header class="dark:bg-celeste bg-secondary text-white p-4 w-full text-left">
+  <h2 class="dark:text-claro text-2xl font-semibold text-white font-sans">Administración de estudiantes</h2>
 </header>
-<h2 class="text-3xl text-white m-10 ml-64">Estudiantes</h2>
-<ul role="list" class="mx-96 rounded bg-primary shadow-2xl p-10">
+<h2 class="dark:text-azul text-3xl text-white m-10 ml-64">Estudiantes</h2>
+<ul role="list" class="dark:bg-claro dark:shadow-2xl mx-96 rounded bg-primary shadow-2xl p-10">
 
-  <li *ngFor="let estudiante of estudiantes" class="flex justify-between border-b border-b-tertiary gap-x-6 p-5">
+  <li *ngFor="let estudiante of estudiantes" class="dark:bg-claro flex justify-between border-b border-b-tertiary gap-x-6 p-5">
     <div class="flex min-w-0 gap-x-4">
-      <img class="size-10 flex-none bg-gray-50" src='https://res.cloudinary.com/ddwshn5tb/image/upload/v1731725951/perfil_v6tmdm.png' alt="">
+      <img class="dark:shadow-2xl flex-none size-10 rounded-full" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAAEA0lEQVR4nO2aW6scRRDHy3gJatAXE9En7wZ8kWi84AXyYkTfvICXByMEfVITfZDggxdUED+EPkROsvEr6PHBnJxsV9e/Zh084aAPUUPwAiZGjwaUkVrPgTM9u7B7dma3R/oHDcPMdlX3dHV1Vc0SJRKJRCKRSCQSjcNZtsMBb7PKPANLDvK7Nbtmlc/7z7JsB/2fKIriApfJEww5wYpipAYsddU/bn2pzSyqXu8UCyNPvNqOAriO2ogD7nOQHyeY/Jo1/MLALmoTPvMPOsj5cDIO8hcDc131T3Wz7FZVvdyaXds9Bzk0pN95zrIHqC1mz4qfK5NQOTyKOa/271T746fot0NhDq+65//mTF4ZVxYD+/p9S7LkS4oZBp6s7OENTH4Np/pqKM+rPkaxrj4HR52Z/aRyGTgSbIWvKUZ8z98ROq5ur3fDpHJt3/ed5zrZx4HbKTZcP8IrHV9ztclWORz4gjcpNtjC23WDtGOtNtkizwTW9RnFhlMsl5yV9zfVJdvihLJ1yQmKDQc5t36QeZ5vqUu2yQos4BzFBgN/NvUCFhcXrwiOwxWKDQZOlzy16i1NbQGnOEWxwYovSoPM5OnaZAPPxu8EgQ+DQR5q8Bj8gGKDVe+vZHBf8Y211BSCQIgzvodioyiKTQOqPp1J5TLwaRgKR1spYmDPgILGvg3LU3mtIk/kOYqVoig2OeBYmA47YP8GM8EgHcZR00Ex0/3vyDozwBKOjJIc2W9Cs1/NLH8VkZupDbDq7orjWnWMfY9usX2Pt1uw1I/yerzd7tmzQSWxfpAFPERtglV3s+JsZTLjt7Otm/wa3vt7B67oiM36mgxqG8x8pQPeqssCTJblA9QGGNjFkO9rmHjoB0579Q9T5Efg+w7yz5BJnHEqBzmTvV2RnSKylZkvtmbXds+eseKTYZZjsh3wXnSBUKfTuZAVHw9ZuSULkBYWFi4dVZ791gPPD/ue6FQ+Mp0UzcprmKz024pFgfPz8xdtVLb1XQ2IVga82LkogiIG3qmuEE454K66dFgVmBUnqy95xsVRBh6t7HmIeO+vrVuXyTTZFZ8g8gjNgjzPt9hKB3vzhyYmv4Y5y7D4ajrrLL+NjHn8MFyt0+yHcRy4jRV/BFvhXZomzHxNWASdJO0dFwe8Eb78Y73e1dPST6xyIDzqJvH242L/KahsP+D1aVZ+vg1ewB6aMg54MRjDN1MJkHzwEdQivHGCnLpg5ssY8ltpLNP4hxmrvBx44YM0I6zyXB6Lf6l5pRpEfZnspRnhgRfC6LBxpQ7I1iv13t9JM4JV7w6DsOaVQr4rKWW+imaEqm4L/NHJxpVykJjkeX4JzYjl5eXNYQI2q7EkEolEIpFIJKhl/AvslsFj2j/36AAAAABJRU5ErkJggg==" alt="gender-neutral-user">
       <div class="min-w-0 flex-auto">
-        <p class="text-sm/13 font-semibold text-white font-sans w-60">{{estudiante.nombre}}</p>
-        <p class="mt-1 truncate text-xs/5 text-white font-sans">{{estudiante.matricula}}</p>
+        <p class="dark:text-azul text-sm/13 font-semibold text-white font-sans w-60">{{estudiante.nombre}}</p>
+        <p class="dark:text-azul mt-1 truncate text-xs/5 text-white font-sans">{{estudiante.matricula}}</p>
       </div>
     </div>
 
     <!-- Mostrar Año de Ingreso -->
-    <div class="mt-2 text-white text-sm/13 font-sans">
+    <div class="dark:text-azul mt-2 text-white text-sm/13 font-sans">
       Ingreso: {{estudiante.anoIngreso}}
     </div>
 
     <!-- Botón para editar estudiante  -->
-    <button class="mt-2 bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-10" (click)="abrirEditarEstudianteModal(estudiante)">
+    <button class="dark:bg-blue-200 dark:text-azul mt-2 bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-10" (click)="abrirEditarEstudianteModal(estudiante)">
       Editar
     </button>
   </li>
 </ul>
 <!-- Botón para añadir estudiante -->
 <div class="flex justify-center mt-12 gap-4 mb-8">
-  <button class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48 mb-40" (click)="modalEleccion()">
+  <button class="dark:bg-celeste dark:text-claro bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48 mb-40" (click)="modalEleccion()">
     Añadir estudiante
   </button>
-  <button class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48" (click)="abrirEliminarEstudianteModal()">
+  <button class="dark:bg-celeste dark:text-claro bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48" (click)="abrirEliminarEstudianteModal()">
     Eliminar estudiante
   </button>
 </div>

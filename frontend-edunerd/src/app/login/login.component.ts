@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
@@ -14,12 +14,13 @@ import {AuthService} from '../AuthService';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit{
   loginForm: FormGroup;
   errorMessage: string | null = null;
 
   private apiUrl = 'http://localhost:8080/usuario/login';
 
+  ngOnInit() {this.cargarTema()}
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -32,13 +33,34 @@ export class LoginComponent {
     });
   }
 
-  oscuro = false;
+  claro = false;
 
-  modoOscuro() {
-    this.oscuro = !this.oscuro;
+  modoOscuro(): void {
+    this.claro = !this.claro;
+    this.actualizarTema();
   }
 
+  private cargarTema(): void {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      this.claro = true;
+      document.documentElement.classList.add('dark');
+    } else {
+      this.claro = false;
+      document.documentElement.classList.remove('dark');
+    }
+  }
 
+  private actualizarTema(): void {
+    const htmlElement = document.documentElement;
+    if (this.claro) {
+      htmlElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      htmlElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }
   onSubmit() {
     console.log("hola");
     const { email, contrasena } = this.loginForm.value;
@@ -74,6 +96,5 @@ export class LoginComponent {
       }
     );
   }
-
-
+  
 }
