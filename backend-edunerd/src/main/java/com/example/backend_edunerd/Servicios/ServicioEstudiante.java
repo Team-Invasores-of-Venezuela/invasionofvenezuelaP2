@@ -18,15 +18,16 @@ public class ServicioEstudiante {
     @Autowired
     private RepositorioEstudiante repositorioEstudiante;
 
+
     @Transactional
     public Estudiante createEstudiante(EstudianteDTO estudianteDTO) {
-        Optional<Estudiante> estudiante = repositorioEstudiante.findByMatricula(estudianteDTO.getMatricula());
-        if (!estudiante.isPresent()) {
-            Estudiante estudianteOpt = new Estudiante(estudianteDTO.getNombre(), estudianteDTO.getMatricula(), estudianteDTO.getAnoIngreso());
-            repositorioEstudiante.save(estudianteOpt);
-            return estudianteOpt;
-        } else {
+        Estudiante newEstudiante = new Estudiante(estudianteDTO);
+        if(exists(newEstudiante)) {
             return null;
+        }
+        else {
+            repositorioEstudiante.save(newEstudiante);
+            return newEstudiante;
         }
     }
 
@@ -40,17 +41,14 @@ public class ServicioEstudiante {
         Optional<Estudiante> estudiante = repositorioEstudiante.findById(estudianteDTO2.getId());
         if (estudiante.isPresent()) {
             repositorioEstudiante.delete(estudiante.get());
-            if(!repositorioEstudiante.existsByMatricula(estudianteDTO2.getMatricula())) {
-                estudiante.get().setId(estudianteDTO2.getId());
-                estudiante.get().setNombre(estudianteDTO2.getNombre());
-                estudiante.get().setMatricula(estudianteDTO2.getMatricula());
-                estudiante.get().setAnoIngreso(estudianteDTO2.getAnoIngreso());
-                repositorioEstudiante.save(estudiante.get());
-                return estudiante.get();
-            } else {
+            if(exists(new Estudiante(estudianteDTO2))) {
                 repositorioEstudiante.save(estudiante.get());
                 System.out.println("Estudiante Repetido");
                 return null;
+            } else {
+                Estudiante newEstudiante = new Estudiante(estudianteDTO2);
+                repositorioEstudiante.save(newEstudiante);
+                return newEstudiante;
             }
         } else {
             return null;
@@ -61,6 +59,8 @@ public class ServicioEstudiante {
         List<Estudiante> estudiantes = repositorioEstudiante.findAll();
         List<EstudianteDTO2> estudianteDTOS = new ArrayList<>();
         for (Estudiante estudiante : estudiantes) {
+            System.out.println(estudiante.getFechaIngreso());
+            System.out.println(estudiante.getFechaNacimiento());
             EstudianteDTO2 estudianteDTO2 = new EstudianteDTO2(estudiante);
             estudianteDTOS.add(estudianteDTO2);
         }
@@ -78,4 +78,13 @@ public class ServicioEstudiante {
             return null;
         }
     }
+
+    public boolean exists(Estudiante estudiante) {
+        Optional<Estudiante> estudianteOpt = repositorioEstudiante.findByRut(estudiante.getRut());
+        if (estudianteOpt.isPresent()) {
+            return true;
+        }
+        return false;
+    }
+
 }
