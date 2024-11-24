@@ -18,7 +18,9 @@ public class Usuario {
         this.email = email;
         this.rut = nombre;
     }
+ public Usuario(){
 
+ }
     public String getId() {
         return id;
     }
