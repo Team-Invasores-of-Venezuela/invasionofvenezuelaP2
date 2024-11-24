@@ -6,8 +6,12 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 
 interface Estudiante {
   nombre: string;
+  apellidoPaterno: string;
+  apellidoMaterno: string;
   matricula: string;
-  cursos: string[];
+  fechaIngreso: string;
+  rut: string;
+  urlFoto: string;
   mostrarAsignaturas: boolean;
 }
 
@@ -33,12 +37,11 @@ export class EstudianteAdminComponent implements OnInit{
   visible = false;
   selectedFile: File | null = null;
 
-
-
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
     this.getEstudiantes();
+    console.log('Estudiantes: ',this.estudiantes);
     console.log('Estudiantes: ',this.estudiantes);
   }
 
