@@ -7,16 +7,14 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RepositorioCurso extends MongoRepository<Curso, String> {
-    List<Curso> findAll();
+    Optional<Curso> findByNombre(String nombre);
 
-    boolean existsByTitulo(String titulo);
+    Optional<Curso> findByAno(int ano);
 
-    Optional<Curso> findByTitulo(String titulo);
+    Optional<Curso> findBySemestre(int semestre);
 
     Optional<Curso> findById(String id);
 
-    boolean existsByAno(int ano);
-
-    boolean existsBySemestre(int semestre);
+    List<Curso> findAll();
 }
 

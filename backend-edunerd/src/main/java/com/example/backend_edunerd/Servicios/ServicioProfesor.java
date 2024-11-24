@@ -26,15 +26,13 @@ public class ServicioProfesor {
 
     @Transactional
     public Profesor createProfesor(ProfesorDTO profesorDTO){
-        Optional<Profesor> profesor = repositorioProfesor.findByNombre(profesorDTO.getNombre());
-        if(!profesor.isPresent()){
-            Profesor profesorOpt = new Profesor(profesorDTO.getNombre(), profesorDTO.getCursos());
-            repositorioProfesor.save(profesorOpt);
-            generarUsuarios(profesorOpt);
-            return profesorOpt;
-        } else {
-            //Si el objeto ya se encuentra en la base de datos.
+        Profesor newProfesor = new Profesor(profesorDTO);
+        if(exists(newProfesor)) {
             return null;
+        }
+        else {
+            repositorioProfesor.save(newProfesor);
+            return newProfesor;
         }
     }
 
@@ -48,16 +46,14 @@ public class ServicioProfesor {
         Optional<Profesor> profesor = repositorioProfesor.findById(profesorDTO2.getId());
         if(profesor.isPresent()){
             repositorioProfesor.delete(profesor.get());
-            if(!repositorioProfesor.existsByNombre(profesorDTO2.getNombre())){
-                profesor.get().setId(profesorDTO2.getId());
-                profesor.get().setNombre(profesorDTO2.getNombre());
-                profesor.get().setCursos(profesorDTO2.getCursos());
-                repositorioProfesor.save(profesor.get());
-                return profesor.get();
-            } else {
+            if(exists(new Profesor(profesorDTO2))) {
                 repositorioProfesor.save(profesor.get());
                 System.out.println("Profesor Repetido");
                 return null;
+            } else {
+                Profesor newProfesor = new Profesor(profesorDTO2);
+                repositorioProfesor.save(newProfesor);
+                return newProfesor;
             }
         } else {
             return null;
@@ -68,7 +64,6 @@ public class ServicioProfesor {
         List<Profesor> profesores = repositorioProfesor.findAll();
         List<ProfesorDTO2> ProfesorDTOS = new ArrayList<>();
         for (Profesor profesor : profesores) {
-            //System.out.println(profesor.getId());
             ProfesorDTO2 profesorDTO2 = new ProfesorDTO2(profesor);
             ProfesorDTOS.add(profesorDTO2);
         }
@@ -87,27 +82,12 @@ public class ServicioProfesor {
         }
     }
 
-    public Usuario generarUsuarios(Profesor profesor){
-        String nombre = profesor.getNombre();
-
-        String nombreSplit = nombre.toLowerCase().replace(" ", "");
-
-        String email = nombreSplit + "@gmail.com";
-
-        if(!repositorioUsuario.existsByEmail(email)){
-            Usuario usuario = new Usuario(false, nombreSplit, nombre, nombre);
-            //System.out.println(usuario.toString());
-            repositorioUsuario.save(usuario);
-            System.out.println("Usuario generado");
-            System.out.println(usuario.isAdmin());
-            System.out.println(usuario.getEmail());
-            System.out.println(usuario.getContrasena());
-            System.out.println(usuario.getNombre());
-
-            return usuario;
+    public boolean exists (Profesor profesor){
+        Optional<Profesor> profesorOpt = repositorioProfesor.findByRut(profesor.getRut());
+        if(profesorOpt.isPresent()){
+            return true;
         }
-        return null;
+        return false;
     }
-
 
 }

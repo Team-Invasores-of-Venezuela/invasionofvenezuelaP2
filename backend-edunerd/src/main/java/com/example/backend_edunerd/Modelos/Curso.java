@@ -1,4 +1,6 @@
 package com.example.backend_edunerd.Modelos;
+import com.example.backend_edunerd.Dominio.CursoDTO;
+import com.example.backend_edunerd.Dominio.CursoDTO2;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -17,10 +19,39 @@ public class Curso {
     private List<String> alumnos;
     private String profesor;
 
-
-
-
     public Curso() {
+    }
+
+    public Curso(String id, String carrera, String nombre, int ano, int semestre, char seccion, List<String> alumnos, String profesor) {
+        this.id = id;
+        this.carrera = carrera;
+        this.nombre = nombre;
+        this.ano = ano;
+        this.semestre = semestre;
+        this.seccion = seccion;
+        this.alumnos = alumnos;
+        this.profesor = profesor;
+    }
+
+    public Curso (CursoDTO cursoDTO) {
+        this.carrera = cursoDTO.getCarrera();
+        this.nombre = cursoDTO.getNombre();
+        this.ano = cursoDTO.getAno();
+        this.semestre = cursoDTO.getSemestre();
+        this.seccion = cursoDTO.getSeccion();
+        this.alumnos = cursoDTO.getAlumnos();
+        this.profesor = cursoDTO.getProfesor();
+    }
+
+    public Curso (CursoDTO2 cursoDTO2) {
+        this.id = cursoDTO2.getId();
+        this.carrera = cursoDTO2.getCarrera();
+        this.nombre = cursoDTO2.getNombre();
+        this.ano = cursoDTO2.getAno();
+        this.semestre = cursoDTO2.getSemestre();
+        this.seccion = cursoDTO2.getSeccion();
+        this.alumnos = cursoDTO2.getAlumnos();
+        this.profesor = cursoDTO2.getProfesor();
     }
 
     public String getId() {
