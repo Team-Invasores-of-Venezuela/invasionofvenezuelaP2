@@ -11,13 +11,52 @@ public class Profesor {
     @Id
     private String id;
     private String nombre;
-    private List<String> cursos;
+    private String apellidoPaterno;
+    private String apellidoMaterno;
+    private String rut;
+    private String titulo;
+    private String gradoMax;
 
     public Profesor() {}
 
-    public Profesor(String nombre, List<String> cursos) {
-        this.nombre = nombre;
-        this.cursos = cursos;
+    public String getApellidoPaterno() {
+        return apellidoPaterno;
+    }
+
+    public void setApellidoPaterno(String apellidoPaterno) {
+        this.apellidoPaterno = apellidoPaterno;
+    }
+
+    public String getApellidoMaterno() {
+        return apellidoMaterno;
+    }
+
+    public void setApellidoMaterno(String apellidoMaterno) {
+        this.apellidoMaterno = apellidoMaterno;
+    }
+
+    public String getRut() {
+        return rut;
+    }
+
+    public void setRut(String rut) {
+        this.rut = rut;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public String getGradoMax() {
+        return gradoMax;
+    }
+
+    public void setGradoMax(String gradoMax) {
+        this.gradoMax = gradoMax;
     }
 
     public String getId() {
@@ -36,11 +75,5 @@ public class Profesor {
         this.nombre = nombre;
     }
 
-    public List<String> getCursos() {
-        return cursos;
-    }
 
-    public void setCursos(List<String> cursos) {
-        this.cursos = cursos;
-    }
 }
