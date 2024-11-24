@@ -10,13 +10,13 @@ public class Usuario {
     private String email;
     private String contrasena;
     private boolean admin;
-    private String nombre;
+    private String rut;
 
     public Usuario(boolean admin, String contrasena, String email, String nombre) {
         this.admin = admin;
         this.contrasena = contrasena;
         this.email = email;
-        this.nombre = nombre;
+        this.rut = nombre;
     }
 
     public String getId() {
@@ -51,11 +51,11 @@ public class Usuario {
         this.admin = admin;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getRut() {
+        return rut;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setRut(String rut) {
+        this.rut = rut;
     }
 }

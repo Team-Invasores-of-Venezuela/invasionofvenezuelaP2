@@ -33,7 +33,7 @@ public class ControladorUsuario {
         if (usuario.isPresent()) {
             response.put("id", usuario.get().getId());
             response.put("admin", usuario.get().isAdmin());
-            response.put("nombre", usuario.get().getNombre());
+            response.put("nombre", usuario.get().getRut());
 
             return ResponseEntity.ok(response);
         } else {
