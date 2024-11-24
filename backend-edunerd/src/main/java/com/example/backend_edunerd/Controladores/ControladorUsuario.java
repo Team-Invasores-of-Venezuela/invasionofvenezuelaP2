@@ -1,9 +1,11 @@
 package com.example.backend_edunerd.Controladores;
 
+import com.example.backend_edunerd.Dominio.AdministradorDTO;
 import com.example.backend_edunerd.Dominio.ProfesorDTO;
 import com.example.backend_edunerd.Dominio.UsuarioDTO;
 import com.example.backend_edunerd.Modelos.Profesor;
 import com.example.backend_edunerd.Modelos.Usuario;
+import com.example.backend_edunerd.Repositorios.RepositorioUsuario;
 import com.example.backend_edunerd.Servicios.ServicioSVC;
 import com.example.backend_edunerd.Servicios.ServicioUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,8 @@ public class ControladorUsuario {
     private ServicioUsuario servicioUsuario;
     @Autowired
     private ServicioSVC servicioSVC;
+    @Autowired
+    private RepositorioUsuario repositorioUsuario;
 
     @CrossOrigin(origins = "*")
     @PostMapping("/login")
@@ -33,8 +37,23 @@ public class ControladorUsuario {
         if (usuario.isPresent()) {
             response.put("id", usuario.get().getId());
             response.put("admin", usuario.get().isAdmin());
-            response.put("nombre", usuario.get().getNombre());
+            response.put("nombre", usuario.get().getRut());
 
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @CrossOrigin(origins = "*")
+    @PostMapping("/registeradmin")
+    public ResponseEntity<Map<String, Object>> registrarAdmin(@RequestBody AdministradorDTO administradorDTO) {
+        Map<String, Object> response = new HashMap<>();
+        Usuario usuario = servicioUsuario.crearAdmin(administradorDTO);
+        if (usuario!= null) {
+            response.put("admin", usuario.isAdmin());
+            response.put("rut", usuario.getRut());
+            repositorioUsuario.save(usuario);
             return ResponseEntity.ok(response);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

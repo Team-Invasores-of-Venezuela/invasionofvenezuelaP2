@@ -44,7 +44,6 @@ public class ServicioSVC {
 
 
     public void importarProfesoresDesdeExcel(MultipartFile file) throws IOException {
-        List<Profesor> profesores = new ArrayList<>();
 
         try (InputStream inputStream = file.getInputStream()) {
             Workbook workbook = new XSSFWorkbook(inputStream);
@@ -89,6 +88,13 @@ public class ServicioSVC {
                 }
 
                 String nombres = obtenerCelda(row, nombresIndex);
+                String[] nombresSeparados = nombres.split("\\s+");
+                if (nombresSeparados.length >= 2) {
+                    // Concatenar ambos nombres separados por un espacio si existen
+                    nombres = nombresSeparados[0] + " " + nombresSeparados[1];
+                } else {
+                    nombres = nombresSeparados[0];
+                }
                 String apellidoPaterno = obtenerCelda(row, apellidoPaternoIndex);
                 String apellidoMaterno = obtenerCelda(row, apellidoMaternoIndex);
                 String rut = obtenerCelda(row, rutIndex);
@@ -107,7 +113,6 @@ public class ServicioSVC {
                     profesorRepository.save(profesor);
                     // Opcionalmente, genera usuarios asociados al profesor
                     generarUsuarios(profesor);
-                    profesores.add(profesor);
 
                 }
             }
@@ -119,7 +124,6 @@ public class ServicioSVC {
 
 
     public void importarEstudiantesDesdeExcel(MultipartFile file) throws IOException {
-        List<Estudiante> estudiantes = new ArrayList<>();
 
         try (InputStream inputStream = file.getInputStream()) {
             Workbook workbook = new XSSFWorkbook(inputStream);
@@ -170,6 +174,14 @@ public class ServicioSVC {
 
 
                 String nombre = row.getCell(nombresIndex).getStringCellValue().trim();
+
+                String[] nombresSeparados = nombre.split("\\s+");
+                if (nombresSeparados.length >= 2) {
+                    // Concatenar ambos nombres separados por un espacio si existen
+                    nombre = nombresSeparados[0] + " " + nombresSeparados[1];
+                } else {
+                    nombre = nombresSeparados[0];
+                }
                 String apellidoPaterno = row.getCell(apellidoPaternoIndex).getStringCellValue().trim();
                 String apellidoMaterno = row.getCell(apellidoMaternoIndex).getStringCellValue().trim();
                 String rut = row.getCell(rutIndex).getStringCellValue().trim();
@@ -214,17 +226,14 @@ public class ServicioSVC {
                     estudiante.setFechaNacimiento(fechaNacimientoLocalDate);
                     estudiante.setFechaIngreso(fechaIngresoLocalDate);
                     estudiante.setUrlfoto(imagen);
-                    estudiantes.add(estudiante);
+                    estudianteRepository.save(estudiante);
                 }
             }
         }
 
-
-        estudianteRepository.saveAll(estudiantes);
     }
 
     public void importarCursosDesdeExcel(MultipartFile file) throws IOException {
-        List<Curso> cursos = new ArrayList<>();
 
         try (InputStream inputStream = file.getInputStream()) {
             Workbook workbook = new XSSFWorkbook(inputStream);
@@ -302,29 +311,29 @@ public class ServicioSVC {
                 curso.setAlumnos(listadoAlumnos);
                 curso.setProfesor(formatearRut(profesor));
 
-                cursos.add(curso);
+                cursoRepository.save(curso);
             }
         }
 
-        cursoRepository.saveAll(cursos);
     }
 
     public Usuario generarUsuarios(Profesor profesor){
-        String nombre = profesor.getNombre();
+        String rutLimpio =profesor.getRut().replaceAll("[^0-9kK]", "");
+        String nombre = profesor.getNombre().charAt(0) + profesor.getApellidoPaterno()+ rutLimpio.charAt(0)+ rutLimpio.charAt(1);
 
         String nombreSplit = nombre.toLowerCase().replace(" ", "");
 
-        String email = nombreSplit + "@gmail.com";
+        String email = nombreSplit + "@docentes.utalca.cl";
 
         if(!repositorioUsuario.existsByEmail(email)){
-            Usuario usuario = new Usuario(false, nombreSplit, email, nombre);
+            Usuario usuario = new Usuario(false, nombreSplit, email, profesor.getRut());
             //System.out.println(usuario.toString());
             System.out.println("Usuario generado");
             repositorioUsuario.save(usuario);
             System.out.println(usuario.isAdmin());
             System.out.println(usuario.getEmail());
             System.out.println(usuario.getContrasena());
-            System.out.println(usuario.getNombre());
+            System.out.println(usuario.getRut());
             return usuario;
         }
         System.out.println("Usuario ya en la base de datos");
