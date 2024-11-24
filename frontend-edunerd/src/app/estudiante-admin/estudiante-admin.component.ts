@@ -71,6 +71,10 @@ export class EstudianteAdminComponent implements OnInit{
     this.verManual = !this.verManual;
   }
 
+  cerrarModalManual() {
+    this.verManual = false;
+  }
+
   cerrarModal() {
     this.visible = false;
     this.selectedFile = null;

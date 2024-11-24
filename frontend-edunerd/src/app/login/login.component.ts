@@ -61,6 +61,8 @@ export class LoginComponent implements OnInit{
       localStorage.setItem('theme', 'light');
     }
   }
+
+
   onSubmit() {
     console.log("hola");
     const { email, contrasena } = this.loginForm.value;
@@ -76,10 +78,11 @@ export class LoginComponent implements OnInit{
         if (response) {
           localStorage.setItem('userId', response.id);
           localStorage.setItem('isAdmin', response.admin.toString());
-          localStorage.setItem('nombre',response.nombre);
-          console.log(response.nombre);
+          localStorage.setItem('nombre', response.nombre);
           console.log("Funcionó el login");
+
           if (response.admin) {
+
             this.router.navigate(['/administrador']); // Ruta para el administrador
           } else {
             this.router.navigate(['/docente']); // Ruta para el usuario regular
@@ -96,5 +99,5 @@ export class LoginComponent implements OnInit{
       }
     );
   }
-  
+
 }

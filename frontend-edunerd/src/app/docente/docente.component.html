@@ -3,7 +3,7 @@
 
   <header class="dark:bg-celeste bg-primary text-white p-4 flex items-center justify-between">
     <h1 class="text-white text-xl dark:text-claro font-medium">
-      Bienvenido(a) <a *ngIf="nombre" class="font-light"> {{nombre}} </a>
+      Bienvenido(a) <a *ngIf="nombre" class="font-light">{{ getNombreDocente() }} </a>
     </h1>
     <button (click)="cerrarSesion()" class="dark:text-claro font-medium text-tertiary">Cerrar sesión</button>
   </header>
@@ -18,10 +18,10 @@
         <div class="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 gap-4">
           <div *ngFor="let curso of mostrarCursos" class="dark:bg-claro w-100 h-50 rounded overflow-hidden shadow-lg bg-tertiary">
             <div class="ml-5 mt-2 dark:text-azul"> {{curso.ano}} - {{curso.semestre}} </div>
-            <img class="w-full" alt="{{ curso.titulo }}" />
+            <a class="text-secondary text-base">{{ curso.seccion }}</a>
             <div class="px-6 py-4">
-              <div class="font-extrabold text-xl mb-2">{{ curso.titulo }} <div class="font-medium">{{ curso.docente }}</div> </div>
-              <p class="text-secondary text-base">{{ curso.aprendizajes }}</p>
+              <div class="font-extrabold text-xl mb-2">{{ curso.nombre }} <div class="font-medium">{{ curso.profesor }}</div> </div>
+              <p class="text-secondary text-base">{{ curso.carrera }}</p>
             </div>
           </div>
         </div>

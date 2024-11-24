@@ -17,13 +17,27 @@ import {HttpClient, HttpClientModule} from '@angular/common/http';
 })
 export class DocenteComponent implements OnInit{
   docente: { id: string, nombre: string, cursos: string[] } = { id: '', nombre: '', cursos: [] };
-  mostrarCursos: { id: string, titulo: string, docente: string, aprendizajes:string[],ano:number,semestre:number }[] = [];
+  mostrarCursos:
+    { id: string,
+      carrera:string,
+      nombre: string,
+      ano:number,
+      semestre:number,
+      seccion: string,
+      alumnos: string[],
+      profesor: string }[] = [];
+
   private apiUrlGetCursos = 'http://localhost:8080/curso/getall';
   private apiUrldocente = 'http://localhost:8080/usuario/';
   docenteId = localStorage.getItem('userId');
   nombre= localStorage.getItem('nombre');
 
 constructor(private router: Router, private authService: AuthService, private http: HttpClient) {
+  }
+
+
+  getNombreDocente(): string | null {
+    return localStorage.getItem('nombre');
   }
 
 
@@ -41,7 +55,7 @@ constructor(private router: Router, private authService: AuthService, private ht
       next: (data) => {
         console.log(this.nombre);
         console.log('Datos:', data);
-        this.mostrarCursos = data.filter(curso => curso.docente === this.nombre);
+        this.mostrarCursos = data.filter(curso => curso.profesor === this.nombre);
       },
       error: (error) => {
         console.error('Error al obtener los cursos:', error);
