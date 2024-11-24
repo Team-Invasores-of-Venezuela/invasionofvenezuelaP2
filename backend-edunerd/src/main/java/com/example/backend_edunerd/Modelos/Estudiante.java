@@ -19,6 +19,9 @@ public class Estudiante {
     private LocalDate fechaNacimiento;
     private LocalDate fechaIngreso;
     private String urlfoto;
+    private int contadorPositvo=0;
+    private int contadorNegativo=0;
+
 
     public Estudiante() {}
 
@@ -142,5 +145,21 @@ public class Estudiante {
                 ", fechaIngreso=" + fechaIngreso +
                 ", urlfoto='" + urlfoto + '\'' +
                 '}';
+    }
+
+    public int getContadorNegativo() {
+        return contadorNegativo;
+    }
+
+    public void setContadorNegativo(int contadorNegativo) {
+        this.contadorNegativo = contadorNegativo;
+    }
+
+    public int getContadorPositvo() {
+        return contadorPositvo;
+    }
+
+    public void setContadorPositvo(int contadorPositvo) {
+        this.contadorPositvo = contadorPositvo;
     }
 }
