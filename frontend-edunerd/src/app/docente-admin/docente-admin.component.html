@@ -11,13 +11,6 @@
     Volver
   </button>
 
-  <!-- Botón para cargar docentes -->
-  <div class="flex justify-center mt-12">
-    <button class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48" (click)="abrirModal()">
-      Cargar Docentes
-    </button>
-  </div>
-
   <!-- Lista de docentes con checkboxes -->
   <ul role="list" class="mx-96 rounded bg-primary shadow-2xl p-10">
     <li *ngFor="let docente of docentes" class="flex justify-between border-b border-b-tertiary gap-x-6 p-5">
@@ -58,14 +51,20 @@
   </div>
 
   <!-- Botón para activar el modo de eliminación -->
-  <div class="flex justify-center mt-12">
+  <div class="flex justify-center mt-12 space-x-16 mb-40">
     <button class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48" (click)="activarModoEliminacion()" *ngIf="!modoEliminacion">
       Eliminar Docente
     </button>
 
-    <button class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-green-600 h-15 w-48" (click)="mostrarFormularioRegistro()">
+    <button class="bg-secondary text-white px-4 py-2 w-60 rounded-2xl hover:bg-green-600 h-15 w-48" (click)="mostrarFormularioRegistro()">
       Registrar Nuevo Docente
     </button>
+
+    <!-- Botón para cargar docentes -->
+      <button class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48" (click)="abrirModal()">
+        Cargar Docentes
+      </button>
+
   </div>
 
   <!-- Botón para volver al estado normal -->
