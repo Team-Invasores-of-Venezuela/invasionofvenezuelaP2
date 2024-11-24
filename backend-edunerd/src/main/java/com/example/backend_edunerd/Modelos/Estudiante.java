@@ -22,7 +22,7 @@ public class Estudiante {
 
     public Estudiante() {}
 
-    public Estudiante(String id, String nombre, String apellidoPaterno, String apellidoMaterno, String rut, String matricula, String fechaNacimiento, String fechaIngreso, String urlfoto) {
+    public Estudiante(String id, String nombre, String apellidoPaterno, String apellidoMaterno, String rut, String matricula, LocalDate fechaNacimiento, LocalDate fechaIngreso, String urlfoto) {
         this.id = id;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
@@ -80,6 +80,7 @@ public class Estudiante {
     public void setRut(String rut) {
         this.rut = rut;
     }
+
 
     public LocalDate getFechaNacimiento() {
         return fechaNacimiento;

@@ -42,7 +42,7 @@ public class ServicioSVC {
     private RepositorioUsuario repositorioUsuario;
 
 
-    /*
+
     public void importarProfesoresDesdeExcel(MultipartFile file) throws IOException {
         List<Profesor> profesores = new ArrayList<>();
 
@@ -338,7 +338,7 @@ public class ServicioSVC {
         }
         return "";
     }
-    */
+
 
     private boolean rutesValido(String rut) {
         if (rut == null || rut.isEmpty()) {
