@@ -1,7 +1,10 @@
 package com.example.backend_edunerd.Controladores;
 
 import com.example.backend_edunerd.Servicios.ServicioSVC;
+import com.example.backend_edunerd.Servicios.ServicioSVCOutput;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,6 +18,9 @@ import java.util.Map;
 public class ControladorSVC {
     @Autowired
     private ServicioSVC servicioSVC;
+
+    @Autowired
+    private ServicioSVCOutput servicioSVCOutput;
 
 
     @CrossOrigin(origins = "*")
@@ -77,6 +83,12 @@ public class ControladorSVC {
         }
     }
 
+    @CrossOrigin(origins = "*")
+    @GetMapping("/descargarcursos")
+    public ResponseEntity<byte[]> generarExcelCursos() {
+        byte[] excel = servicioSVCOutput.exportarCursos();
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=cursos.xlsx").contentType(MediaType.APPLICATION_OCTET_STREAM).body(excel);
+    }
 
-
+    
 }
