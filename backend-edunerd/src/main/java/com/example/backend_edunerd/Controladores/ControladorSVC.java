@@ -90,5 +90,17 @@ public class ControladorSVC {
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=cursos.xlsx").contentType(MediaType.APPLICATION_OCTET_STREAM).body(excel);
     }
 
-    
+    @CrossOrigin(origins = "*")
+    @GetMapping("/descargarestudiantes")
+    public ResponseEntity<byte[]> generarExcelEstudiantes() {
+        byte[] excel = servicioSVCOutput.exportarEstudiantes();
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=estudiantes.xlsx").contentType(MediaType.APPLICATION_OCTET_STREAM).body(excel);
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/descargardocentes")
+    public ResponseEntity<byte[]> generarExcelProfesores() {
+        byte[] excel = servicioSVCOutput.exportarProfesores();
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=docentes.xlsx").contentType(MediaType.APPLICATION_OCTET_STREAM).body(excel);
+    }
 }
