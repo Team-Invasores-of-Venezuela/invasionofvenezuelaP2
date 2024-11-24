@@ -16,6 +16,7 @@
     </div>
   </div>
 
+  <button class="absolute top-4 left-4 px-4 py-2 text-lg font-semibold text-white bg-primary rounded-full" (click)="toggleSidebar()">☰</button>
 
   <button  class="dark:bg-celeste dark:text-claro absolute top-4 left-4 px-4 py-2 text-lg font-semibold text-white transition transform bg-primary rounded-full shadow-lg hover:bg-secondary hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white" (click)="toggleSidebar()">
     ☰
@@ -68,7 +69,7 @@
     <div class="dark:bg-claro bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
       <h2 class="text-xl font-bold mb-4">Subir Archivo</h2>
       <p class="mb-4">Seleccione un archivo Excel para cargar.</p>
-      <input type="file" accept=".xlsx, .xls" id="fileInput" class=" block w-full text-sm text-gray-700 border border-gray-300 rounded-md p-2 mb-4" />
+      <input type="file" accept=".xlsx, .xls" (change)="onArchivoSeleccionado($event)" class="block w-full text-sm text-gray-700 border border-gray-300 rounded-md p-2 mb-4" />
       <div class="flex justify-end space-x-4">
         <button (click)="cerrarModal()" class="dark:bg-transparent px-4 py-2 bg-tertiary rounded-md ">Cancelar</button>
         <button (click)="subirArchivo()" class="dark:bg-celeste dark:text-claro px-4 py-2 bg-secondary text-white rounded-md">Subir</button>
