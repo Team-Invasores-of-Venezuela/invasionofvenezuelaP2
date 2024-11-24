@@ -3,6 +3,8 @@ package com.example.backend_edunerd.Modelos;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDate;
+
 @Document(collection = "Estudiantes")
 public class Estudiante {
     @Id
@@ -12,8 +14,8 @@ public class Estudiante {
     private String apellidoMaterno;
     private String rut;
     private String matricula;
-    private String fechaNacimiento;
-    private String fechaIngreso;
+    private LocalDate fechaNacimiento;
+    private LocalDate fechaIngreso;
     private String urlfoto;
 
     public Estudiante() {}
@@ -43,19 +45,19 @@ public class Estudiante {
         this.rut = rut;
     }
 
-    public String getFechaNacimiento() {
+    public LocalDate getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(String fechaNacimiento) {
+    public void setFechaNacimiento(LocalDate fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public String getFechaIngreso() {
+    public LocalDate getFechaIngreso() {
         return fechaIngreso;
     }
 
-    public void setFechaIngreso(String fechaIngreso) {
+    public void setFechaIngreso(LocalDate fechaIngreso) {
         this.fechaIngreso = fechaIngreso;
     }
 
@@ -91,5 +93,17 @@ public class Estudiante {
         this.matricula = matricula;
     }
 
-
+    @Override
+    public String toString() {
+        return "Estudiante{" +
+                "nombre='" + nombre + '\'' +
+                ", apellidoPaterno='" + apellidoPaterno + '\'' +
+                ", apellidoMaterno='" + apellidoMaterno + '\'' +
+                ", rut='" + rut + '\'' +
+                ", matricula='" + matricula + '\'' +
+                ", fechaNacimiento=" + fechaNacimiento +
+                ", fechaIngreso=" + fechaIngreso +
+                ", urlfoto='" + urlfoto + '\'' +
+                '}';
+    }
 }
