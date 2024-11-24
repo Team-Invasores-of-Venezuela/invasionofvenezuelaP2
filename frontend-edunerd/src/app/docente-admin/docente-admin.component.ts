@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import {getXHRResponse} from 'rxjs/internal/ajax/getXHRResponse';
 
 interface Docente {
   nombre: string;
@@ -74,35 +75,58 @@ export class DocenteAdminComponent implements OnInit{
       );
   }
 
-  onCheckboxChange(docenteId: string, isChecked: Event): void {
-    if (isChecked) {
-      this.selectedDocentes.add(docenteId);
+  onCheckboxChange(docenteRut: string, isChecked: Event): void {
+    if (docenteRut && docenteRut.trim() !== "") { // Asegúrate de que el rut no sea nulo ni vacío
+      if (isChecked) {
+        this.selectedDocentes.add(docenteRut);
+        console.log(`Docente con rut ${docenteRut} agregado a la selección`);
+      } else {
+        this.selectedDocentes.delete(docenteRut);
+        console.log(`Docente con rut ${docenteRut} eliminado de la selección`);
+      }
+
+      console.log('Selected Docentes:', Array.from(this.selectedDocentes)); // Verificar contenido del conjunto
     } else {
-      this.selectedDocentes.delete(docenteId);
+      console.error('El rut del docente es inválido:', docenteRut); // Log para identificar rut inválido
     }
   }
 
+
+
   eliminarDocentes(): void {
     if (this.selectedDocentes.size === 0) {
+      console.error('No hay docentes seleccionados para eliminar');
       alert('Por favor, seleccione al menos un docente para eliminar.');
       return;
     }
 
-    this.selectedDocentes.forEach(docenteId => {
-      this.http.post(`http://localhost:8080/profesor/delete?id=${docenteId}`, {})
-        .subscribe(
-          (response) => {
-            console.log(`Docente ${docenteId} eliminado`, response);
-            this.getDocentes();
-            alert('Docentes eliminados con éxito');
-          },
-          (error) => {
-            console.error('Error al eliminar el docente:', error);
-            alert('Ocurrió un error al eliminar los docentes.');
-          }
-        );
+    console.log('Docentes seleccionados para eliminar:', Array.from(this.selectedDocentes));
+
+    this.selectedDocentes.forEach(docenteRut => {
+      // Asegúrate de que docenteRut no sea null ni vacío
+      if (docenteRut && docenteRut.trim() !== "") {
+        this.http.post(`http://localhost:8080/profesor/delete?rut=${docenteRut}`, {})
+          .subscribe(
+            (response) => {
+              console.log(`Docente con rut ${docenteRut} eliminado`, response);
+              this.getDocentes();  // Actualiza la lista de docentes
+              alert('Docentes eliminados con éxito');
+            },
+            (error) => {
+              console.error('Error al eliminar el docente:', error);
+              alert('Ocurrió un error al eliminar los docentes.');
+            }
+          );
+      } else {
+        console.error('El rut del docente es inválido:', docenteRut);
+      }
     });
   }
+
+
+
+
+
 
   eliminarDocente(docenteId: string): void {
     this.http.post(`http://localhost:8080/profesor/delete?id=${docenteId}`, {})
@@ -164,8 +188,8 @@ export class DocenteAdminComponent implements OnInit{
       );
   }
 
-  isChecked(docenteId: string): boolean {
-    return this.selectedDocentes.has(docenteId);
+  isChecked(docenteRut: string): boolean {
+    return this.selectedDocentes.has(docenteRut);
   }
 
   toggleModoEliminacion(): void {
@@ -207,6 +231,8 @@ export class DocenteAdminComponent implements OnInit{
     }
 
     // Crear el objeto Docente
+    console.log('Datos originales de nuevoDocente:', this.nuevoDocente);
+
     const docente: Docente = {
       nombre: this.nuevoDocenteNombre,
       apellidoPaterno: this.nuevoDocenteApellidoP,
@@ -216,7 +242,11 @@ export class DocenteAdminComponent implements OnInit{
       gradoMax: this.nuevoDocenteGrado
     };
 
-    this.http.post<Docente>('http://localhost:8080/profesor/create', docente).subscribe(
+    const docenteDatos: Docente = { ...this.nuevoDocente };
+
+    console.log('Datos enviados al backend (docenteDatos):', docenteDatos);
+
+    this.http.post<Docente>('http://localhost:8080/profesor/create', docenteDatos).subscribe(
       (response: Docente) => {
         console.log('Docente registrado exitosamente', response);
         alert('Docente registrado con éxito.');
@@ -224,12 +254,13 @@ export class DocenteAdminComponent implements OnInit{
         this.ocultarFormularioRegistro();
       },
       (error) => {
+        console.log('Detalles del error:', error);
         console.error('Error al registrar el docente:', error);
         alert('Ocurrió un error al registrar el docente.');
       }
     );
-  }
 
+  }
 
   abrirModalEditar(docente: Docente): void {
     if (docente) {
