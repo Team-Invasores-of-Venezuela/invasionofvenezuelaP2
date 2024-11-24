@@ -18,8 +18,6 @@ public class ControladorEstudiante {
     @Autowired
     private ServicioEstudiante servicioEstudiante;
 
-
-    /*
     @CrossOrigin(origins = "*")
     @PostMapping("/create")
     public ResponseEntity<EstudianteDTO2> createEstudiante(@RequestBody EstudianteDTO estudianteDTO) {
@@ -70,6 +68,4 @@ public class ControladorEstudiante {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
-
-     */
 }
