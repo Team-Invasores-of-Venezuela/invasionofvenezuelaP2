@@ -6,16 +6,17 @@
 <ul role="list" class="mx-96 rounded bg-primary shadow-2xl p-10">
   <li *ngFor="let estudiante of estudiantes" class="flex justify-between border-b border-b-tertiary gap-x-6 p-5">
     <div class="flex min-w-0 gap-x-4">
-      <img class="size-10 flex-none bg-gray-50" src='https://res.cloudinary.com/ddwshn5tb/image/upload/v1731725951/perfil_v6tmdm.png' alt="">
+      <img class="size-10 flex-none bg-gray-50" [src]=estudiante.urlFoto alt="">
       <div class="min-w-0 flex-auto">
-        <p class="text-sm/13 font-semibold text-white font-sans w-60">{{estudiante.nombre}}</p>
-        <p class="mt-1 truncate text-xs/5 text-white font-sans">{{estudiante.matricula}}</p>
+        <p class="text-sm/13 font-semibold text-white font-sans w-60">{{estudiante.nombre}} {{estudiante.apellidoPaterno}} {{estudiante.apellidoMaterno}}</p>
+        <p class="mt-1 truncate text-xs/5 text-white font-sans"> Mátricula: {{estudiante.matricula}}</p>
       </div>
     </div>
 
     <!-- Mostrar Año de Ingreso -->
     <div class="mt-2 text-white text-sm/13 font-sans">
-      Ingreso: {{estudiante.anoIngreso}}
+      <p> Ingreso: {{estudiante.fechaIngreso}}</p>
+      <p> Rut: {{estudiante.rut}}</p>
     </div>
 
     <!-- Botón para editar estudiante  -->
