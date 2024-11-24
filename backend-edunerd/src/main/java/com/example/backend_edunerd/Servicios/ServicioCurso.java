@@ -18,7 +18,7 @@ public class ServicioCurso {
     @Autowired
     private RepositorioCurso repositorioCurso;
 
-    /*
+
     public List<CursoDTO2> getCursos(){
         List<Curso> cursos = repositorioCurso.findAll();
         List<CursoDTO2> cursoDTOS = new ArrayList<>();
@@ -34,14 +34,13 @@ public class ServicioCurso {
 
     @Transactional
     public Curso createCurso(CursoDTO cursoDTO){
-        Optional<Curso> curso = repositorioCurso.findByTitulo(cursoDTO.getTitulo());
-        if(!curso.isPresent()){
-            Curso cursoOpt = new Curso(cursoDTO.getTitulo(), cursoDTO.getDocente(), cursoDTO.getAprendizajes(), cursoDTO.getSemestre(), cursoDTO.getAno());
-            repositorioCurso.save(cursoOpt);
-            return cursoOpt;
-        } else {
-            //Si el objeto ya se encuentra en la base de datos.
+        Curso newCurso = new Curso(cursoDTO);
+
+        if(exists(newCurso)) {
             return null;
+        } else {
+            repositorioCurso.save(newCurso);
+            return newCurso;
         }
     }
 
@@ -53,23 +52,25 @@ public class ServicioCurso {
     @Transactional
     public Curso updateCurso(CursoDTO2 cursoDTO2){
         Optional<Curso> curso = repositorioCurso.findById(cursoDTO2.getId());
+        System.out.println("Encontrado");
         if(curso.isPresent()){
-            if(!repositorioCurso.existsByTitulo(cursoDTO2.getTitulo())){
-                if(cursoDTO2.getSemestre() == 1 | cursoDTO2.getSemestre() == 2) {
-                    curso.get().setTitulo(cursoDTO2.getTitulo());
-                    curso.get().setDocente(cursoDTO2.getDocente());
-                    curso.get().setAprendizajes(cursoDTO2.getAprendizajes());
-                    curso.get().setSemestre(cursoDTO2.getSemestre());
-                    curso.get().setAno(cursoDTO2.getAno());
+            repositorioCurso.delete(curso.get());
+            System.out.println("Eliminado");
+            if(cursoDTO2.getSemestre() == 1 | cursoDTO2.getSemestre() == 2){
+                System.out.println("Semestre valido");
+                if(exists(new Curso(cursoDTO2))) {
                     repositorioCurso.save(curso.get());
-                    return curso.get();
-                } else {
-                    System.out.println("Semestre no valido");
+                    System.out.println("Curso Repetido");
                     return null;
+                } else {
+                    Curso newCurso = new Curso(cursoDTO2);
+                    repositorioCurso.save(newCurso);
+                    return newCurso;
                 }
+            } else {
+                System.out.println("Semestre no valido");
+                return null;
             }
-            System.out.println("Curso repetido");
-            return null;
         } else {
             return null;
         }
@@ -86,5 +87,15 @@ public class ServicioCurso {
             return null;
         }
     }
-    */
+
+    public boolean exists(Curso curso){
+        List<Curso> cursos = repositorioCurso.findAll();
+
+        for (Curso curso1 : cursos) {
+            if(curso1.getNombre().equals(curso.getNombre()) && curso1.getAno() == curso.getAno() && curso1.getSemestre() == curso.getSemestre()){
+                return true;
+            }
+        }
+        return false;
+    }
 }

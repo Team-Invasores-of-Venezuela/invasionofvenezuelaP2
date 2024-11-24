@@ -19,7 +19,7 @@ public class ControladorCurso {
     private ServicioCurso servicioCurso;
 
 
-    /*
+
     @CrossOrigin(origins = "*")
     @GetMapping("/getall")
     public ResponseEntity<List<CursoDTO2>> getCursos() {
@@ -72,5 +72,4 @@ public class ControladorCurso {
         }
     }
 
-     */
 }

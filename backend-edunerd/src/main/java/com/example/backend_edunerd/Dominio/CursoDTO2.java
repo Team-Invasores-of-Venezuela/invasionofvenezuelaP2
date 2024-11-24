@@ -5,33 +5,37 @@ import com.example.backend_edunerd.Modelos.Curso;
 import java.util.List;
 
 public class CursoDTO2 {
-    private String id;
-    private String titulo;
-    private String docente;
-    private List<String> aprendizajes;
-    private int semestre;
-    private int ano;
 
-    public CursoDTO2(String id, String titulo, String docente, List<String> aprendizajes, int semestre, int ano) {
+    private String id;
+    private String carrera;
+    private String nombre;
+    private int ano;
+    private int semestre;
+    private char seccion;
+    private List<String> alumnos;
+    private String profesor;
+
+    public CursoDTO2(String id, String carrera, String nombre, int ano, int semestre, char seccion, List<String> alumnos, String profesor) {
         this.id = id;
-        this.titulo = titulo;
-        this.docente = docente;
-        this.aprendizajes = aprendizajes;
-        this.semestre = semestre;
+        this.carrera = carrera;
+        this.nombre = nombre;
         this.ano = ano;
+        this.semestre = semestre;
+        this.seccion = seccion;
+        this.alumnos = alumnos;
+        this.profesor = profesor;
     }
 
-    /*
     public CursoDTO2(Curso curso) {
         this.id = curso.getId();
-        this.titulo = curso.getTitulo();
-        this.docente = curso.getDocente();
-        this.aprendizajes = curso.getAprendizajes();
-        this.semestre = curso.getSemestre();
+        this.carrera = curso.getCarrera();
+        this.nombre = curso.getNombre();
         this.ano = curso.getAno();
+        this.semestre = curso.getSemestre();
+        this.seccion = curso.getSeccion();
+        this.alumnos = curso.getAlumnos();
+        this.profesor = curso.getProfesor();
     }
-
-     */
 
     public String getId() {
         return id;
@@ -41,28 +45,28 @@ public class CursoDTO2 {
         this.id = id;
     }
 
-    public String getTitulo() {
-        return titulo;
+    public String getCarrera() {
+        return carrera;
     }
 
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
+    public void setCarrera(String carrera) {
+        this.carrera = carrera;
     }
 
-    public String getDocente() {
-        return docente;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setDocente(String docente) {
-        this.docente = docente;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public List<String> getAprendizajes() {
-        return aprendizajes;
+    public int getAno() {
+        return ano;
     }
 
-    public void setAprendizajes(List<String> aprendizajes) {
-        this.aprendizajes = aprendizajes;
+    public void setAno(int ano) {
+        this.ano = ano;
     }
 
     public int getSemestre() {
@@ -73,11 +77,27 @@ public class CursoDTO2 {
         this.semestre = semestre;
     }
 
-    public int getAno() {
-        return ano;
+    public char getSeccion() {
+        return seccion;
     }
 
-    public void setAno(int ano) {
-        this.ano = ano;
+    public void setSeccion(char seccion) {
+        this.seccion = seccion;
+    }
+
+    public List<String> getAlumnos() {
+        return alumnos;
+    }
+
+    public void setAlumnos(List<String> alumnos) {
+        this.alumnos = alumnos;
+    }
+
+    public String getProfesor() {
+        return profesor;
+    }
+
+    public void setProfesor(String profesor) {
+        this.profesor = profesor;
     }
 }
