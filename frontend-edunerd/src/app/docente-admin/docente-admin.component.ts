@@ -254,4 +254,8 @@ export class DocenteAdminComponent {
     // @ts-ignore
     this.docente = {};
   }
+
+  navegarAdmin() {
+    this.router.navigate(['/administrador']);
+  }
 }

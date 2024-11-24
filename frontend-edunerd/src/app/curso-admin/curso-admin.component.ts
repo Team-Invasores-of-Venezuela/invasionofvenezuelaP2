@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import { RouterLink, RouterModule } from '@angular/router';
+import { RouterLink, RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, NgIf } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+
 
 @Component({
   selector: 'app-curso-admin',
@@ -26,7 +27,7 @@ export class CursoAdminComponent implements OnInit{
   private apiUrlcrear = 'http://localhost:8080/curso/create';
   private apiUrleliminar = 'http://localhost:8080/curso/delete';
 
-  constructor(private http: HttpClient, private router:RouterModule) {}
+  constructor(private http: HttpClient, private router:Router) {}
   mostrarCursos: { id: string, titulo: string, docente: string, aprendizajes:string[],ano:number,semestre:number }[] = [];
   verEditarEstudianteModal = false;
   protected cursoEditado: any = {};
@@ -224,6 +225,10 @@ export class CursoAdminComponent implements OnInit{
     } else {
       alert('Por favor, seleccione un archivo antes de subir.');
     }
+  }
+
+  navegarAdmin() {
+    this.router.navigate(['/administrador']);
   }
 
 
