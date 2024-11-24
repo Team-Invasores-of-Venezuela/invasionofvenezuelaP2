@@ -33,8 +33,6 @@ export class EstudianteAdminComponent implements OnInit{
   visible = false;
   selectedFile: File | null = null;
 
-
-
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
