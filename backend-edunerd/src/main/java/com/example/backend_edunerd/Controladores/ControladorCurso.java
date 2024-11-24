@@ -18,6 +18,8 @@ public class ControladorCurso {
     @Autowired
     private ServicioCurso servicioCurso;
 
+
+
     @CrossOrigin(origins = "*")
     @GetMapping("/getall")
     public ResponseEntity<List<CursoDTO2>> getCursos() {
@@ -69,4 +71,5 @@ public class ControladorCurso {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
+
 }

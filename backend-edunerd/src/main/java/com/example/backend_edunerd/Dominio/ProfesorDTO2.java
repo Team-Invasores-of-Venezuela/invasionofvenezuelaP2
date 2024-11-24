@@ -8,18 +8,30 @@ public class ProfesorDTO2 {
 
     private String id;
     private String nombre;
-    private List<String> cursos;
+    private String apellidoPaterno;
+    private String apellidoMaterno;
+    private String rut;
+    private String titulo;
+    private String gradoMax;
 
-    public ProfesorDTO2(String id, String nombre, List<String> cursos) {
+    public ProfesorDTO2(String id, String nombre, String apellidoPaterno, String apellidoMaterno, String rut, String titulo, String gradoMax) {
         this.id = id;
         this.nombre = nombre;
-        this.cursos = cursos;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+        this.rut = rut;
+        this.titulo = titulo;
+        this.gradoMax = gradoMax;
     }
 
     public ProfesorDTO2(Profesor profesor) {
         this.id = profesor.getId();
         this.nombre = profesor.getNombre();
-        this.cursos = profesor.getCursos();
+        this.apellidoPaterno = profesor.getApellidoPaterno();
+        this.apellidoMaterno = profesor.getApellidoMaterno();
+        this.rut = profesor.getRut();
+        this.titulo = profesor.getTitulo();
+        this.gradoMax = profesor.getGradoMax();
     }
 
     public String getId() {
@@ -38,11 +50,43 @@ public class ProfesorDTO2 {
         this.nombre = nombre;
     }
 
-    public List<String> getCursos() {
-        return cursos;
+    public String getApellidoPaterno() {
+        return apellidoPaterno;
     }
 
-    public void setCursos(List<String> cursos) {
-        this.cursos = cursos;
+    public void setApellidoPaterno(String apellidoPaterno) {
+        this.apellidoPaterno = apellidoPaterno;
+    }
+
+    public String getApellidoMaterno() {
+        return apellidoMaterno;
+    }
+
+    public void setApellidoMaterno(String apellidoMaterno) {
+        this.apellidoMaterno = apellidoMaterno;
+    }
+
+    public String getRut() {
+        return rut;
+    }
+
+    public void setRut(String rut) {
+        this.rut = rut;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public String getGradoMax() {
+        return gradoMax;
+    }
+
+    public void setGradoMax(String gradoMax) {
+        this.gradoMax = gradoMax;
     }
 }
