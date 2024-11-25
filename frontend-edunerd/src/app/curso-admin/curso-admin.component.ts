@@ -30,7 +30,7 @@ export class CursoAdminComponent implements OnInit{
   private amniocenteses: any[] | undefined;
   nombreProfesor: string = '';
 
-  constructor(private http: HttpClient, private router:RouterModule) {}
+  constructor(private http: HttpClient, private router:Router) {}
   mostrarCursos: { nombreProfesor: any; id: any; ano: any; alumnos: any; nombre: any; profesor: any;seccion: any; semestre: any }[] = [];
   verEditarEstudianteModal = false;
   protected cursoEditado: any = {};
