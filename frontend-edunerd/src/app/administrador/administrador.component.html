@@ -6,8 +6,8 @@
   <title>Administrador</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="bg-primary">
-<header class="bg-midSecondary text-white p-4 w-full flex items-center justify-between">
+<body class="bg-primary dark:bg-claro">
+<header class="bg-midSecondary text-white p-4 w-full flex items-center justify-between dark:bg-celeste">
   <h2 class="text-2xl font-semibold">Bienvenido Administrador</h2>
   <button (click)="cerrarSesion()" class="font-medium text-white">Cerrar sesión</button>
 </header>
@@ -17,7 +17,7 @@
     <!-- Botón para navegar a cursos -->
     <button
       (click)="navegarCursoAdmin()"
-      class="group relative w-80 h-96 p-6 text-left rounded-lg bg-midSecondary shadow-lg transition transform hover:bg-gray-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white"
+      class="dark:bg-celeste dark:text-claro dark:hover:bg-azulClaro dark:hover:text-claro group relative w-80 h-96 p-6 text-left rounded-lg bg-midSecondary shadow-lg transition transform hover:bg-gray-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white"
     >
       <!-- Imagen de fondo con superposición -->
       <div
@@ -45,7 +45,7 @@
     <!-- Botón para navegar a docentes -->
     <button
       (click)="navegarDocenteAdmin()"
-      class="group relative w-80 h-96 p-6 text-left rounded-lg bg-midSecondary shadow-lg transition transform hover:bg-gray-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white"
+      class="dark:bg-celeste dark:text-claro dark:hover:bg-azulClaro dark:hover:text-claro group relative w-80 h-96 p-6 text-left rounded-lg bg-midSecondary shadow-lg transition transform hover:bg-gray-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white"
     >
       <!-- Imagen de fondo con superposición -->
       <div
@@ -73,7 +73,7 @@
     <!-- Botón para navegar a estudiantes -->
     <button
       (click)="navegarEstudianteAdmin()"
-      class="group relative w-80 h-96 p-6 text-left rounded-lg bg-midSecondary shadow-lg transition transform hover:bg-gray-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white"
+      class="dark:bg-celeste dark:text-claro dark:hover:bg-azulClaro dark:hover:text-claro group relative w-80 h-96 p-6 text-left rounded-lg bg-midSecondary shadow-lg transition transform hover:bg-gray-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white"
     >
       <!-- Imagen de fondo con superposición -->
       <div
@@ -100,7 +100,7 @@
       </div>
   </div>
 <div class="flex justify-center -mt-48 mb-40">
-  <button (click)="alternarFormulario()" class=" py-4 w-60 text-lg font-semibold text-white transition transform bg-secondary rounded shadow-lg hover:bg-gray-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white">
+  <button (click)="alternarFormulario()" class=" dark:bg-celeste dark:text-claro dark:hover:bg-azulClaro dark:hover:text-claro py-4 w-60 text-lg font-semibold text-white transition transform bg-secondary rounded shadow-lg hover:bg-gray-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white">
     Registrar Administrador
   </button>
 </div>

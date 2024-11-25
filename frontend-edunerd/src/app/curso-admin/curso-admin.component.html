@@ -1,3 +1,6 @@
+<div class="flex items-center justify-center min-h-screen dark:bg-claro">
+
+
 <div class="flex items-center justify-center min-h-screen">
   <!-- Botón en la esquina superior derecha -->
   <button
@@ -5,83 +8,96 @@
     (click)="navegarAdmin()">
     Volver
   </button>
-  <div *ngIf="slideBarvisible" class="fixed inset-0 flex z-50 right-full">
-    <div class="bg-primary bg-opacity-50 w-full h-full" (click)="toggleSidebar()"></div>
-    <div class="bg-primary min-w-60 h-full p-4 shadow-lg transform transition-all duration-300 ease-in-out" [ngClass]="{'translate-x-0': slideBarvisible, 'translate-x-[-100%]': !slideBarvisible}">
+  <div *ngIf="slideBarvisible" class="fixed inset-0 flex z-50 right-full dark:bg-azul">
+    <div class="dark:bg-celeste bg-primary bg-opacity-50 w-full h-full" (click)="toggleSidebar()"></div>
+    <div class="dark:bg-celeste bg-primary min-w-60 h-full p-4 shadow-lg transform transition-all duration-300 ease-in-out" [ngClass]="{'translate-x-0': slideBarvisible, 'translate-x-[-100%]': !slideBarvisible}">
 
-      <button class="absolute top-4 right-4 text-2xl font-bold text-primary hover:text-white" (click)="CerrartoggleSidebar()">✖</button>
+      <button class="absolute top-4 right-4 text-2xl font-medium text-primary hover:text-white dark:text-azul dark:font-medium" (click)="CerrartoggleSidebar()">X</button>
 
-      <h2 class="text-2xl font-semibold text-white mb-4">Opciones</h2>
-      <button class="w-full px-4 py-2 text-lg font-semibold text-tertiary transition transform bg-secondary rounded-full shadow-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white mb-4" (click)="abrirModal()">
+      <h2 class="text-2xl font-semibold text-white mb-4 dark:text-azul">Opciones</h2>
+      <button class="dark:bg-azulClaro dark:text-azul w-full px-4 py-2 text-lg font-semibold text-primary transition transform bg-white rounded-full shadow-lg hover:bg-white hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white mb-4" (click)="abrirModal()">
         Subir Excel
       </button>
-      <button class="w-full px-4 py-2 text-lg font-semibold text-tertiary transition transform bg-secondary rounded-full shadow-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white mb-4" (click)="abrir()">
+      <button class="dark:bg-azulClaro dark:text-azul  w-full px-4 py-2 text-lg font-semibold text-primary transition transform bg-white rounded-full shadow-lg hover:bg-white hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white mb-4" (click)="abrir()">
         Agregar curso de forma manual
-      </button>
-      <button class="bg-secondary w-full px-4 py-2 text-lg font-semibold text-tertiary transition transform  rounded-full shadow-lg hover:bg-secondary hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white" (click)="abrirFormularioEliminar()">
-        Eliminar Curso
       </button>
     </div>
   </div>
 
   <button class="absolute top-4 left-4 px-4 py-2 text-lg font-semibold text-white bg-primary rounded-full" (click)="toggleSidebar()">☰</button>
 
-  <button  class="absolute top-4 left-4 px-4 py-2 text-lg font-semibold text-white transition transform bg-primary rounded-full shadow-lg hover:bg-secondary hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white" (click)="toggleSidebar()">
+  <button  class="dark:bg-celeste dark:text-claro absolute top-4 left-4 px-4 py-2 text-lg font-semibold text-white transition transform bg-primary rounded-full shadow-lg hover:bg-secondary hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white" (click)="toggleSidebar()">
     ☰
   </button>
 
   <!-- Apartado de Mostrar los cursos-->
-  <div class="ml-64 max-w-6xl mx-auto p-6 rounded-lg mt-8 bg-secondary shadow-2xl">
-    <h2 class="text-2xl font-semibold text-tertiary mb-4">Cursos</h2>
+  <div class="dark:bg-azulClaro ml-64 max-w-6xl mx-auto p-6 rounded-lg mt-8 bg-secondary shadow-2xl">
+    <h2 class="text-2xl font-semibold text-tertiary mb-4 dark:text-azul">Cursos</h2>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
-      <div *ngFor="let curso of mostrarCursos" class="w-90 h-50 rounded overflow-hidden shadow-lg bg-midSecondary text-tertiary">
+      <div *ngFor="let curso of mostrarCursos" class="dark:bg-claro w-90 h-50 rounded overflow-hidden shadow-lg bg-midSecondary text-tertiary">
 
-        <div class="flex justify-between items-center ml-5 mt-2">
+        <div class="flex justify-between items-center ml-5 mt-2 dark:text-azul">
           <span>{{ curso.ano }} - {{ curso.semestre }} / Sección: {{ curso.seccion }}</span>
           <button class="text-secondary px-4 py-2 rounded focus:bg-white" (click)="abrirEditarCurso(curso)">
             Editar
+          </button>
+          |
+          <button (click)="confirmarEliminacion(curso)">
+            <img width="25" height="25" src="https://img.icons8.com/sf-regular/48/003064/trash.png" alt="trash" />
           </button>
         </div>
 
         <div class="px-6 py-4">
           <div class="font-extrabold text-xl mb-2">
             {{ curso.nombre }}
-            <div class="font-medium text-tertiary"> Profesor(a): {{ curso.nombreProfesor }}</div>
+            <div class="dark:text-primary font-medium text-tertiary"> Profesor(a): {{ curso.nombreProfesor }}</div>
           </div>
 
-          <div class="text-secondary text-base text-tertiary">
+          <div class="dark:text-primary text-secondary text-base text-tertiary">
             <div *ngFor="let grupo of dividirMatriculas(curso)">
               <p>{{ grupo.join(', ') }}</p>
             </div>
           </div>
 
         </div>
-
       </div>
     </div>
   </div>
 
+  <!-- Modal de confirmación para eliminar curso -->
+  <div *ngIf="mostrarConfirmacionEliminar" class="fixed inset-0 flex items-center justify-center bg-primary bg-opacity-20 dark:bg-azul dark:bg-opacity-60">
+    <div class="dark:bg-claro bg-white rounded-lg shadow-lg p-6 max-w-sm w-full">
+      <h2 class="text-xl font-semibold mb-4 dark:text-azul">Confirmar Eliminación</h2>
+      <p class="mb-4 dark:text-azul">¿Estás seguro de que deseas eliminar el curso <strong>{{ cursoAEliminar?.titulo }}</strong>?</p>
+      <div class="flex justify-end space-x-4">
+        <button (click)="cancelarEliminacion()" class="dark:bg-transparent dark:text-primary bg-tertiary text-secondary px-4 py-2 rounded">Cancelar</button>
+        <button (click)="eliminarCurso()" class="dark:bg-celeste bg-secondary text-white px-4 py-2 rounded">Eliminar</button>
+      </div>
+    </div>
+  </div>
+
+
   <!-- Modal de subir archivo -->
-  <div *ngIf="visible" id="uploadModal" class="fixed inset-0 flex items-center justify-center bg-primary bg-opacity-20">
-    <div class="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
+  <div *ngIf="visible" id="uploadModal" class=" fixed inset-0 flex items-center justify-center bg-primary bg-opacity-20 dark:bg-azul dark:bg-opacity-60">
+    <div class="dark:bg-claro bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
       <h2 class="text-xl font-bold mb-4">Subir Archivo</h2>
       <p class="mb-4">Seleccione un archivo Excel para cargar.</p>
       <input type="file" accept=".xlsx, .xls" (change)="onArchivoSeleccionado($event)" class="block w-full text-sm text-gray-700 border border-gray-300 rounded-md p-2 mb-4" />
       <div class="flex justify-end space-x-4">
-        <button (click)="cerrarModal()" class="px-4 py-2 bg-tertiary rounded-md ">Cancelar</button>
-        <button (click)="subirArchivo()" class="px-4 py-2 bg-secondary text-white rounded-md">Subir</button>
+        <button (click)="cerrarModal()" class="dark:bg-transparent px-4 py-2 bg-tertiary rounded-md ">Cancelar</button>
+        <button (click)="subirArchivo()" class="dark:bg-celeste dark:text-claro px-4 py-2 bg-secondary text-white rounded-md">Subir</button>
       </div>
     </div>
   </div>
 
   <!-- Modal de agregar curso -->
-  <div *ngIf="abrirAgregarCurso" id="agregarCurso" class="fixed inset-0 flex items-center justify-center bg-primary bg-opacity-20">
-    <div class="bg-white p-6 rounded shadow-lg max-w-md w-full">
+  <div *ngIf="abrirAgregarCurso" id="agregarCurso" class="dark:bg-azul dark:bg-opacity-60 fixed inset-0 flex items-center justify-center bg-primary bg-opacity-20">
+    <div class="dark:bg-azulClaro bg-white p-6 rounded shadow-lg max-w-md w-full">
       <h3 class="text-xl font-semibold">Agregar Curso</h3>
       <form (ngSubmit)="agregarCurso()" class="space-y-4">
         <div>
-          <label class="block">Título</label>
+          <label class="block">Nombre</label>
           <input type="text" [(ngModel)]="cursosTotales.titulo" name="titulo" class="w-full rounded p-2" />
         </div>
         <div>
@@ -101,36 +117,16 @@
           <input type="text" [(ngModel)]="cursosTotales.ano" name="año" class="w-full  rounded p-2" />
         </div>
         <div class="flex justify-end space-x-4">
-          <button type="submit" class="bg-secondary text-white px-4 py-2 rounded">Agregar</button>
-          <button type="button" (click)="cerrar()" class="bg-tertiary text-secondary px-4 py-2 rounded">Cancelar</button>
+          <button type="button" (click)="cerrar()" class="dark:bg-transparent dark:text-primary bg-tertiary text-secondary px-4 py-2 rounded">Cancelar</button>
+          <button type="submit" class="dark:bg-celeste  font-medium bg-secondary text-white px-4 py-2 rounded">Agregar</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- Modal de eliminar curso -->
-  <div *ngIf="abrireliminar" id="eliminarCurso" class="fixed inset-0 flex items-center justify-center bg-primary bg-opacity-20">
-    <div class="bg-white p-6 rounded shadow-lg max-w-md w-full">
-      <h3 class="text-xl font-semibold">Eliminar Curso</h3>
-      <form (ngSubmit)="eliminarCurso()" class="space-y-4">
-        <div *ngFor="let curso of mostrarCursos">
-          <input type="radio" name="curso" [value]="curso.id" [(ngModel)]="cursoSeleccionadoId" />
-          {{ curso.nombre }}
-        </div>
-        <div class="flex justify-end space-x-4">
-          <button type="submit" class="bg-secondary text-white px-4 py-2 rounded hover:bg-secondary">
-            Eliminar
-          </button>
-          <button type="button" (click)="cerrarFormularioEliminar()" class="bg-tertiary px-4 py-2 rounded ">
-            Cancelar
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
   <!-- Modal para editar curso -->
-  <div *ngIf="verEditarEstudianteModal" class="fixed inset-0 flex items-center justify-center bg-primary bg-opacity-20">
-    <div class="bg-white p-6 rounded shadow-lg max-w-md w-full">
+  <div *ngIf="verEditarEstudianteModal" class="dark:bg-azul dark:bg-opacity-60 fixed inset-0 flex items-center justify-center bg-primary bg-opacity-20">
+    <div class="dark:bg-azulClaro bg-white p-6 rounded shadow-lg max-w-md w-full">
       <h3 class="text-xl font-semibold mb-4">Editar Curso</h3>
       <form (ngSubmit)="editarCurso()">
         <div class="space-y-4">
@@ -156,10 +152,10 @@
           </div>
         </div>
         <div class="flex justify-end space-x-4 mt-4">
-          <button type="button" class="text-primary bg-tertiary px-4 py-2 rounded hover:bg-tertiary" (click)="cerrarEditarCursoModal()">
+          <button type="button" class="dark:bg-transparent dark:text-azul text-primary bg-tertiary px-4 py-2 rounded hover:bg-tertiary" (click)="cerrarEditarCursoModal()">
             Cancelar
           </button>
-          <button type="submit" (click)="editarCurso()" class="bg-primary text-white px-4 py-2 rounded hover:bg-secondary">
+          <button type="submit" (click)="editarCurso()" class="dark:bg-celeste dark:font-medium bg-primary text-white px-4 py-2 rounded hover:bg-secondary">
             Guardar Cambios
             </button>
           </div>

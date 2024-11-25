@@ -66,9 +66,16 @@ export class EstudianteAdminComponent implements OnInit{
   modalEleccion() {
     this.verEleccion = !this.verEleccion;
   }
+  cerrarModalEleccion() {
+    this.verEleccion = false;
+  }
 
   modalManual() {
     this.verManual = !this.verManual;
+  }
+
+  cerrarModalManual() {
+    this.verManual = false;
   }
 
   cerrarModal() {
@@ -164,7 +171,8 @@ export class EstudianteAdminComponent implements OnInit{
             (response) => {
               console.log('Estudiante eliminado:', response);
               this.estudiantes = this.estudiantes.filter((est: { id: any; }) => est.id !== id);
-            },
+              this.cerrarEliminarEstudianteModal();
+              },
             (error) => {
               console.error('Error al eliminar el estudiante:', error);
             }
@@ -176,8 +184,20 @@ export class EstudianteAdminComponent implements OnInit{
   cerrarEliminarEstudianteModal(): void {
     this.verEliminarEstudianteModal = false;
     this.estudiantesSeleccionados = [];
+    this.mostrarConfirmacionEliminar=false;
+  }
+  mostrarConfirmacionEliminar = false;
+  estudianteAEliminar: any = null;
+
+  confirmarEliminacion(estudiante: any) {
+    this.estudianteAEliminar = estudiante;
+    this.mostrarConfirmacionEliminar = true;
   }
 
+  cancelarEliminacion() {
+    this.estudianteAEliminar = null;
+    this.mostrarConfirmacionEliminar = false;
+  }
   editarEstudiante(): void {
     const estudianteModificado = this.estudianteEditado;
 

@@ -163,6 +163,18 @@ export class CursoAdminComponent implements OnInit{
     }
   }
 
+  mostrarConfirmacionEliminar = false;
+  cursoAEliminar: any = null;
+
+  confirmarEliminacion(curso: any) {
+    this.cursoAEliminar = curso;
+    this.mostrarConfirmacionEliminar = true;
+  }
+
+  cancelarEliminacion() {
+    this.cursoAEliminar = null;
+    this.mostrarConfirmacionEliminar = false;
+  }
   eliminarCurso() {
     if (!this.cursoSeleccionadoId) {
       alert('Por favor, selecciona un curso para eliminar.');
