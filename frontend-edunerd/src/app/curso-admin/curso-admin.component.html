@@ -43,10 +43,10 @@
         <div class="px-6 py-4">
           <div class="font-extrabold text-xl mb-2">
             {{ curso.nombre }}
-            <div class="font-medium text-tertiary"> Profesor(a): {{ curso.nombreProfesor }}</div>
+            <div class="dark:text-primary font-medium text-tertiary"> Profesor(a): {{ curso.nombreProfesor }}</div>
           </div>
 
-          <div class="text-secondary text-base text-tertiary">
+          <div class="dark:text-primary text-secondary text-base text-tertiary">
             <div *ngFor="let grupo of dividirMatriculas(curso)">
               <p>{{ grupo.join(', ') }}</p>
             </div>
@@ -89,7 +89,7 @@
       <h3 class="text-xl font-semibold">Agregar Curso</h3>
       <form (ngSubmit)="agregarCurso()" class="space-y-4">
         <div>
-          <label class="block">Título</label>
+          <label class="block">Nombre</label>
           <input type="text" [(ngModel)]="cursosTotales.titulo" name="titulo" class="w-full rounded p-2" />
         </div>
         <div>
