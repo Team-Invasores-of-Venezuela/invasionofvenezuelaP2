@@ -202,4 +202,8 @@ export class EstudianteAdminComponent implements OnInit{
       );
   }
 
+  navegarAdmin() {
+    this.router.navigate(['/administrador']);
+  }
+
 }

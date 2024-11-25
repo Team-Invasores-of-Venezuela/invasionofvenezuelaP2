@@ -4,6 +4,13 @@
   </header>
 
   <h2 class="text-3xl text-white m-10 ml-64">Docentes</h2>
+
+  <button
+    class="absolute top-28 right-20 px-4 py-2 text-lg font-semibold text-white bg-midSecondary rounded shadow-lg hover:bg-secondary hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white"
+    (click)="navegarAdmin()">
+    Volver
+  </button>
+
   <!-- Lista de docentes con checkboxes -->
   <ul role="list" class="mx-auto max-w-5xl rounded-lg bg-primary shadow-2xl p-8">
     <li *ngFor="let docente of docentes" class="flex justify-between border-b border-b-tertiary gap-x-6 p-5">
