@@ -22,30 +22,36 @@
     ☰
   </button>
 
-  <div class="flex items-center justify-center p-10">
-    <div class="dark:bg-azulClaro mx-auto p-6 bg-white shadow-lg rounded-lg mt-8 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-      <h2 class="text-2xl font-semibold text-secondary mb-4 dark:text-azul">Cursos</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        <div *ngFor="let curso of mostrarCursos" class="dark:bg-claro rounded overflow-hidden shadow-lg bg-tertiary">
-          <div class="ml-5 mt-2 dark:text-azul flex justify-between">
-            <span>{{curso.ano}} - {{curso.semestre}}</span>
-            <div class="flex items-center">
-              <button class="text-secondary rounded focus:bg-white mr-2" (click)="abrirEditarCurso(curso)">
-                Editar |
-              </button>
-              <button (click)="confirmarEliminacion(curso)">
-                <img width="25" height="25" src="https://img.icons8.com/sf-regular/48/003064/trash.png" alt="trash" />
-              </button>
+  <!-- Apartado de Mostrar los cursos-->
+  <div class="dark:bg-azulClaro ml-64 max-w-6xl mx-auto p-6 rounded-lg mt-8 bg-secondary shadow-2xl">
+    <h2 class="text-2xl font-semibold text-tertiary mb-4 dark:text-azul">Cursos</h2>
 
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
+      <div *ngFor="let curso of mostrarCursos" class="dark:bg-claro w-90 h-50 rounded overflow-hidden shadow-lg bg-midSecondary text-tertiary">
+
+        <div class="flex justify-between items-center ml-5 mt-2 dark:text-azul">
+          <span>{{ curso.ano }} - {{ curso.semestre }} / Sección: {{ curso.seccion }}</span>
+          <button class="text-secondary px-4 py-2 rounded focus:bg-white" (click)="abrirEditarCurso(curso)">
+            Editar
+          </button>
+          |
+          <button (click)="confirmarEliminacion(curso)">
+            <img width="25" height="25" src="https://img.icons8.com/sf-regular/48/003064/trash.png" alt="trash" />
+          </button>
+        </div>
+
+        <div class="px-6 py-4">
+          <div class="font-extrabold text-xl mb-2">
+            {{ curso.nombre }}
+            <div class="font-medium text-tertiary"> Profesor(a): {{ curso.nombreProfesor }}</div>
+          </div>
+
+          <div class="text-secondary text-base text-tertiary">
+            <div *ngFor="let grupo of dividirMatriculas(curso)">
+              <p>{{ grupo.join(', ') }}</p>
             </div>
           </div>
-          <div class="px-6 py-4">
-            <div class="font-extrabold text-xl mb-2">
-              {{ curso.titulo }}
-              <div class="font-medium">{{ curso.docente }}</div>
-            </div>
-            <p class="text-secondary text-base">{{ curso.aprendizajes }}</p>
-          </div>
+
         </div>
       </div>
     </div>
@@ -91,7 +97,7 @@
           <input type="text" [(ngModel)]="cursosTotales.docente" name="docente" class="w-full  rounded p-2" />
         </div>
         <div>
-          <label class="block">Aprendizajes (separados por comas)</label>
+          <label class="block">Mátricula de Alumnos (separados por comas)</label>
           <input type="text" [(ngModel)]="cursosTotales.aprendizajes" name="aprendizajes" class="w-full rounded p-2" />
         </div>
         <div>
@@ -143,11 +149,9 @@
           </button>
           <button type="submit" (click)="editarCurso()" class="dark:bg-celeste dark:font-medium bg-primary text-white px-4 py-2 rounded hover:bg-secondary">
             Guardar Cambios
-          </button>
-        </div>
-      </form>
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
-
-
-</div>

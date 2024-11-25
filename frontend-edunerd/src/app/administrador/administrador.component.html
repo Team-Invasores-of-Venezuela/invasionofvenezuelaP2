@@ -3,25 +3,61 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Botones Estilizados con Tailwind</title>
+  <title>Administrador</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-800 dark:bg-claro">
-<header class="bg-gray-700 text-white p-4 w-full text-left dark:bg-celeste">
-  <h2 class="text-2xl font-semibold">Bienvenido Administrador</h2>
-</header>
-<div class="flex items-center justify-center min-h-screen">
-  <div class="space-x-52">
-    <button (click)="navegarCursoAdmin()" class="dark:bg-celeste dark:text-claro dark:hover:bg-azulClaro dark:hover:text-claro px-20 py-4 text-lg font-semibold text-white transition transform bg-gray-400 rounded-full shadow-lg hover:bg-gray-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white">
-      Cursos
-    </button>
-    <button (click)="navegarDocenteAdmin()" class="dark:bg-celeste dark:text-claro dark:hover:bg-azulClaro dark:hover:text-claro px-20 py-4 text-lg font-semibold text-white transition transform bg-gray-400 rounded-full shadow-lg hover:bg-gray-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white">
-      Docentes
-    </button>
-    <button (click)="navegarEstudianteAdmin()" class="dark:bg-celeste dark:text-claro dark:hover:bg-azulClaro dark:hover:text-claro px-20 py-4 text-lg font-semibold text-white transition transform bg-gray-400 rounded-full shadow-lg hover:bg-gray-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white">
-      Estudiantes
-    </button>
+<body class="bg-primary dark:bg-claro">
+  <!-- Header -->
+  <header class="bg-midSecondary text-white p-4 w-full text-left dark:bg-celeste">
+    <h2 class="text-2xl font-semibold">Bienvenido Administrador</h2>
+  </header>
+
+  <!-- Contenido Principal -->
+  <div class="min-h-screen flex flex-col items-center justify-center space-y-10">
+    <!-- Botones -->
+    <div class="space-y-4 text-center">
+      <button (click)="navegarCursoAdmin()" class="dark:bg-celeste dark:text-claro dark:hover:bg-azulClaro dark:hover:text-claro px-20 py-4 text-lg font-semibold text-white transition transform bg-midSecondary rounded-full shadow-lg hover:bg-gray-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white">
+        Cursos
+      </button>
+      <button (click)="navegarDocenteAdmin()" class="dark:bg-celeste dark:text-claro dark:hover:bg-azulClaro dark:hover:text-claro px-20 py-4 text-lg font-semibold text-white transition transform bg-midSecondary rounded-full shadow-lg hover:bg-gray-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white">
+        Docentes
+      </button>
+      <button (click)="navegarEstudianteAdmin()" class="dark:bg-celeste dark:text-claro dark:hover:bg-azulClaro dark:hover:text-claro px-20 py-4 text-lg font-semibold text-white transition transform bg-midSecondary rounded-full shadow-lg hover:bg-gray-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white">
+        Estudiantes
+      </button>
+      <button (click)="alternarFormulario()" class="dark:bg-celeste dark:text-claro dark:hover:bg-azulClaro dark:hover:text-claro px-20 py-4 text-lg font-semibold text-white transition transform bg-secondary rounded-full shadow-lg hover:bg-gray-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white">
+        Registrar Administrador
+      </button>
+    </div>
   </div>
-</div>
+
+  <!-- Modal -->
+  <div *ngIf="mostrarFormulario" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+      <div class="flex justify-between items-center mb-4">
+        <h1 class="text-2xl font-bold">Registrar Nuevo Administrador</h1>
+        <button (click)="alternarFormulario()" class="text-gray-500 hover:text-red-500">
+          &times; <!-- Botón para cerrar -->
+        </button>
+      </div>
+      <form (ngSubmit)="registrarAdmin()" class="space-y-4">
+        <div>
+          <label for="email" class="block text-lg font-semibold">Email:</label>
+          <input type="email" id="email" [(ngModel)]="adminData.email" name="email" class="w-full p-2 border rounded" required />
+        </div>
+        <div>
+          <label for="contrasena" class="block text-lg font-semibold">Contraseña:</label>
+          <input type="password" id="contrasena" [(ngModel)]="adminData.contrasena" name="contrasena" class="w-full p-2 border rounded" required />
+        </div>
+        <div>
+          <label for="rut" class="block text-lg font-semibold">RUT:</label>
+          <input type="text" id="rut" [(ngModel)]="adminData.rut" name="rut" class="w-full p-2 border rounded" required />
+        </div>
+        <button type="submit" class="w-full bg-midSecondary text-white p-2 rounded hover:bg-gray-600">
+          Registrar
+        </button>
+      </form>
+    </div>
+  </div>
 </body>
 </html>
