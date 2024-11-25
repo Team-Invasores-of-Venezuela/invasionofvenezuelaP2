@@ -45,6 +45,34 @@ export class DocenteComponent implements OnInit{
   nombreProfesor: string | null ='';
 
   constructor(private router: Router, private authService: AuthService, private http: HttpClient) {}
+  claro = false;
+
+  modoOscuro(): void {
+    this.claro = !this.claro;
+    this.actualizarTema();
+  }
+
+  private cargarTema(): void {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      this.claro = true;
+      document.documentElement.classList.add('dark');
+    } else {
+      this.claro = false;
+      document.documentElement.classList.remove('dark');
+    }
+  }
+
+  private actualizarTema(): void {
+    const htmlElement = document.documentElement;
+    if (this.claro) {
+      htmlElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      htmlElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }
 
   dividirMatriculas(curso: any): any[] {
     const alumnos = curso.alumnos;
@@ -59,8 +87,9 @@ export class DocenteComponent implements OnInit{
   ngOnInit() {
     this.cargarDatosDocente();
     this.cargarDatosDocenteParaNombre()
-
+    this.cargarTema();
   }
+
 
   cargarDatosDocente() {
 
