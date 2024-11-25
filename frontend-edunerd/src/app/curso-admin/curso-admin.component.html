@@ -1,7 +1,15 @@
 <div class="flex items-center justify-center min-h-screen dark:bg-claro">
 
+
+<div class="flex items-center justify-center min-h-screen">
+  <!-- Botón en la esquina superior derecha -->
+  <button
+    class="absolute top-4 right-4 px-4 py-2 text-lg font-semibold text-white bg-midSecondary rounded shadow-lg hover:bg-secondary hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white"
+    (click)="navegarAdmin()">
+    Volver
+  </button>
   <div *ngIf="slideBarvisible" class="fixed inset-0 flex z-50 right-full dark:bg-azul">
-    <div class="bg-primary bg-opacity-50 w-full h-full dark:bg-celeste" (click)="toggleSidebar()"></div>
+    <div class="dark:bg-celeste bg-primary bg-opacity-50 w-full h-full" (click)="toggleSidebar()"></div>
     <div class="dark:bg-celeste bg-primary min-w-60 h-full p-4 shadow-lg transform transition-all duration-300 ease-in-out" [ngClass]="{'translate-x-0': slideBarvisible, 'translate-x-[-100%]': !slideBarvisible}">
 
       <button class="absolute top-4 right-4 text-2xl font-medium text-primary hover:text-white dark:text-azul dark:font-medium" (click)="CerrartoggleSidebar()">X</button>

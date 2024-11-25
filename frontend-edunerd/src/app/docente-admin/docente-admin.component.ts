@@ -324,4 +324,8 @@ export class DocenteAdminComponent implements OnInit{
     // @ts-ignore
     this.docente = {};
   }
+
+  navegarAdmin() {
+    this.router.navigate(['/administrador']);
+  }
 }

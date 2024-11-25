@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import { RouterLink, RouterModule } from '@angular/router';
+import { RouterLink, RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, NgIf } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+
 
 @Component({
   selector: 'app-curso-admin',
@@ -29,7 +30,7 @@ export class CursoAdminComponent implements OnInit{
   private amniocenteses: any[] | undefined;
   nombreProfesor: string = '';
 
-  constructor(private http: HttpClient, private router:RouterModule) {}
+  constructor(private http: HttpClient, private router:Router) {}
   mostrarCursos: { nombreProfesor: any; id: any; ano: any; alumnos: any; nombre: any; profesor: any;seccion: any; semestre: any }[] = [];
   verEditarEstudianteModal = false;
   protected cursoEditado: any = {};
@@ -293,4 +294,10 @@ export class CursoAdminComponent implements OnInit{
       alert('Por favor, seleccione un archivo antes de subir.');
     }
   }
+
+  navegarAdmin() {
+    this.router.navigate(['/administrador']);
+  }
+
+
 }
