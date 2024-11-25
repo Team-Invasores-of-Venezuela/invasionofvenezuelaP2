@@ -5,6 +5,8 @@ import com.example.backend_edunerd.Dominio.EstudianteDTO2;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDate;
+
 @Document(collection = "Estudiantes")
 public class Estudiante {
     @Id
@@ -14,13 +16,16 @@ public class Estudiante {
     private String apellidoMaterno;
     private String rut;
     private String matricula;
-    private String fechaNacimiento;
-    private String fechaIngreso;
+    private LocalDate fechaNacimiento;
+    private LocalDate fechaIngreso;
     private String urlfoto;
+    private int contadorPositvo=0;
+    private int contadorNegativo=0;
+
 
     public Estudiante() {}
 
-    public Estudiante(String id, String nombre, String apellidoPaterno, String apellidoMaterno, String rut, String matricula, String fechaNacimiento, String fechaIngreso, String urlfoto) {
+    public Estudiante(String id, String nombre, String apellidoPaterno, String apellidoMaterno, String rut, String matricula, LocalDate fechaNacimiento, LocalDate fechaIngreso, String urlfoto) {
         this.id = id;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
@@ -79,19 +84,20 @@ public class Estudiante {
         this.rut = rut;
     }
 
-    public String getFechaNacimiento() {
+
+    public LocalDate getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(String fechaNacimiento) {
+    public void setFechaNacimiento(LocalDate fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public String getFechaIngreso() {
+    public LocalDate getFechaIngreso() {
         return fechaIngreso;
     }
 
-    public void setFechaIngreso(String fechaIngreso) {
+    public void setFechaIngreso(LocalDate fechaIngreso) {
         this.fechaIngreso = fechaIngreso;
     }
 
@@ -127,5 +133,33 @@ public class Estudiante {
         this.matricula = matricula;
     }
 
+    @Override
+    public String toString() {
+        return "Estudiante{" +
+                "nombre='" + nombre + '\'' +
+                ", apellidoPaterno='" + apellidoPaterno + '\'' +
+                ", apellidoMaterno='" + apellidoMaterno + '\'' +
+                ", rut='" + rut + '\'' +
+                ", matricula='" + matricula + '\'' +
+                ", fechaNacimiento=" + fechaNacimiento +
+                ", fechaIngreso=" + fechaIngreso +
+                ", urlfoto='" + urlfoto + '\'' +
+                '}';
+    }
 
+    public int getContadorNegativo() {
+        return contadorNegativo;
+    }
+
+    public void setContadorNegativo(int contadorNegativo) {
+        this.contadorNegativo = contadorNegativo;
+    }
+
+    public int getContadorPositvo() {
+        return contadorPositvo;
+    }
+
+    public void setContadorPositvo(int contadorPositvo) {
+        this.contadorPositvo = contadorPositvo;
+    }
 }

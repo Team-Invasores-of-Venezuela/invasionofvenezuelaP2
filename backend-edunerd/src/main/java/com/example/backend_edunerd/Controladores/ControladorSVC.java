@@ -1,7 +1,10 @@
 package com.example.backend_edunerd.Controladores;
 
 import com.example.backend_edunerd.Servicios.ServicioSVC;
+import com.example.backend_edunerd.Servicios.ServicioSVCOutput;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,7 +19,10 @@ public class ControladorSVC {
     @Autowired
     private ServicioSVC servicioSVC;
 
-    /*
+    @Autowired
+    private ServicioSVCOutput servicioSVCOutput;
+
+
     @CrossOrigin(origins = "*")
     @PostMapping("/importarProfesores")
     public ResponseEntity<Map<String, Object>> importarDatos(@RequestParam("file") MultipartFile archivoCSV) {
@@ -77,8 +83,24 @@ public class ControladorSVC {
         }
     }
 
-     */
+    @CrossOrigin(origins = "*")
+    @GetMapping("/descargarcursos")
+    public ResponseEntity<byte[]> generarExcelCursos() {
+        byte[] excel = servicioSVCOutput.exportarCursos();
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=cursos.xlsx").contentType(MediaType.APPLICATION_OCTET_STREAM).body(excel);
+    }
 
+    @CrossOrigin(origins = "*")
+    @GetMapping("/descargarestudiantes")
+    public ResponseEntity<byte[]> generarExcelEstudiantes() {
+        byte[] excel = servicioSVCOutput.exportarEstudiantes();
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=estudiantes.xlsx").contentType(MediaType.APPLICATION_OCTET_STREAM).body(excel);
+    }
 
-
+    @CrossOrigin(origins = "*")
+    @GetMapping("/descargardocentes")
+    public ResponseEntity<byte[]> generarExcelProfesores() {
+        byte[] excel = servicioSVCOutput.exportarProfesores();
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=docentes.xlsx").contentType(MediaType.APPLICATION_OCTET_STREAM).body(excel);
+    }
 }

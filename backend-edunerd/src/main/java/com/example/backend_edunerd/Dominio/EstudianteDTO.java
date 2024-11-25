@@ -2,6 +2,8 @@ package com.example.backend_edunerd.Dominio;
 
 import com.example.backend_edunerd.Modelos.Estudiante;
 
+import java.time.LocalDate;
+
 public class EstudianteDTO {
 
     private String nombre;
@@ -9,11 +11,11 @@ public class EstudianteDTO {
     private String apellidoMaterno;
     private String rut;
     private String matricula;
-    private String fechaNacimiento;
-    private String fechaIngreso;
+    private LocalDate fechaNacimiento;
+    private LocalDate fechaIngreso;
     private String urlfoto;
 
-    public EstudianteDTO(String nombre, String apellidoPaterno, String apellidoMaterno, String rut, String matricula, String fechaNacimiento, String fechaIngreso, String urlfoto) {
+    public EstudianteDTO(String nombre, String apellidoPaterno, String apellidoMaterno, String rut, String matricula, LocalDate fechaNacimiento, LocalDate fechaIngreso, String urlfoto) {
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
@@ -64,19 +66,19 @@ public class EstudianteDTO {
         this.matricula = matricula;
     }
 
-    public String getFechaNacimiento() {
+    public LocalDate getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(String fechaNacimiento) {
+    public void setFechaNacimiento(LocalDate fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public String getFechaIngreso() {
+    public LocalDate getFechaIngreso() {
         return fechaIngreso;
     }
 
-    public void setFechaIngreso(String fechaIngreso) {
+    public void setFechaIngreso(LocalDate fechaIngreso) {
         this.fechaIngreso = fechaIngreso;
     }
 

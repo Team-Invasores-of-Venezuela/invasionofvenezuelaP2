@@ -2,6 +2,8 @@ package com.example.backend_edunerd.Dominio;
 
 import com.example.backend_edunerd.Modelos.Estudiante;
 
+import java.time.LocalDate;
+
 public class EstudianteDTO2 {
 
     private String id;
@@ -10,11 +12,13 @@ public class EstudianteDTO2 {
     private String apellidoMaterno;
     private String rut;
     private String matricula;
-    private String fechaNacimiento;
-    private String fechaIngreso;
+    private LocalDate fechaNacimiento;
+    private LocalDate fechaIngreso;
     private String urlfoto;
+    private int contadorPositivo;
+    private int contadorNegativo;
 
-    public EstudianteDTO2(String id, String nombre, String apellidoPaterno, String apellidoMaterno, String rut, String matricula, String fechaNacimiento, String fechaIngreso, String urlfoto) {
+    public EstudianteDTO2(String id, String nombre, String apellidoPaterno, String apellidoMaterno, String rut, String matricula, LocalDate fechaNacimiento, LocalDate fechaIngreso, String urlfoto, int contadorPositivo, int contadorNegativo) {
         this.id = id;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
@@ -24,6 +28,8 @@ public class EstudianteDTO2 {
         this.fechaNacimiento = fechaNacimiento;
         this.fechaIngreso = fechaIngreso;
         this.urlfoto = urlfoto;
+        this.contadorPositivo = contadorPositivo;
+        this.contadorNegativo = contadorNegativo;
     }
 
     public EstudianteDTO2(Estudiante estudiante) {
@@ -36,6 +42,8 @@ public class EstudianteDTO2 {
         this.fechaNacimiento = estudiante.getFechaNacimiento();
         this.fechaIngreso = estudiante.getFechaIngreso();
         this.urlfoto = estudiante.getUrlfoto();
+        this.contadorPositivo = estudiante.getContadorPositvo();
+        this.contadorNegativo = estudiante.getContadorNegativo();
     }
 
     public String getId() {
@@ -86,19 +94,19 @@ public class EstudianteDTO2 {
         this.matricula = matricula;
     }
 
-    public String getFechaNacimiento() {
+    public LocalDate getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(String fechaNacimiento) {
+    public void setFechaNacimiento(LocalDate fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public String getFechaIngreso() {
+    public LocalDate getFechaIngreso() {
         return fechaIngreso;
     }
 
-    public void setFechaIngreso(String fechaIngreso) {
+    public void setFechaIngreso(LocalDate fechaIngreso) {
         this.fechaIngreso = fechaIngreso;
     }
 
@@ -108,5 +116,21 @@ public class EstudianteDTO2 {
 
     public void setUrlfoto(String urlfoto) {
         this.urlfoto = urlfoto;
+    }
+
+    public int getContadorPositivo() {
+        return contadorPositivo;
+    }
+
+    public void setContadorPositivo(int contadorPositivo) {
+        this.contadorPositivo = contadorPositivo;
+    }
+
+    public int getContadorNegativo() {
+        return contadorNegativo;
+    }
+
+    public void setContadorNegativo(int contadorNegativo) {
+        this.contadorNegativo = contadorNegativo;
     }
 }

@@ -12,66 +12,67 @@
   </button>
 
   <!-- Lista de docentes con checkboxes -->
-  <ul role="list" class="mx-96 rounded bg-primary shadow-2xl p-10">
+  <ul role="list" class="mx-auto max-w-5xl rounded-lg bg-primary shadow-2xl p-8">
     <li *ngFor="let docente of docentes" class="flex justify-between border-b border-b-tertiary gap-x-6 p-5">
-      <div class="flex min-w-0 gap-x-4">
-        <img class="size-10 flex-none bg-gray-50" src="https://res.cloudinary.com/ddwshn5tb/image/upload/v1731725951/perfil_v6tmdm.png" alt="Perfil Docente">
+      <div class="flex min-w-0 gap-x-6 w-full">
+        <img class="w-24 h-24 rounded-full bg-gray-50" src="https://res.cloudinary.com/ddwshn5tb/image/upload/v1731725951/perfil_v6tmdm.png" alt="Perfil Docente">
         <div class="min-w-0 flex-auto">
-          <p class="text-sm font-semibold text-white">{{ docente.nombre }}</p>
-          <p class="mt-1 truncate text-xs text-white">{{ docente.id }}</p>
+          <p class="text-lg font-semibold text-white">{{ docente.nombre }} {{ docente.apellidoPaterno }} {{ docente.apellidoMaterno }}</p>
+          <p class="text-sm text-white">Rut: {{ docente.rut }}</p>
+          <p class="text-sm text-white">Título: {{ docente.titulo }}</p>
+          <p class="text-sm text-white">Grado: {{ docente.gradoMax }}</p>
         </div>
       </div>
-
-      <ul class="mt-2 bg-primary text-white rounded p-4 w-60 font-sans shadow-2xl">
-        <li *ngFor="let curso of docente.cursos" class="py-1 border-gray-700 last:border-none">
-          {{ curso }}
-        </li>
-      </ul>
-
-      <!-- Checkbox para seleccionar el docente (solo visible en modo de eliminación) -->
-      <input type="checkbox" [checked]="isChecked(docente.id)" (change)="onCheckboxChange(docente.id, $event)" *ngIf="modoEliminacion">
-
-      <!-- Botón para eliminar docente individualmente (visible solo en modo eliminación) -->
-      <button (click)="eliminarDocente(docente.id)" class="ml-4 bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600" *ngIf="modoEliminacion">
-        Eliminar
-      </button>
-
-      <!-- Botón para editar docente -->
-      <button (click)="abrirModalEditar(docente)" class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48">
-        Editar Docente
-      </button>
+      <div class="flex items-center gap-x-4">
+        <!--<input type="checkbox" [checked]="isChecked(docente.rut)" (change)="onCheckboxChange(docente.rut, $event)" *ngIf="modoEliminacion" class="h-6 w-6">
+        -->
+        <!-- Botón para editar docente -->
+        <!--(click)="abrirModalEditar(docente)"-->
+        <button
+          class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48"
+          [disabled]="modoEliminacion">
+          Editar Docente
+        </button>
+      </div>
     </li>
   </ul>
 
-  <!-- Botón para eliminar los docentes seleccionados -->
-  <div class="flex justify-center mt-12">
-    <button class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-15 w-48" (click)="eliminarDocentes()" *ngIf="modoEliminacion">
-      Eliminar Docentes Seleccionados
-    </button>
-  </div>
 
-  <!-- Botón para activar el modo de eliminación -->
-  <div class="flex justify-center mt-12 space-x-16 mb-40">
-    <button class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48" (click)="activarModoEliminacion()" *ngIf="!modoEliminacion">
+
+  <!-- Div con los botones -->
+  <div class="flex justify-center mt-12">
+    <button
+      class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48"
+      (click)="abrirModal()" style="margin-right: 25px">
+      Cargar Docentes
+    </button>
+
+    <button
+      class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-green-600 h-15 w-48"
+      (click)="mostrarFormularioRegistro()" style="margin-right: 25px"
+      [disabled]="modoEliminacion">
+    Registrar Nuevo Docente
+    </button>
+
+    <button
+      class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48"
+      (click)="activarModoEliminacion()" style="margin-right: 25px"
+      *ngIf="!modoEliminacion">
       Eliminar Docente
     </button>
 
-    <button class="bg-secondary text-white px-4 py-2 w-60 rounded-2xl hover:bg-green-600 h-15 w-48" (click)="mostrarFormularioRegistro()">
-      Registrar Nuevo Docente
+    <button class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-15 w-48"
+            (click)="eliminarDocentes()" style="margin-right: 25px"
+            *ngIf="modoEliminacion">
+      Eliminar Docentes Seleccionados
     </button>
 
-    <!-- Botón para cargar docentes -->
-      <button class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48" (click)="abrirModal()">
-        Cargar Docentes
-      </button>
-
-  </div>
-
-  <!-- Botón para volver al estado normal -->
-  <div class="flex justify-center mt-4">
-    <button class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48" (click)="volverModoNormal()" *ngIf="modoEliminacion">
+    <button class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48"
+            (click)="volverModoNormal()" style="margin-right: 25px"
+            *ngIf="modoEliminacion">
       Volver
     </button>
+
   </div>
 
   <!-- Modal para elegir la forma de cargar docentes -->
@@ -96,15 +97,28 @@
   <!-- Modal para registrar nuevo docente -->
   <div *ngIf="nuevoDocenteVisible" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
     <div class="bg-white p-6 rounded-lg shadow-md w-1/4">
-      <h3 class="text-lg font-semibold mb-4">Registrar Nuevo Docente</h3>
-      <label class="block mb-2">Nombre:</label>
-      <input type="text" [(ngModel)]="nuevoDocenteNombre" name="nuevoDocenteNombre" class="w-full border rounded px-3 py-2 mb-4" />
+      <h3 class="text-lg font-semibold mb-3">Registrar Nuevo Docente</h3>
 
-      <label class="block mb-2">Cursos (separados por comas):</label>
-      <input type="text" [(ngModel)]="nuevoDocenteCursos" name="nuevoDocenteCursos" class="w-full border rounded px-3 py-2 mb-4" />
+      <label class="block mb-2">Nombre:</label>
+      <input type="text" [(ngModel)]="nuevoDocente.nombre" name="nuevoDocenteNombre" class="w-full border rounded px-3 py-2 mb-4" />
+
+      <label class="block mb-2">Apellido Paterno:</label>
+      <input type="text" [(ngModel)]="nuevoDocente.apellidoPaterno" name="nuevoDocenteApellidoPaterno" class="w-full border rounded px-3 py-2 mb-4" />
+
+      <label class="block mb-2">Apellido Materno:</label>
+      <input type="text" [(ngModel)]="nuevoDocente.apellidoMaterno" name="nuevoDocenteApellidoMaterno" class="w-full border rounded px-3 py-2 mb-4" />
+
+      <label class="block mb-2">RUT:</label>
+      <input type="text" [(ngModel)]="nuevoDocente.rut" name="nuevoDocenteRut" class="w-full border rounded px-3 py-2 mb-4" />
+
+      <label class="block mb-2">Título:</label>
+      <input type="text" [(ngModel)]="nuevoDocente.titulo" name="nuevoDocenteTitulo" class="w-full border rounded px-3 py-2 mb-4" />
+
+      <label class="block mb-2">Grado Máximo:</label>
+      <input type="text" [(ngModel)]="nuevoDocente.gradoMax" name="nuevoDocenteGradoMax" class="w-full border rounded px-3 py-2 mb-4" />
 
       <div class="flex justify-end space-x-4">
-        <button class="bg-secondary text-gray-800 px-4 py-2 rounded hover:bg-gray-400" (click)="ocultarFormularioRegistro()">
+        <button class="bg-secondary text-white px-4 py-2 rounded hover:bg-gray-400" (click)="ocultarFormularioRegistro()">
           Cancelar
         </button>
         <button class="bg-secondary text-white px-4 py-2 rounded hover:bg-green-600" (click)="registrarDocente()">
@@ -113,6 +127,7 @@
       </div>
     </div>
   </div>
+
 
   <!-- Modal para editar docente existente -->
   <div *ngIf="showModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10">
@@ -125,13 +140,8 @@
       <label for="nombreEditar" class="block text-sm font-medium text-gray-700">Nuevo nombre del docente</label>
       <input type="text" [(ngModel)]="nombreEditar" id="nombreEditar" name="nombreEditar" class="block w-full text-sm text-gray-700 border border-gray-300 rounded-md p-2">
 
-
-      <label for="cursosEditar" class="block text-sm font-medium text-gray-700">Nuevos cursos (separados por comas)</label>
-      <input type="text" id="cursosEditar" [(ngModel)]="nuevoDocenteCursos" name="cursosEditar" class="block w-full text-sm text-gray-700 border border-gray-300 rounded-md p-2 mb-4">
-
-
       <div class="flex justify-end space-x-4">
-        <button (click)="cerrarModalEditar()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-2xl hover:bg-gray-400">Cancelar</button>
+        <button (click)="cerrarModalEditar()" class="bg-primary text-white px-4 py-2 rounded-2xl hover:bg-gray-400">Cancelar</button>
         <button (click)="guardarEdicion()" class="bg-primary text-white px-4 py-2 rounded-2xl hover:bg-primary-light">Guardar</button>
       </div>
     </div>

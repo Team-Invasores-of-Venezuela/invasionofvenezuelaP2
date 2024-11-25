@@ -1,13 +1,18 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import {getXHRResponse} from 'rxjs/internal/ajax/getXHRResponse';
 
 interface Docente {
   nombre: string;
-  id: string;
-  cursos: string[];
+  apellidoPaterno: string;
+  apellidoMaterno: string;
+  rut: string;
+  titulo: string;
+  gradoMax: string;
+  //id: string;
 }
 
 @Component({
@@ -17,7 +22,7 @@ interface Docente {
   templateUrl: './docente-admin.component.html',
   styleUrls: ['./docente-admin.component.css'],
 })
-export class DocenteAdminComponent {
+export class DocenteAdminComponent implements OnInit{
   docentes: Docente[] = [];
   selectedDocentes: Set<string> = new Set();
   visible = false;
@@ -25,12 +30,31 @@ export class DocenteAdminComponent {
   modoEliminacion = false;
   nuevoDocenteVisible = false;
   nuevoDocenteNombre: string = '';
-  nuevoDocenteCursos: string = '';
+  nuevoDocenteApellidoP:string = '';
+  nuevoDocenteApellidoM:string = '';
+  nuevoDocenteRut:string = '';
+  nuevoDocenteTitulo:string = '';
+  nuevoDocenteGrado:string = '';
+  nuevoDocenteId :string = '';
   showModal: boolean = false;
   idEditar: string = '';
   nombreEditar: string = '';
-  cursosEditar: string = '';
-  nuevoDocente: any = { nombre: '', id: '' };
+  apellidoPEditar: string = '';
+  apellidoMEditar: string = '';
+  rutEditar: string = '';
+  tituloEditar: string = '';
+  gradoEditar: string = '';
+  modoEliminar: boolean = false;
+  nuevoDocente: Docente = {
+    nombre: '',
+    apellidoPaterno: '',
+    apellidoMaterno: '',
+    rut: '',
+    titulo: '',
+    gradoMax: '',
+    //id: ''
+  };
+
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -51,35 +75,58 @@ export class DocenteAdminComponent {
       );
   }
 
-  onCheckboxChange(docenteId: string, isChecked: Event): void {
-    if (isChecked) {
-      this.selectedDocentes.add(docenteId);
+  onCheckboxChange(docenteRut: string, isChecked: Event): void {
+    if (docenteRut && docenteRut.trim() !== "") { // Asegúrate de que el rut no sea nulo ni vacío
+      if (isChecked) {
+        this.selectedDocentes.add(docenteRut);
+        console.log(`Docente con rut ${docenteRut} agregado a la selección`);
+      } else {
+        this.selectedDocentes.delete(docenteRut);
+        console.log(`Docente con rut ${docenteRut} eliminado de la selección`);
+      }
+
+      console.log('Selected Docentes:', Array.from(this.selectedDocentes)); // Verificar contenido del conjunto
     } else {
-      this.selectedDocentes.delete(docenteId);
+      console.error('El rut del docente es inválido:', docenteRut); // Log para identificar rut inválido
     }
   }
 
+
+
   eliminarDocentes(): void {
     if (this.selectedDocentes.size === 0) {
+      console.error('No hay docentes seleccionados para eliminar');
       alert('Por favor, seleccione al menos un docente para eliminar.');
       return;
     }
 
-    this.selectedDocentes.forEach(docenteId => {
-      this.http.post(`http://localhost:8080/profesor/delete?id=${docenteId}`, {})
-        .subscribe(
-          (response) => {
-            console.log(`Docente ${docenteId} eliminado`, response);
-            this.getDocentes();
-            alert('Docentes eliminados con éxito');
-          },
-          (error) => {
-            console.error('Error al eliminar el docente:', error);
-            alert('Ocurrió un error al eliminar los docentes.');
-          }
-        );
+    console.log('Docentes seleccionados para eliminar:', Array.from(this.selectedDocentes));
+
+    this.selectedDocentes.forEach(docenteRut => {
+      // Asegúrate de que docenteRut no sea null ni vacío
+      if (docenteRut && docenteRut.trim() !== "") {
+        this.http.post(`http://localhost:8080/profesor/delete?rut=${docenteRut}`, {})
+          .subscribe(
+            (response) => {
+              console.log(`Docente con rut ${docenteRut} eliminado`, response);
+              this.getDocentes();  // Actualiza la lista de docentes
+              alert('Docentes eliminados con éxito');
+            },
+            (error) => {
+              console.error('Error al eliminar el docente:', error);
+              alert('Ocurrió un error al eliminar los docentes.');
+            }
+          );
+      } else {
+        console.error('El rut del docente es inválido:', docenteRut);
+      }
     });
   }
+
+
+
+
+
 
   eliminarDocente(docenteId: string): void {
     this.http.post(`http://localhost:8080/profesor/delete?id=${docenteId}`, {})
@@ -94,6 +141,13 @@ export class DocenteAdminComponent {
           alert('Ocurrió un error al eliminar el docente.');
         }
       );
+  }
+  ActivarModoEliminacion(): void {
+    this.modoEliminar = true;
+  }
+
+  VolverModoNormal(): void {
+    this.modoEliminar = false;
   }
 
   abrirModal() {
@@ -134,8 +188,8 @@ export class DocenteAdminComponent {
       );
   }
 
-  isChecked(docenteId: string): boolean {
-    return this.selectedDocentes.has(docenteId);
+  isChecked(docenteRut: string): boolean {
+    return this.selectedDocentes.has(docenteRut);
   }
 
   toggleModoEliminacion(): void {
@@ -161,39 +215,58 @@ export class DocenteAdminComponent {
   ocultarFormularioRegistro(): void {
     this.nuevoDocenteVisible = false;
     this.nuevoDocenteNombre = '';
-    this.nuevoDocenteCursos = '';
+    this.nuevoDocenteApellidoP = '';
+    this.nuevoDocenteApellidoM = '';
+    this.nuevoDocenteRut = '';
+    this.nuevoDocenteGrado = '';
+    this.nuevoDocenteTitulo = '';
+    this.nuevoDocenteId = '';
   }
 
   registrarDocente(): void {
-    if (!this.nuevoDocenteNombre || !this.nuevoDocenteCursos) {
+    if (!this.nuevoDocente.rut || !this.nuevoDocente.nombre || !this.nuevoDocente.apellidoPaterno ||
+      !this.nuevoDocente.apellidoMaterno || !this.nuevoDocente.titulo || !this.nuevoDocente.gradoMax) {
       alert('Por favor, complete todos los campos.');
       return;
     }
 
-    const cursos = this.nuevoDocenteCursos.split(',').map(curso => curso.trim());
-    const nuevoDocente: Docente = { nombre: this.nuevoDocenteNombre, id: '', cursos };
+    // Crear el objeto Docente
+    console.log('Datos originales de nuevoDocente:', this.nuevoDocente);
 
-    this.http.post<Docente>('http://localhost:8080/profesor/create', nuevoDocente)
-      .subscribe(
-        (response: Docente) => {
-          console.log('Docente registrado exitosamente', response);
-          alert('Docente registrado con éxito.');
-          this.getDocentes();
-          this.ocultarFormularioRegistro();
-        },
-        (error) => {
-          console.error('Error al registrar el docente:', error);
-          alert('Ocurrió un error al registrar el docente.');
-        }
-      );
+    const docente: Docente = {
+      nombre: this.nuevoDocenteNombre,
+      apellidoPaterno: this.nuevoDocenteApellidoP,
+      apellidoMaterno: this.nuevoDocenteApellidoM,
+      rut: this.nuevoDocenteRut,
+      titulo: this.nuevoDocenteTitulo,
+      gradoMax: this.nuevoDocenteGrado
+    };
+
+    const docenteDatos: Docente = { ...this.nuevoDocente };
+
+    console.log('Datos enviados al backend (docenteDatos):', docenteDatos);
+
+    this.http.post<Docente>('http://localhost:8080/profesor/create', docenteDatos).subscribe(
+      (response: Docente) => {
+        console.log('Docente registrado exitosamente', response);
+        alert('Docente registrado con éxito.');
+        this.getDocentes();
+        this.ocultarFormularioRegistro();
+      },
+      (error) => {
+        console.log('Detalles del error:', error);
+        console.error('Error al registrar el docente:', error);
+        alert('Ocurrió un error al registrar el docente.');
+      }
+    );
+
   }
 
   abrirModalEditar(docente: Docente): void {
     if (docente) {
-      this.idEditar = docente.id;
+      //this.idEditar = docente.id;
       this.nombreEditar = docente.nombre;
-      this.cursosEditar = docente.cursos.join(', ');
-      this.showModal = true;  // Mostrar el modal
+      this.showModal = true;
     } else {
       console.error('Docente no encontrado');
     }
@@ -207,12 +280,12 @@ export class DocenteAdminComponent {
       return;
     }
 
-    const docenteExistente = this.docentes.find(docente => docente.id === idEditarCadena);
-
+    //const docenteExistente = this.docentes.find(docente => docente.id === idEditarCadena);
+    /*
     if (!docenteExistente) {
       alert('No se encontró un docente con el ID ingresado.');
       return;
-    }
+    }*/
 
     const nombre = this.nombreEditar?.trim();
     console.log('Nombre recibido:', nombre);
@@ -222,18 +295,15 @@ export class DocenteAdminComponent {
       return;
     }
 
-    const cursos = this.nuevoDocenteCursos.split(',').map(curso => curso.trim()).filter(curso => curso.length > 0);
-    console.log('Cursos procesados:', cursos);
-
-    if (cursos.length === 0) {
-      alert('Debe ingresar al menos un curso.');
-      return;
-    }
-
-    const docenteActualizado: Docente = {
+    let docenteActualizado: Docente;
+    docenteActualizado = {
       nombre: nombre,
-      id: idEditarCadena,
-      cursos: cursos
+      apellidoPaterno: this.apellidoPEditar,
+      apellidoMaterno: this.apellidoMEditar,
+      rut: this.rutEditar,
+      titulo: this.tituloEditar,
+      gradoMax: this.gradoEditar,
+      //id: this.idEditar
     };
 
     this.http.post('http://localhost:8080/profesor/update', docenteActualizado).subscribe(

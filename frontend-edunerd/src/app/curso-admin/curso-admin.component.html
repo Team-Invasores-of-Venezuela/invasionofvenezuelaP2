@@ -30,28 +30,35 @@
     ☰
   </button>
 
-  <div class="ml-64 max-w-4xl mx-auto p-6 rounded-lg mt-8 bg-secondary shadow-2xl">
-    <h2 class="text-2xl font-semibold text-tertiary mb-4 ">Cursos</h2>
+  <!-- Apartado de Mostrar los cursos-->
+  <div class="ml-64 max-w-6xl mx-auto p-6 rounded-lg mt-8 bg-secondary shadow-2xl">
+    <h2 class="text-2xl font-semibold text-tertiary mb-4">Cursos</h2>
+
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
       <div *ngFor="let curso of mostrarCursos" class="w-90 h-50 rounded overflow-hidden shadow-lg bg-midSecondary text-tertiary">
 
-        <div class="ml-5 mt-2">
-          {{curso.ano}} - {{curso.semestre}}
-          <button class="ml-64 text-secondary px-4 py-2 rounded focus:bg-white"
-            (click)="abrirEditarCurso(curso)">
+        <div class="flex justify-between items-center ml-5 mt-2">
+          <span>{{ curso.ano }} - {{ curso.semestre }} / Sección: {{ curso.seccion }}</span>
+          <button class="text-secondary px-4 py-2 rounded focus:bg-white" (click)="abrirEditarCurso(curso)">
             Editar
           </button>
         </div>
+
         <div class="px-6 py-4">
           <div class="font-extrabold text-xl mb-2">
-            {{ curso.titulo }}
-            <div class="font-medium text-tertiary">{{ curso.docente }}</div>
+            {{ curso.nombre }}
+            <div class="font-medium text-tertiary"> Profesor(a): {{ curso.nombreProfesor }}</div>
           </div>
-          <p class="text-secondary text-base text-tertiary">{{ curso.aprendizajes }}</p>
+
+          <div class="text-secondary text-base text-tertiary">
+            <div *ngFor="let grupo of dividirMatriculas(curso)">
+              <p>{{ grupo.join(', ') }}</p>
+            </div>
+          </div>
+
         </div>
 
       </div>
-
     </div>
   </div>
 
@@ -82,7 +89,7 @@
           <input type="text" [(ngModel)]="cursosTotales.docente" name="docente" class="w-full  rounded p-2" />
         </div>
         <div>
-          <label class="block">Aprendizajes (separados por comas)</label>
+          <label class="block">Mátricula de Alumnos (separados por comas)</label>
           <input type="text" [(ngModel)]="cursosTotales.aprendizajes" name="aprendizajes" class="w-full rounded p-2" />
         </div>
         <div>
@@ -108,7 +115,7 @@
       <form (ngSubmit)="eliminarCurso()" class="space-y-4">
         <div *ngFor="let curso of mostrarCursos">
           <input type="radio" name="curso" [value]="curso.id" [(ngModel)]="cursoSeleccionadoId" />
-          {{ curso.titulo }}
+          {{ curso.nombre }}
         </div>
         <div class="flex justify-end space-x-4">
           <button type="submit" class="bg-secondary text-white px-4 py-2 rounded hover:bg-secondary">
@@ -154,9 +161,9 @@
           </button>
           <button type="submit" (click)="editarCurso()" class="bg-primary text-white px-4 py-2 rounded hover:bg-secondary">
             Guardar Cambios
-          </button>
-        </div>
-      </form>
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
-</div>

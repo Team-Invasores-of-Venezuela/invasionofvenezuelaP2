@@ -1,26 +1,25 @@
-package com.example.backend_edunerd.Modelos;
+package com.example.backend_edunerd.Dominio;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "Usuarios")
-public class Usuario {
+public class AdministradorDTO {
     @Id
     private String id;
     private String email;
     private String contrasena;
     private boolean admin;
-    private String rut;
+    private String rut;;
 
-    public Usuario(boolean admin, String contrasena, String email, String nombre) {
-        this.admin = admin;
-        this.contrasena = contrasena;
+    public AdministradorDTO() {}
+
+   public AdministradorDTO(String email, String contrasena, boolean admin, String rut) {
         this.email = email;
-        this.rut = nombre;
-    }
- public Usuario(){
+        this.contrasena = contrasena;
+        this.admin = admin;
+        this.rut = rut;
+   }
 
- }
     public String getId() {
         return id;
     }
