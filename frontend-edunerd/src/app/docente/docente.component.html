@@ -4,9 +4,12 @@
       Bienvenido(a) <a *ngIf="nombre" class="font-light">{{ nombreProfesor }}</a>
     </h1>
     <button (click)="cerrarSesion()" class="dark:text-claro font-medium text-tertiary">Cerrar sesión</button>
+    <button (click)="modoOscuro()" class=" dark:bg-celeste dark:bg-opacity-30 dark:text-primary absolute right-0 mt-28 text-sm px-2  rounded-md font-semibold bg-primary text-white hover:bg-secondary transition-colors">
+      {{ claro ? 'Modo Oscuro' : 'Modo Claro' }}
+    </button>
   </header>
 
-  <div class="ml-10 mr-10 dark:bg-azulClaro max-w-full mx-auto p-4 lg:p-6 rounded-lg mt-8 bg-secondary shadow-2xl">
+  <div class="ml-10 mr-10 dark:bg-azulClaro max-w-full mx-auto p-4 lg:p-6 rounded-lg mt-14 bg-secondary shadow-2xl">
     <h2 class="text-xl md:text-2xl font-semibold text-tertiary mb-4 dark:text-azul">Cursos</h2>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

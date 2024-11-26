@@ -20,7 +20,10 @@ export class LoginComponent implements OnInit{
 
   private apiUrl = 'http://localhost:8080/usuario/login';
 
-  ngOnInit() {this.cargarTema()}
+  ngOnInit() {
+    this.cargarTema()
+  }
+
   constructor(
     private fb: FormBuilder,
     private router: Router,

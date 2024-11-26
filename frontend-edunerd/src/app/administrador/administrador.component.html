@@ -7,17 +7,16 @@
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-primary dark:bg-claro">
-<header class="bg-midSecondary text-white p-4 w-full flex items-center justify-between dark:bg-celeste">
+<header class="bg-midSecondary text-white p-4  flex items-center justify-between dark:bg-celeste">
   <h2 class="text-2xl font-semibold">Bienvenido Administrador</h2>
   <button (click)="cerrarSesion()" class="font-medium text-white">Cerrar sesión</button>
 </header>
-<h2 class="text-4xl text-white m-10 ml-48 mt-24">Seleccione categoría que desea administrar</h2>
-<div class="flex items-center justify-center min-h-screen -mt-40">
-  <div class="flex space-x-20">
+<main class="flex-grow">
+<h2 class="dark:text-azul dark:text-opacity-40 text-xl text-white text-center mt-2 mb-2">Seleccione categoría que desea administrar</h2>
+<div class="flex items-center justify-center ">
+  <div class="flex gap-5 mt-2 ">
     <!-- Botón para navegar a cursos -->
-    <button
-      (click)="navegarCursoAdmin()"
-      class="dark:bg-celeste dark:text-claro dark:hover:bg-azulClaro dark:hover:text-claro group relative w-80 h-96 p-6 text-left rounded-lg bg-midSecondary shadow-lg transition transform hover:bg-gray-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white"
+    <button (click)="navegarCursoAdmin()" class="dark:bg-celeste dark:text-claro dark:hover:bg-azulClaro dark:hover:text-claro group relative w-80 h-96 p-6 text-left rounded-lg bg-midSecondary shadow-lg transition transform hover:bg-gray-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white"
     >
       <!-- Imagen de fondo con superposición -->
       <div
@@ -97,18 +96,14 @@
         </ul>
       </div>
     </button>
-      </div>
   </div>
-<div class="flex justify-center -mt-48 mb-40">
-  <button (click)="alternarFormulario()" class=" dark:bg-celeste dark:text-claro dark:hover:bg-azulClaro dark:hover:text-claro py-4 w-60 text-lg font-semibold text-white transition transform bg-secondary rounded shadow-lg hover:bg-gray-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white">
+  </div>
+</main>
+<footer class="flex justify-center p-4 mt-8 bg-transparent">
+  <button (click)="alternarFormulario()" class="w-11/12 sm:w-1/2 lg:w-1/4 py-4 text-lg font-semibold text-white bg-secondary rounded shadow-lg transition transform hover:bg-gray-600 hover:scale-105 dark:bg-celeste dark:hover:bg-azulClaro dark:hover:text-claro">
     Registrar Administrador
   </button>
-</div>
-
-<div class="flex justify-center">
-</div>
-
-
+</footer>
   <!-- Modal -->
   <div *ngIf="mostrarFormulario" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
     <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
@@ -131,7 +126,7 @@
           <label for="rut" class="block text-lg font-semibold">RUT:</label>
           <input type="text" id="rut" [(ngModel)]="adminData.rut" name="rut" class="w-full p-2 border rounded" required />
         </div>
-        <button type="submit" class="w-full bg-midSecondary text-white p-2 rounded hover:bg-gray-600">
+        <button type="submit" class=" bg-midSecondary text-white p-2 rounded hover:bg-gray-600">
           Registrar
         </button>
       </form>

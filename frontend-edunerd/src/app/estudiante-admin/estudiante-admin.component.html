@@ -1,38 +1,46 @@
 <body class="min-h-screen  dark:bg-claro bg-primary font-sans">
 <header class="dark:bg-celeste bg-secondary text-white p-4 w-full text-left">
   <h2 class="dark:text-claro text-2xl font-semibold text-white font-sans">Administración de estudiantes</h2>
+
 </header>
 
-<div class="flex justify-between items-center mr-36">
-  <h2 class="dark:text-azul text-3xl text-white m-10 ml-64">Estudiantes</h2>
+<div class="flex justify-between items-center ">
+  <h2 class="dark:text-azul text-3xl text-white m-10 ml-64 mr-36">Estudiantes</h2>
+
   <button
-    class=" px-4 py-2 text-lg font-semibold text-white bg-midSecondary rounded shadow-lg hover:bg-secondary hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white"
+    class="ml-72  dark:bg-azulClaro dark:text-claro mt-1  px-4 py-2 text-lg font-semibold text-white bg-midSecondary rounded shadow-lg hover:bg-secondary hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white"
     (click)="navegarAdmin()">
     Volver
   </button>
+  <button (click)="modoOscuro()" class=" dark:bg-celeste dark:bg-opacity-40 dark:text-claro px-4 py-2 mr-5 mt-1  text-lg rounded font-semibold bg-primary text-white hover:bg-secondary transition-colors">
+    {{ claro ? 'Modo Oscuro' : 'Modo Claro' }}
+  </button>
 </div>
-<ul role="list" class="mx-96 rounded bg-primary shadow-2xl p-10">
-  <li *ngFor="let estudiante of estudiantes" class="flex justify-between border-b border-b-tertiary gap-x-6 p-5">
-    <div class="flex min-w-0 gap-x-4">
-      <img class="dark:shadow-2xl size-10 flex-none bg-gray-50" [src]=estudiante.urlFoto alt="">
-      <div class="min-w-0 flex-auto">
-        <p class="dark:text-azul text-sm/13 font-semibold text-white font-sans w-60">{{estudiante.nombre}} {{estudiante.apellidoPaterno}} {{estudiante.apellidoMaterno}}</p>
-        <p class="dark:text-azul mt-1 truncate text-xs/5 text-white font-sans"> Mátricula: {{estudiante.matricula}}</p>
+<div class="flex justify-center items-center">
+  <ul role="list" class="dark:bg-opacity-50 dark:bg-azulClaro max-w-2xl rounded bg-primary shadow-2xl p-10">
+    <li *ngFor="let estudiante of estudiantes" class="flex justify-between border-b border-b-tertiary gap-x-6 p-5">
+      <div class="flex min-w-0 gap-x-4">
+        <img class="dark:shadow-2xl size-10 flex-none bg-gray-50" [src]=estudiante.urlFoto alt="">
+        <div class="min-w-0 flex-auto">
+          <p class="dark:text-azul text-sm/13 font-semibold text-white font-sans w-60">{{estudiante.nombre}} {{estudiante.apellidoPaterno}} {{estudiante.apellidoMaterno}}</p>
+          <p class="dark:text-azul mt-1 truncate text-xs/5 text-white font-sans"> Mátricula: {{estudiante.matricula}}</p>
+        </div>
       </div>
-    </div>
 
-    <!-- Mostrar Año de Ingreso -->
-    <div class="dark:text-azul mt-2 text-white text-sm/13 font-sans">
-      <p> Ingreso: {{estudiante.fechaIngreso}}</p>
-      <p> Rut: {{estudiante.rut}}</p>
-    </div>
+      <!-- Mostrar Año de Ingreso -->
+      <div class="dark:text-azul mt-2 text-white text-sm font-sans">
+        <p> Ingreso: {{estudiante.fechaIngreso}}</p>
+        <p> Rut: {{estudiante.rut}}</p>
+      </div>
 
-    <!-- Botón para editar estudiante  -->
-    <button class="dark:bg-blue-200 dark:text-azul mt-2 bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-10" (click)="abrirEditarEstudianteModal(estudiante)">
-      Editar
-    </button>
-  </li>
-</ul>
+      <!-- Botón para editar estudiante  -->
+      <button class="dark:bg-transparent dark:border-b-2 dark:border-opacity-60 dark:border-celeste dark:text-azul mt-2 bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-10" (click)="abrirEditarEstudianteModal(estudiante)">
+        Editar
+      </button>
+    </li>
+  </ul>
+</div>
+
 
 <!-- Modal para agregar estudiantes a través de un excel -->
 <div *ngIf="verExcel" id="uploadModal" class="fixed inset-0 flex items-center justify-center bg-primary bg-opacity-50">
