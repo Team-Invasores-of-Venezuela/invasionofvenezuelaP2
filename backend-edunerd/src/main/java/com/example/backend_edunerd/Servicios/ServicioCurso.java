@@ -28,7 +28,7 @@ public class ServicioCurso {
             CursoDTO2 cursoDTO2 = new CursoDTO2(curso);
             cursoDTOS.add(cursoDTO2);
         }
-        return cursoDTOS;
+        return cursoDTOS.reversed();
     }
 
 
