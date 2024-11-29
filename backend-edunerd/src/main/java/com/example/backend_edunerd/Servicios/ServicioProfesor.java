@@ -67,7 +67,7 @@ public class ServicioProfesor {
             ProfesorDTO2 profesorDTO2 = new ProfesorDTO2(profesor);
             ProfesorDTOS.add(profesorDTO2);
         }
-        return ProfesorDTOS;
+        return ProfesorDTOS.reversed();
     }
 
     @Transactional
