@@ -22,6 +22,7 @@ export class CursoAdminComponent implements OnInit{
   abrireliminar = false;
   slideBarvisible = false;
   CURSOS: any[] = []
+  estudiantes: any[] = [];
 
   private apiUrlGetCursos = 'http://localhost:8080/curso/getall';
   private apiUrlSubirArchivo = 'http://localhost:8080/svc/importarCursos';
@@ -38,6 +39,7 @@ export class CursoAdminComponent implements OnInit{
   ngOnInit() {
     this.obtenerCursos();
     this.getDocentes()
+    this.getEstudiantes()
     this.transformarCursos()
     this.cargarTema();
   }
@@ -98,20 +100,80 @@ export class CursoAdminComponent implements OnInit{
       );
   }
 
-  compararNombreProfesor(): void {
+  getEstudiantes(): void {
+    this.http.get<any[]>('http://localhost:8080/estudiante/getall').subscribe(
+      (response: any[]) => {
+        this.estudiantes = response;
+        console.log('Estudiantes obtenidos', this.estudiantes);
+        this.compararEstudiantes();
+      },
+      (error) => {
+        console.error('Error al obtener estudiantes:', error);
+      }
+    );
+  }
+
+  compararEstudiantes(): void {
     this.mostrarCursos.forEach(curso => {
+      //console.log('Curso.alumnos:', curso.alumnos);
+
+      // Validar que `curso.alumnos` no sea nulo
+      const alumnosCurso = curso.alumnos || [];
+      const alumnosCursoValidados = alumnosCurso.filter((alumno: string) => alumno);
+
+      if (alumnosCursoValidados.length === 0) {
+        curso.alumnos = ['No hay estudiantes asignados'];
+        //console.log(`Curso: ${curso.nombre}, sin estudiantes asignados`);
+        return;
+      }
+
+      // Realizar el mapeo entre `d.alumnos` y `estudiantes.matricula`
+      curso.alumnos = alumnosCursoValidados.map((matricula: string) => {
+        const estudiante = this.estudiantes.find(e => e.matricula?.trim() === matricula.trim());
+
+        if (estudiante) {
+          const nombreCompleto = `${estudiante.nombre} ${estudiante.apellidoPaterno || ''} ${estudiante.apellidoMaterno || ''}`.trim();
+          return nombreCompleto;
+        } else {
+          return `Estudiante no encontrado (${matricula})`;
+        }
+      });
+
+      //console.log(`Curso: ${curso.nombre}, Estudiantes: ${curso.listaEstudiantes.join(', ')}`);
+    });
+  }
+
+
+
+  compararNombreProfesor(): void {
+    //console.log("Todos los docentes", this.amniocenteses);
+    this.mostrarCursos.forEach(curso => {
+      //console.log("Curso.profesor", curso.profesor);
+
+      const profesorRut = curso.profesor ? curso.profesor.trim() : null;
+
+      if (!profesorRut) {
+        curso.nombreProfesor = 'Profesor no encontrado';
+        //console.log(`Curso: ${curso.nombre}, Profesor no encontrado (RUT inválido)`);
+        return;
+      }
+
       // @ts-ignore
-      const docente = this.amniocenteses.find(d => d.rut.trim() === curso.profesor.trim());
+      const docente = this.amniocenteses.find(d => {
+        const docenteRut = d.rut ? d.rut.trim() : null;
+        return docenteRut === profesorRut;
+      });
 
       if (docente) {
         curso.nombreProfesor = docente.nombre;
-        console.log(`Curso: ${curso.nombre}, Profesor: ${curso.nombreProfesor}`);
+        //console.log(`Curso: ${curso.nombre}, Profesor: ${curso.nombreProfesor}`);
       } else {
         curso.nombreProfesor = 'Profesor no encontrado';
-        console.log(`Curso: ${curso.nombre}, Profesor no encontrado`);
+        //console.log(`Curso: ${curso.nombre}, Profesor no encontrado`);
       }
     });
   }
+
 
   dividirMatriculas(curso: any): any[] {
     const alumnos = curso.alumnos;

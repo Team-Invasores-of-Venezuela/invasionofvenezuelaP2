@@ -43,17 +43,20 @@
               <img width="25" height="25" src="https://img.icons8.com/sf-regular/48/003064/trash.png" alt="trash" />
             </button>
           </div>
+
           <div class="px-6 py-4">
             <div class="font-extrabold text-xl mb-2">
               {{ curso.nombre }}
               <div class="dark:text-primary font-medium text-tertiary"> Profesor(a): {{ curso.nombreProfesor }}</div>
             </div>
-            <div class="dark:text-primary text-secondary text-base">
-              <div *ngFor="let grupo of dividirMatriculas(curso)">
-                <p>{{ grupo.join(', ') }}</p>
-              </div>
+            <div class="dark:text-secondary text-secondary text-base mt-4">
+              <div class="font-bold text-tertiary mb-2">Estudiantes:</div>
+              <ul class="list-disc text-tertiary list-inside">
+                <li *ngFor="let estudiante of curso.alumnos">{{ estudiante }}</li>
+              </ul>
             </div>
           </div>
+
         </div>
       </div>
     </div>
