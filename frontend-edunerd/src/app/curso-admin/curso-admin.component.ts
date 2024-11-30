@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import { RouterLink, RouterModule } from '@angular/router';
+import { RouterLink, RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, NgIf } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+
 
 @Component({
   selector: 'app-curso-admin',
@@ -20,25 +21,114 @@ export class CursoAdminComponent implements OnInit{
   abrirAgregarCurso = false;
   abrireliminar = false;
   slideBarvisible = false;
+  CURSOS: any[] = []
 
   private apiUrlGetCursos = 'http://localhost:8080/curso/getall';
   private apiUrlSubirArchivo = 'http://localhost:8080/svc/importarCursos';
   private apiUrlcrear = 'http://localhost:8080/curso/create';
   private apiUrleliminar = 'http://localhost:8080/curso/delete';
+  private amniocenteses: any[] | undefined;
+  nombreProfesor: string = '';
 
-  constructor(private http: HttpClient, private router:RouterModule) {}
-  mostrarCursos: { id: string, titulo: string, docente: string, aprendizajes:string[],ano:number,semestre:number }[] = [];
+  constructor(private http: HttpClient, private router:Router) {}
+  mostrarCursos: { nombreProfesor: any; id: any; ano: any; alumnos: any; nombre: any; profesor: any;seccion: any; semestre: any }[] = [];
   verEditarEstudianteModal = false;
   protected cursoEditado: any = {};
 
   ngOnInit() {
     this.obtenerCursos();
+    this.getDocentes()
+    this.transformarCursos()
+    this.cargarTema();
   }
+
+  claro = false;
+
+  modoOscuro(): void {
+    this.claro = !this.claro;
+    this.actualizarTema();
+  }
+
+  private cargarTema(): void {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      this.claro = true;
+      document.documentElement.classList.add('dark');
+    } else {
+      this.claro = false;
+      document.documentElement.classList.remove('dark');
+    }
+  }
+
+  private actualizarTema(): void {
+    const htmlElement = document.documentElement;
+    if (this.claro) {
+      htmlElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      htmlElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }
+
+  transformarCursos() {
+    // @ts-ignore
+    this.mostrarCursos = this.CURSOS.map(curso => ({
+      id: curso.id,
+      ano: curso.ano,
+      semestre: curso.semestre,
+      seccion: curso.seccion,
+      nombre: curso.nombre,
+      profesor: curso.profesor,
+      alumnos: curso.alumnos.join(', ')
+    }));
+  }
+
+  getDocentes(): void {
+    this.http.get<any[]>('http://localhost:8080/profesor/getall')
+      .subscribe(
+        (data: any[]) => {
+          console.log('Docentes obtenidos', data);
+          this.amniocenteses = data;
+          this.compararNombreProfesor()
+        },
+        (error: any) => {
+          console.log('Error al obtener los docentes');
+        }
+      );
+  }
+
+  compararNombreProfesor(): void {
+    this.mostrarCursos.forEach(curso => {
+      // @ts-ignore
+      const docente = this.amniocenteses.find(d => d.rut.trim() === curso.profesor.trim());
+
+      if (docente) {
+        curso.nombreProfesor = docente.nombre;
+        console.log(`Curso: ${curso.nombre}, Profesor: ${curso.nombreProfesor}`);
+      } else {
+        curso.nombreProfesor = 'Profesor no encontrado';
+        console.log(`Curso: ${curso.nombre}, Profesor no encontrado`);
+      }
+    });
+  }
+
+  dividirMatriculas(curso: any): any[] {
+    const alumnos = curso.alumnos;
+    const grupos: any[] = [];
+
+    for (let i = 0; i < alumnos.length; i += 5) {
+      grupos.push(alumnos.slice(i, i + 5));
+    }
+    return grupos;
+  }
+
 
   obtenerCursos() {
     this.http.get<any>(this.apiUrlGetCursos).subscribe({
       next: (data) => {
         this.mostrarCursos = data;
+        console.log("mostrarCursos",this.mostrarCursos)
       },
       error: (error) => {
         console.error('Error al obtener los cursos:', error);
@@ -75,18 +165,17 @@ export class CursoAdminComponent implements OnInit{
             ano: this.cursosTotales.ano,
           };
 
-          // Enviar curso al backend
           this.http.post(`${this.apiUrlcrear}`, curso).subscribe({
             next: (response) => {
               alert('Curso agregado exitosamente');
               this.cursosTotales = {
                 titulo: '',
                 docente: '',
-                aprendizajes: [''], // Reinicia el campo de aprendizajes
+                aprendizajes: [''],
                 semestre:0,
                 ano:0,
               };
-              this.abrirAgregarCurso = false; // Cierra el modal
+              this.abrirAgregarCurso = false;
             },
             error: (error) => {
               console.error('Error al agregar el curso:', error);
@@ -104,6 +193,18 @@ export class CursoAdminComponent implements OnInit{
     }
   }
 
+  mostrarConfirmacionEliminar = false;
+  cursoAEliminar: any = null;
+
+  confirmarEliminacion(curso: any) {
+    this.cursoAEliminar = curso;
+    this.mostrarConfirmacionEliminar = true;
+  }
+
+  cancelarEliminacion() {
+    this.cursoAEliminar = null;
+    this.mostrarConfirmacionEliminar = false;
+  }
   eliminarCurso() {
     if (!this.cursoSeleccionadoId) {
       alert('Por favor, selecciona un curso para eliminar.');
@@ -119,10 +220,9 @@ export class CursoAdminComponent implements OnInit{
     // @ts-ignore
     this.http.post<any>(`${this.apiUrleliminar}?id=${cursoSeleccionado.id}`).subscribe({
       next: () => {
-        alert(`El curso "${cursoSeleccionado.titulo}" ha sido eliminado.`);
-        // Actualizar la lista de cursos después de la eliminación
+        alert(`El curso "${cursoSeleccionado.nombre}" ha sido eliminado.`);
         this.mostrarCursos = this.mostrarCursos.filter((curso) => curso.id !== this.cursoSeleccionadoId);
-        this.cerrarFormularioEliminar(); // Cerrar el formulario/modal
+        this.cerrarFormularioEliminar();
       },
       error: (error) => {
         console.error('Error al eliminar el curso:', error);
@@ -143,7 +243,6 @@ export class CursoAdminComponent implements OnInit{
       ano:this.cursoEditado.ano
     };
 
-    // Realizamos la llamada POST al endpoint de actualización
     this.http.post('http://localhost:8080/curso/update',curso)
       .subscribe(
         (response) => {
@@ -163,8 +262,8 @@ export class CursoAdminComponent implements OnInit{
     this.verEditarEstudianteModal=false;
   }
   abrirEditarCurso(curso: any) {
-    this.cursoEditado = { ...curso }; // Copia los datos del curso para editar
-    this.verEditarEstudianteModal = true; // Abre el modal
+    this.cursoEditado = { ...curso };
+    this.verEditarEstudianteModal = true;
   }
   abrirFormularioEliminar() {
     this.abrireliminar=true;
@@ -225,4 +324,10 @@ export class CursoAdminComponent implements OnInit{
       alert('Por favor, seleccione un archivo antes de subir.');
     }
   }
+
+  navegarAdmin() {
+    this.router.navigate(['/administrador']);
+  }
+
+
 }

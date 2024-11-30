@@ -59,12 +59,12 @@ public class ServicioEstudiante {
         List<Estudiante> estudiantes = repositorioEstudiante.findAll();
         List<EstudianteDTO2> estudianteDTOS = new ArrayList<>();
         for (Estudiante estudiante : estudiantes) {
-            System.out.println(estudiante.getFechaIngreso());
-            System.out.println(estudiante.getFechaNacimiento());
+            //System.out.println(estudiante.getFechaIngreso());
+            //System.out.println(estudiante.getFechaNacimiento());
             EstudianteDTO2 estudianteDTO2 = new EstudianteDTO2(estudiante);
             estudianteDTOS.add(estudianteDTO2);
         }
-        return estudianteDTOS;
+        return estudianteDTOS.reversed();
     }
 
     @Transactional

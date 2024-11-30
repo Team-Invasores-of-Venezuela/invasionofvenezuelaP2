@@ -6,8 +6,12 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 
 interface Estudiante {
   nombre: string;
+  apellidoPaterno: string;
+  apellidoMaterno: string;
   matricula: string;
-  cursos: string[];
+  fechaIngreso: string;
+  rut: string;
+  urlFoto: string;
   mostrarAsignaturas: boolean;
 }
 
@@ -33,13 +37,42 @@ export class EstudianteAdminComponent implements OnInit{
   visible = false;
   selectedFile: File | null = null;
 
-
-
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
     this.getEstudiantes();
     console.log('Estudiantes: ',this.estudiantes);
+    console.log('Estudiantes: ',this.estudiantes);
+    this.cargarTema();
+  }
+
+  claro = false;
+
+  modoOscuro(): void {
+    this.claro = !this.claro;
+    this.actualizarTema();
+  }
+
+  private cargarTema(): void {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      this.claro = true;
+      document.documentElement.classList.add('dark');
+    } else {
+      this.claro = false;
+      document.documentElement.classList.remove('dark');
+    }
+  }
+
+  private actualizarTema(): void {
+    const htmlElement = document.documentElement;
+    if (this.claro) {
+      htmlElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      htmlElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
   }
 
   getEstudiantes(): void {
@@ -63,9 +96,16 @@ export class EstudianteAdminComponent implements OnInit{
   modalEleccion() {
     this.verEleccion = !this.verEleccion;
   }
+  cerrarModalEleccion() {
+    this.verEleccion = false;
+  }
 
   modalManual() {
     this.verManual = !this.verManual;
+  }
+
+  cerrarModalManual() {
+    this.verManual = false;
   }
 
   cerrarModal() {
@@ -161,7 +201,8 @@ export class EstudianteAdminComponent implements OnInit{
             (response) => {
               console.log('Estudiante eliminado:', response);
               this.estudiantes = this.estudiantes.filter((est: { id: any; }) => est.id !== id);
-            },
+              this.cerrarEliminarEstudianteModal();
+              },
             (error) => {
               console.error('Error al eliminar el estudiante:', error);
             }
@@ -173,8 +214,20 @@ export class EstudianteAdminComponent implements OnInit{
   cerrarEliminarEstudianteModal(): void {
     this.verEliminarEstudianteModal = false;
     this.estudiantesSeleccionados = [];
+    this.mostrarConfirmacionEliminar=false;
+  }
+  mostrarConfirmacionEliminar = false;
+  estudianteAEliminar: any = null;
+
+  confirmarEliminacion(estudiante: any) {
+    this.estudianteAEliminar = estudiante;
+    this.mostrarConfirmacionEliminar = true;
   }
 
+  cancelarEliminacion() {
+    this.estudianteAEliminar = null;
+    this.mostrarConfirmacionEliminar = false;
+  }
   editarEstudiante(): void {
     const estudianteModificado = this.estudianteEditado;
 
@@ -197,6 +250,10 @@ export class EstudianteAdminComponent implements OnInit{
           console.error('Error al actualizar el estudiante:', error);
         }
       );
+  }
+
+  navegarAdmin() {
+    this.router.navigate(['/administrador']);
   }
 
 }

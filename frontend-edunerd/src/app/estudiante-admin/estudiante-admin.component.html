@@ -1,29 +1,46 @@
-<body class="min-h-screen bg-primary font-sans">
-<header class="bg-secondary text-white p-4 w-full text-left">
-  <h2 class="text-2xl font-semibold text-white font-sans">Administración de estudiantes</h2>
+<body class="min-h-screen  dark:bg-claro bg-primary font-sans">
+<header class="dark:bg-celeste bg-secondary text-white p-4 w-full text-left">
+  <h2 class="dark:text-claro text-2xl font-semibold text-white font-sans">Administración de estudiantes</h2>
+
 </header>
-<h2 class="text-3xl text-white m-10 ml-64">Estudiantes</h2>
-<ul role="list" class="mx-96 rounded bg-primary shadow-2xl p-10">
-  <li *ngFor="let estudiante of estudiantes" class="flex justify-between border-b border-b-tertiary gap-x-6 p-5">
-    <div class="flex min-w-0 gap-x-4">
-      <img class="size-10 flex-none bg-gray-50" src='https://res.cloudinary.com/ddwshn5tb/image/upload/v1731725951/perfil_v6tmdm.png' alt="">
-      <div class="min-w-0 flex-auto">
-        <p class="text-sm/13 font-semibold text-white font-sans w-60">{{estudiante.nombre}}</p>
-        <p class="mt-1 truncate text-xs/5 text-white font-sans">{{estudiante.matricula}}</p>
+
+<div class="flex justify-between items-center ">
+  <h2 class="dark:text-azul text-3xl text-white m-10 ml-64 mr-36">Estudiantes</h2>
+
+  <button
+    class="ml-72  dark:bg-azulClaro dark:text-claro mt-1  px-4 py-2 text-lg font-semibold text-white bg-midSecondary rounded shadow-lg hover:bg-secondary hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white"
+    (click)="navegarAdmin()">
+    Volver
+  </button>
+  <button (click)="modoOscuro()" class=" dark:bg-celeste dark:bg-opacity-40 dark:text-claro px-4 py-2 mr-5 mt-1  text-lg rounded font-semibold bg-primary text-white hover:bg-secondary transition-colors">
+    {{ claro ? 'Modo Oscuro' : 'Modo Claro' }}
+  </button>
+</div>
+<div class="flex justify-center items-center">
+  <ul role="list" class="dark:bg-opacity-50 dark:bg-azulClaro max-w-2xl rounded bg-primary shadow-2xl p-10">
+    <li *ngFor="let estudiante of estudiantes" class="flex justify-between border-b border-b-tertiary gap-x-6 p-5">
+      <div class="flex min-w-0 gap-x-4">
+        <img class="dark:shadow-2xl size-10 flex-none bg-gray-50" [src]=estudiante.urlFoto alt="">
+        <div class="min-w-0 flex-auto">
+          <p class="dark:text-azul text-sm/13 font-semibold text-white font-sans w-60">{{estudiante.nombre}} {{estudiante.apellidoPaterno}} {{estudiante.apellidoMaterno}}</p>
+          <p class="dark:text-azul mt-1 truncate text-xs/5 text-white font-sans"> Mátricula: {{estudiante.matricula}}</p>
+        </div>
       </div>
-    </div>
 
-    <!-- Mostrar Año de Ingreso -->
-    <div class="mt-2 text-white text-sm/13 font-sans">
-      Ingreso: {{estudiante.anoIngreso}}
-    </div>
+      <!-- Mostrar Año de Ingreso -->
+      <div class="dark:text-azul mt-2 text-white text-sm font-sans">
+        <p> Ingreso: {{estudiante.fechaIngreso}}</p>
+        <p> Rut: {{estudiante.rut}}</p>
+      </div>
 
-    <!-- Botón para editar estudiante  -->
-    <button class="mt-2 bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-10" (click)="abrirEditarEstudianteModal(estudiante)">
-      Editar
-    </button>
-  </li>
-</ul>
+      <!-- Botón para editar estudiante  -->
+      <button class="dark:bg-transparent dark:border-b-2 dark:border-opacity-60 dark:border-celeste dark:text-azul mt-2 bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-10" (click)="abrirEditarEstudianteModal(estudiante)">
+        Editar
+      </button>
+    </li>
+  </ul>
+</div>
+
 
 <!-- Modal para agregar estudiantes a través de un excel -->
 <div *ngIf="verExcel" id="uploadModal" class="fixed inset-0 flex items-center justify-center bg-primary bg-opacity-50">
@@ -46,30 +63,33 @@
 
 
 <!-- Botón para añadir estudiante -->
-<div class="flex justify-center mt-12 gap-4">
-  <button class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48 mb-40" (click)="modalEleccion()">
+<div class="flex justify-center mt-12 gap-4 mb-8">
+  <button class="dark:bg-celeste dark:text-claro bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48 mb-40" (click)="modalEleccion()">
     Añadir estudiante
   </button>
-  <button class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48" (click)="abrirEliminarEstudianteModal()">
+  <button class="dark:bg-celeste dark:text-claro bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11 w-48" (click)="abrirEliminarEstudianteModal()">
     Eliminar estudiante
   </button>
 </div>
 
 <!-- Modal para elegir el método para agregar estudiante/s -->
-<div *ngIf="verEleccion" id="eleccion" class="fixed inset-0 flex items-center justify-center bg-primary bg-opacity-50">
-  <div class="bg-midSecondary h-40 w-auto shadow-2xl rounded p-10 flex flex-col items-center space-y-4">
-    <button class="bg-secondary text-white px-4 py-2 rounded hover:bg-secondary h-11 w-48 hover:scale-105" (click)="modalEleccion(); modalManual()">
+<div *ngIf="verEleccion" id="eleccion" class="dark:bg-azul dark:bg-opacity-60 fixed inset-0 flex items-center justify-center bg-primary bg-opacity-60">
+  <div class="dark:bg-claro bg-midSecondary h-58 w-auto shadow-2xl rounded p-10 flex flex-col items-center space-y-4">
+    <button class="ml-64 -mt-2" (click)="cerrarModalEleccion()">X</button>
+    <button class="dark:bg-azulClaro dark:text-primary bg-secondary text-white px-4 py-2 rounded hover:bg-secondary h-11 w-48 hover:scale-105" (click)="modalEleccion(); modalManual()">
       Añadir manual
     </button>
-    <button class="bg-secondary text-white px-4 py-2 rounded hover:bg-secondary h-11 w-48 hover:scale-105" (click)="modalExcel(); modalEleccion();">
+    <button class="dark:bg-azulClaro dark:text-primary bg-secondary text-white px-4 py-2 rounded hover:bg-secondary h-11 w-48 hover:scale-105" (click)="modalEleccion()">
       Subir excel
     </button>
   </div>
 </div>
 
 <!-- Modal para agregar un estudiante manualmente -->
-<div *ngIf="verManual" id="manual" class="fixed inset-0 flex items-center justify-center bg-secondary bg-opacity-50 shadow-2xl">
-  <form (ngSubmit)="onSubmit()" class="w-1/4 mx-auto p-6 bg-primary shadow-lg rounded-lg space-y-6 text-white">
+<div *ngIf="verManual" id="manual" class="dark:bg-azul dark:bg-opacity-60 fixed inset-0 flex items-center justify-center bg-secondary bg-opacity-50 shadow-2xl">
+
+  <form (ngSubmit)="onSubmit()" class="dark:bg-azulClaro w-1/4 mx-auto p-6 bg-primary shadow-lg rounded-lg space-y-6 text-white">
+    <button class="dark:text-azul text-white -mt-30 ml-60" (click)="cerrarModalManual()">X</button>
     <!-- Campo: Nombre -->
     <div>
       <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre</label>
@@ -79,7 +99,7 @@
         [(ngModel)]="estudiante.nombre"
         type="text"
         required
-        class="mt-1 block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-accent focus:border-accent bg-secondary"
+        class="text-primary dark:bg-claro mt-1 block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-accent focus:border-accent bg-secondary"
         placeholder="Ingresa el nombre completo"
       />
     </div>
@@ -93,7 +113,7 @@
         [(ngModel)]="estudiante.matricula"
         type="text"
         required
-        class="mt-1 block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-accent focus:border-accent bg-secondary"
+        class=" text-primary dark:bg-claro mt-1 block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-accent focus:border-accent bg-secondary"
         placeholder="Ingresa el número de matrícula"
       />
     </div>
@@ -107,14 +127,14 @@
         [(ngModel)]="estudiante.anoIngreso"
         type="number"
         required
-        class="mt-1 block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-accent focus:border-accent bg-secondary"
+        class="text-primary dark:bg-claro mt-1 block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-accent focus:border-accent bg-secondary"
         placeholder="Ingresa el año de ingreso del estudiante"
       />
     </div>
 
     <!-- Botón: Enviar -->
     <div class="text-center">
-      <button type="submit" class="bg-midSecondary text-white px-6 py-2 rounded-lg hover:bg-accent-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent" (click)="modalManual(); onSubmit()">
+      <button type="submit" class="dark:bg-celeste bg-midSecondary font-medium text-white px-6 py-2 rounded-lg hover:bg-accent-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent" (click)="modalManual()">
         Agregar Estudiante
       </button>
     </div>
@@ -123,19 +143,19 @@
 
 
 <!-- Modal para eliminar un estudiante -->
-<div *ngIf="verEliminarEstudianteModal" id="eliminarModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-20">
-  <div class="bg-midSecondary shadow-lg p-6 max-w-md w-full rounded-lg">
-    <h2 class="text-xl font-bold mb-4 text-white">Eliminar Estudiante</h2>
-    <p class="mb-4 text-white" >Seleccione un estudiante para eliminar:</p>
+<div *ngIf="verEliminarEstudianteModal" id="eliminarModal" class="dark:bg-azul dark:bg-opacity-60 fixed inset-0 flex items-center justify-center bg-black bg-opacity-20">
+  <div class="dark:bg-claro bg-midSecondary shadow-lg p-6 max-w-md w-full rounded-lg">
+    <h2 class="dark:text-azul text-xl font-bold mb-4 text-white">Eliminar Estudiante</h2>
+    <p class="dark:text-azul mb-4 text-white" >Seleccione un estudiante para eliminar:</p>
 
     <div class="max-h-60 overflow-y-auto">
       <table class="min-w-full table-auto border-collapse">
         <thead>
         <tr class="bg-gray-100">
-          <th class="px-4 py-2 text-left font-medium text-sm text-gray-600">Seleccionar</th>
-          <th class="px-4 py-2 text-left font-medium text-sm text-gray-600">Nombre</th>
-          <th class="px-4 py-2 text-left font-medium text-sm text-gray-600">Matrícula</th>
-          <th class="px-4 py-2 text-left font-medium text-sm text-gray-600">Año Ingreso</th>
+          <th class="dark:text-azul px-4 py-2 text-left font-medium text-sm text-gray-600">Seleccionar</th>
+          <th class="dark:text-azul px-4 py-2 text-left font-medium text-sm text-gray-600">Nombre</th>
+          <th class="dark:text-azul px-4 py-2 text-left font-medium text-sm text-gray-600">Matrícula</th>
+          <th class="dark:text-azul px-4 py-2 text-left font-medium text-sm text-gray-600">Año Ingreso</th>
         </tr>
         </thead>
         <tbody>
@@ -148,56 +168,65 @@
               class="mr-2"
             />
           </td>
-          <td class="px-4 py-2 text-sm text-white">{{ estudiante.nombre }}</td>
-          <td class="px-4 py-2 text-sm text-white">{{ estudiante.matricula }}</td>
-          <td class="px-4 py-2 text-sm text-white">{{ estudiante.anoIngreso }}</td>
+          <td class="dark:text-azul px-4 py-2 text-sm text-white">{{ estudiante.nombre }}</td>
+          <td class="dark:text-azul px-4 py-2 text-sm text-white">{{ estudiante.matricula }}</td>
+          <td class="dark:text-azul px-4 py-2 text-sm text-white">{{ estudiante.anoIngreso }}</td>
         </tr>
         </tbody>
       </table>
     </div>
 
     <button
-      class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 mt-4 w-full"
+      class="dark:bg-celeste dark:text-azul bg-primary text-white px-4 py-2 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 mt-4 w-full"
       [disabled]="estudiantesSeleccionados.length === 0"
-      (click)="eliminarEstudiante()">
+      (click)="confirmarEliminacion(estudiantesSeleccionados)">
       Eliminar Estudiantes
     </button>
 
     <button
       (click)="cerrarEliminarEstudianteModal()"
-      class="bg-secondary text-tertiary px-4 py-2 rounded-lg hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 mt-2 w-full">
+      class="dark:bg-azulClaro dark:text-azul bg-secondary text-tertiary px-4 py-2 rounded-lg hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 mt-2 w-full">
       Cerrar
     </button>
   </div>
 </div>
 
+<div *ngIf="mostrarConfirmacionEliminar" class="fixed inset-0 flex items-center justify-center bg-primary bg-opacity-20 dark:bg-azul dark:bg-opacity-60">
+  <div class="dark:bg-claro bg-white rounded-lg shadow-lg p-6 max-w-sm w-full">
+    <h2 class="text-xl font-semibold mb-4 dark:text-azul">Confirmar Eliminación</h2>
+    <p class="mb-4 dark:text-azul">¿Estás seguro de que deseas eliminar??</p>
+    <div class="flex justify-end space-x-4">
+      <button (click)="cancelarEliminacion()" class="dark:bg-transparent dark:text-primary bg-tertiary text-secondary px-4 py-2 rounded">Cancelar</button>
+      <button (click)="eliminarEstudiante()" class="dark:bg-celeste bg-secondary text-white px-4 py-2 rounded">Eliminar</button>
+    </div>
+  </div>
+</div>
+
 <!-- Modal de edición -->
-<div *ngIf="verEditarEstudianteModal" id="editarModal" class="fixed inset-0 flex items-center justify-center bg-primary bg-opacity-50">
-  <div class="bg-midSecondary h-auto w-auto shadow-2xl rounded p-10 flex flex-col items-center space-y-4 relative">
+<div *ngIf="verEditarEstudianteModal" id="editarModal" class="dark:bg-azul dark:bg-opacity-60 fixed inset-0 flex items-center justify-center bg-primary bg-opacity-50">
+  <div class="dark:bg-azulClaro bg-midSecondary h-auto w-auto shadow-2xl rounded p-10 flex flex-col items-center space-y-4 relative">
     <button class="absolute top-2 right-2 text-white bg-red-500 rounded-full h-8 w-8 flex items-center justify-center" (click)="cerrarEditarEstudianteModal()">×</button>
-
-    <h2 class="text-xl font-bold text-white">Editar Estudiante</h2>
-
+    <h2 class="dark:text-azul text-xl font-bold text-white">Editar Estudiante</h2>
     <!-- Formulario de edición -->
     <form (ngSubmit)="editarEstudiante()">
       <div class="mb-4">
-        <label for="nombre" class="block text-white">Nombre:</label>
+        <label for="nombre" class="dark:text-azul block text-white">Nombre:</label>
         <input id="nombre1" [(ngModel)]="estudianteEditado.nombre" name="nombre" class="mt-1 p-2 w-64 rounded" required />
       </div>
       <div class="mb-4">
-        <label for="matricula" class="block text-white">Matrícula:</label>
+        <label for="matricula" class="dark:text-azul block text-white">Matrícula:</label>
         <input id="matricula1" [(ngModel)]="estudianteEditado.matricula" name="matricula" class="mt-1 p-2 w-64 rounded" required />
       </div>
       <div class="mb-4">
-        <label for="anoIngreso" class="block text-white">Año de Ingreso:</label>
+        <label for="anoIngreso" class="dark:text-azul block text-white">Año de Ingreso:</label>
         <input id="anoIngreso" [(ngModel)]="estudianteEditado.anoIngreso" name="anoIngreso" class="mt-1 p-2 w-64 rounded" required />
       </div>
-
-      <button type="submit" class="bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light w-48" (click)="editarEstudiante()">
-        Guardar cambios
-      </button>
+      <div class="flex justify-center w-full">
+        <button type="submit" class="items-center dark:text-claro font-medium dark:bg-celeste bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light w-48">
+          Guardar cambios
+        </button>
+      </div>
     </form>
   </div>
 </div>
 
-</body>

@@ -7,12 +7,46 @@ import {Router, RouterLink} from '@angular/router';
 @Component({
   selector: 'app-administrador',
   standalone: true,
-  imports: [HttpClientModule,FormsModule,CommonModule,RouterLink],
+  imports: [HttpClientModule,FormsModule,CommonModule],
   templateUrl: './administrador.component.html',
   styleUrl: './administrador.component.css'
 })
 export class AdministradorComponent {
-  constructor(private router: Router) {
+  mostrarFormulario = false;
+
+  adminData = {
+    email: '',
+    contrasena: '',
+    admin: true,
+    rut: ''
+  };
+  backendUrl = 'http://localhost:8080/usuario/registeradmin';
+  registrarAdmin() {
+    this.http.post(this.backendUrl, this.adminData).subscribe(
+      (response) => {
+        alert('Administrador registrado con éxito');
+        this.limpiarFormulario();
+        this.mostrarFormulario = false;
+      },
+      (error) => {
+        console.error(error);
+        alert('Error al registrar el administrador');
+      }
+    );
+  }
+
+  limpiarFormulario() {
+    this.adminData = {
+      email: '',
+      contrasena: '',
+      admin: true,
+      rut: ''
+    };
+  }
+  constructor(private http: HttpClient, private router: Router) {
+  }
+  alternarFormulario() {
+    this.mostrarFormulario = !this.mostrarFormulario;
   }
   navegarCursoAdmin() {
     this.router.navigate(['/cursoadmin']);
@@ -22,5 +56,14 @@ export class AdministradorComponent {
   }
   navegarEstudianteAdmin() {
     this.router.navigate(['/estudianteadmin']);
+  }
+
+  cerrarSesion() {
+    // Elimina los datos almacenados de sesión
+    localStorage.removeItem('userId');
+    localStorage.removeItem('isAdmin');
+
+    // Redirige al usuario a la página de login
+    this.router.navigate(['/login']);
   }
 }
