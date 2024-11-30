@@ -24,16 +24,20 @@ export class DocenteComponent implements OnInit{
   private apiUrldocente = 'http://localhost:8080/usuario/';
   docenteId = localStorage.getItem('userId');
   nombre= localStorage.getItem('nombre');
+  periodos: { anio: number; semestre: number }[] = [];
+  hayCursos: boolean = false;
 
-constructor(private router: Router, private authService: AuthService, private http: HttpClient) {
-
+  constructor(private router: Router, private authService: AuthService, private http: HttpClient) {
+    for (let year = 2016; year <= 2024; year++) {
+      for (let semester = 1; semester <= 2; semester++) {
+        this.periodos.push({ anio: year, semestre: semester });
+      }
+    }
   }
-
 
   ngOnInit() {
     this.cargarDatosDocente();
     this.getCursoAnioSemestre(1,1);
-
   }
 
   cargarDatosDocente() {
@@ -89,6 +93,7 @@ constructor(private router: Router, private authService: AuthService, private ht
       }
     }
     console.log("Cursos filtrados",this.cursosFiltrados);
+    this.hayCursos = this.cursosFiltrados.length > 0;
 
   }
 
