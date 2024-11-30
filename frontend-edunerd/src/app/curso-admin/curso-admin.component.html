@@ -40,13 +40,93 @@
 
           <div class="flex justify-between items-center p-4 dark:text-azul">
             <span>{{ curso.ano }} - {{ curso.semestre }} / Sección: {{ curso.seccion }}</span>
-            <button class="dark:text-claro dark:bg-celeste dark:bg-opacity-60 bg-secondary text-tertiary px-4 py-2 rounded focus:bg-white"
-                    (click)="abrirEditarCurso(curso)">
+            <button
+              class="dark:text-claro dark:bg-celeste dark:bg-opacity-60 bg-secondary text-tertiary px-4 py-2 rounded focus:bg-white"
+              (click)="abrirEditarCurso(curso)"
+            >
               Editar
             </button>
             <button (click)="abrirModalEliminar(curso)">
               <img width="25" height="25" src="https://img.icons8.com/sf-regular/48/003064/trash.png" alt="trash" />
             </button>
+          </div>
+
+          <!-- Modal para editar curso -->
+          <div *ngIf="verEditarCursoModal" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
+            <div class="bg-white rounded-lg shadow-xl p-6 w-1/3">
+              <h2 class="text-xl font-semibold mb-4 text-center">Editar Curso</h2>
+              <form (ngSubmit)="editarCurso()">
+                <div class="mb-4">
+                  <label class="block text-gray-700 font-medium mb-2">Carrera</label>
+                  <input
+                    [(ngModel)]="cursoEditado.carrera"
+                    name="carrera"
+                    class="border rounded-lg px-4 py-2 w-full"
+                    required
+                  />
+                </div>
+                <div class="mb-4">
+                  <label class="block text-gray-700 font-medium mb-2">Nombre</label>
+                  <input
+                    [(ngModel)]="cursoEditado.nombre"
+                    name="nombre"
+                    class="border rounded-lg px-4 py-2 w-full"
+                    required
+                  />
+                </div>
+                <div class="mb-4">
+                  <label class="block text-gray-700 font-medium mb-2">Año</label>
+                  <input
+                    type="number"
+                    [(ngModel)]="cursoEditado.ano"
+                    name="ano"
+                    class="border rounded-lg px-4 py-2 w-full"
+                    required
+                  />
+                </div>
+                <div class="mb-4">
+                  <label class="block text-gray-700 font-medium mb-2">Semestre</label>
+                  <input
+                    type="number"
+                    [(ngModel)]="cursoEditado.semestre"
+                    name="semestre"
+                    class="border rounded-lg px-4 py-2 w-full"
+                    required
+                  />
+                </div>
+                <div class="mb-4">
+                  <label class="block text-gray-700 font-medium mb-2">Sección</label>
+                  <input
+                    [(ngModel)]="cursoEditado.seccion"
+                    name="seccion"
+                    class="border rounded-lg px-4 py-2 w-full"
+                    required
+                  />
+                </div>
+                <div class="mb-4">
+                  <label class="block text-gray-700 font-medium mb-2">Profesor</label>
+                  <input
+                    [(ngModel)]="cursoEditado.profesor"
+                    name="profesor"
+                    class="border rounded-lg px-4 py-2 w-full"
+                    required
+                  />
+                </div>
+                <div class="flex justify-around mt-6">
+                  <button
+                    type="submit"
+                    class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                    Guardar
+                  </button>
+                  <button
+                    type="button"
+                    class="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
+                    (click)="cerrarEditarCursoModal()">
+                    Cancelar
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
 
           <!-- Modal de confirmación -->
@@ -72,7 +152,9 @@
             <div class="font-extrabold text-xl mb-2">
               {{ curso.nombre }}
               <div class="dark:text-primary font-medium text-tertiary"> Profesor(a): {{ curso.nombreProfesor }}</div>
+              <div class="dark:text-primary font-medium text-tertiary"> Carrera: {{curso.carrera}} </div>
             </div>
+
             <div class="dark:text-secondary text-secondary text-base mt-4">
               <div class="font-bold text-tertiary mb-2">Estudiantes:</div>
               <ul class="list-disc text-tertiary list-inside">

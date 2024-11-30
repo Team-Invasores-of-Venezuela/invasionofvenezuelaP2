@@ -32,9 +32,9 @@ export class CursoAdminComponent implements OnInit{
   nombreProfesor: string = '';
 
   constructor(private http: HttpClient, private router:Router) {}
-  mostrarCursos: { nombreProfesor: any; id: any; ano: any; alumnos: any; nombre: any; profesor: any;seccion: any; semestre: any }[] = [];
+  mostrarCursos: { nombreProfesor: any; id: any; ano: any; alumnos: any; nombre: any; profesor: any; carrera:any ;seccion: any; semestre: any }[] = [];
   verEditarEstudianteModal = false;
-  protected cursoEditado: any = {};
+  //protected cursoEditado: any = {};
 
   ngOnInit() {
     this.obtenerCursos();
@@ -82,6 +82,7 @@ export class CursoAdminComponent implements OnInit{
       seccion: curso.seccion,
       nombre: curso.nombre,
       profesor: curso.profesor,
+      carrera: curso.carrera,
       alumnos: curso.alumnos.join(', ')
     }));
   }
@@ -279,7 +280,7 @@ export class CursoAdminComponent implements OnInit{
       next: () => {
         alert(`El curso "${this.cursoAEliminar.nombre}" ha sido eliminado.`);
         this.mostrarCursos = this.mostrarCursos.filter(curso => curso.id !== this.cursoAEliminar.id);
-        this.cancelarEliminacion(); 
+        this.cancelarEliminacion();
       },
       error: (error) => {
         console.error('Error al eliminar el curso:', error);
@@ -288,41 +289,51 @@ export class CursoAdminComponent implements OnInit{
     });
   }
 
+  verEditarCursoModal: boolean = false;
+  cursoEditado: any = {};
+
+  abrirEditarCurso(curso: any): void {
+    this.cursoEditado = { ...curso }; // Copiar el curso para evitar mutaciones
+    this.verEditarCursoModal = true;
+  }
+
+  cerrarEditarCursoModal(): void {
+    this.cursoEditado = null;
+    this.verEditarCursoModal = false;
+  }
 
   editarCurso(): void {
-    const cursoModificado = this.cursoEditado;
+    const { carrera, nombre, ano, semestre, seccion, profesor } = this.cursoEditado;
 
-    const curso = {
+    if (!carrera || !nombre || !ano || !semestre || !seccion || !profesor) {
+      alert('Por favor, completa todos los campos antes de guardar.');
+      return;
+    }
+
+    const cursoActualizado = {
       id: this.cursoEditado.id,
-      titulo: this.cursoEditado.titulo,
-      docente: this.cursoEditado.docente,
-      aprendizajes:this.cursoEditado.aprendizajes,
-      semestre:this.cursoEditado.semestre,
-      ano:this.cursoEditado.ano
+      carrera,
+      nombre,
+      ano,
+      semestre,
+      seccion,
+      profesor,
     };
 
-    this.http.post('http://localhost:8080/curso/update',curso)
-      .subscribe(
-        (response) => {
-
-          this.obtenerCursos();
-          this.cerrarEditarCursoModal();
-        },
-        error => {
-          console.error('Error al actualizar el curso:', error);
-        }
-      );
+    this.http.post('http://localhost:8080/curso/update', cursoActualizado).subscribe({
+      next: () => {
+        alert('El curso se ha actualizado exitosamente.');
+        this.obtenerCursos(); // Actualizar la lista de cursos
+        this.cerrarEditarCursoModal();
+      },
+      error: (error) => {
+        console.error('Error al actualizar el curso:', error);
+        alert('Hubo un error al actualizar el curso.');
+      },
+    });
   }
 
 
-
-  cerrarEditarCursoModal() {
-    this.verEditarEstudianteModal=false;
-  }
-  abrirEditarCurso(curso: any) {
-    this.cursoEditado = { ...curso };
-    this.verEditarEstudianteModal = true;
-  }
   abrirFormularioEliminar() {
     this.abrireliminar=true;
   }
@@ -386,6 +397,4 @@ export class CursoAdminComponent implements OnInit{
   navegarAdmin() {
     this.router.navigate(['/administrador']);
   }
-
-
 }
