@@ -54,7 +54,7 @@ export class DocenteAdminComponent implements OnInit{
     gradoMax: '',
     //id: ''
   };
-
+  slideBarvisible = false;
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -122,6 +122,13 @@ export class DocenteAdminComponent implements OnInit{
   }
 
 
+  CerrartoggleSidebar(){
+    this.slideBarvisible=false;
+  }
+
+  toggleSidebar() {
+    this.slideBarvisible = !this.slideBarvisible;
+  }
 
   eliminarDocentes(): void {
     if (this.selectedDocentes.size === 0) {
@@ -153,11 +160,6 @@ export class DocenteAdminComponent implements OnInit{
     });
   }
 
-
-
-
-
-
   eliminarDocente(docenteId: string): void {
     this.http.post(`http://localhost:8080/profesor/delete?id=${docenteId}`, {})
       .subscribe(
@@ -171,13 +173,6 @@ export class DocenteAdminComponent implements OnInit{
           alert('Ocurrió un error al eliminar el docente.');
         }
       );
-  }
-  ActivarModoEliminacion(): void {
-    this.modoEliminar = true;
-  }
-
-  VolverModoNormal(): void {
-    this.modoEliminar = false;
   }
 
   abrirModal() {
