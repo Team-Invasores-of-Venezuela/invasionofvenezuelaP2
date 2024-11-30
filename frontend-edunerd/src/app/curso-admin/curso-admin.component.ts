@@ -258,33 +258,28 @@ export class CursoAdminComponent implements OnInit{
   mostrarConfirmacionEliminar = false;
   cursoAEliminar: any = null;
 
-  confirmarEliminacion(curso: any) {
+  abrirModalEliminar(curso: any): void {
     this.cursoAEliminar = curso;
     this.mostrarConfirmacionEliminar = true;
   }
 
-  cancelarEliminacion() {
+  cancelarEliminacion(): void {
     this.cursoAEliminar = null;
     this.mostrarConfirmacionEliminar = false;
   }
-  eliminarCurso() {
-    if (!this.cursoSeleccionadoId) {
+
+  eliminarCurso(): void {
+    if (!this.cursoAEliminar) {
       alert('Por favor, selecciona un curso para eliminar.');
       return;
     }
 
-    const cursoSeleccionado = this.mostrarCursos.find((curso) => curso.id === this.cursoSeleccionadoId);
-    if (!cursoSeleccionado) {
-      alert('No se encontró el curso seleccionado.');
-      return;
-    }
-
     // @ts-ignore
-    this.http.post<any>(`${this.apiUrleliminar}?id=${cursoSeleccionado.id}`).subscribe({
+    this.http.post<any>(`${this.apiUrleliminar}?id=${this.cursoAEliminar.id}`).subscribe({
       next: () => {
-        alert(`El curso "${cursoSeleccionado.nombre}" ha sido eliminado.`);
-        this.mostrarCursos = this.mostrarCursos.filter((curso) => curso.id !== this.cursoSeleccionadoId);
-        this.cerrarFormularioEliminar();
+        alert(`El curso "${this.cursoAEliminar.nombre}" ha sido eliminado.`);
+        this.mostrarCursos = this.mostrarCursos.filter(curso => curso.id !== this.cursoAEliminar.id);
+        this.cancelarEliminacion(); 
       },
       error: (error) => {
         console.error('Error al eliminar el curso:', error);
@@ -292,6 +287,7 @@ export class CursoAdminComponent implements OnInit{
       },
     });
   }
+
 
   editarCurso(): void {
     const cursoModificado = this.cursoEditado;
