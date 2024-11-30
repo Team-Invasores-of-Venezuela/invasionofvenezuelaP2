@@ -17,7 +17,7 @@
       <div class=" w-90 max-w-5xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-8">
 
         <div class="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 gap-4">
-          <div *ngFor="let curso of mostrarCursos" class="w-100 h-50 rounded overflow-hidden shadow-lg bg-tertiary">
+          <div *ngFor="let curso of cursos" class="w-100 h-50 rounded overflow-hidden shadow-lg bg-tertiary">
             <div class="ml-5 mt-2"> {{curso.ano}} - {{curso.semestre}} </div>
             <img class="w-full" alt="{{ curso.titulo }}" />
             <div class="px-6 py-4">
@@ -28,14 +28,14 @@
         </div>
       </div>
 
-      <div *ngIf="mostrarCursos" class="mt-6 bg-white p-4 rounded shadow">
-        <h3 class="text-xl font-semibold text-primary">Estudiantes en {{ mostrarCursos}}</h3>
+      <div *ngIf="cursos" class="mt-6 bg-white p-4 rounded shadow">
+        <h3 class="text-xl font-semibold text-primary">Estudiantes en {{ cursos}}</h3>
         <ul class="mt-2 space-y-2">
           <li *ngFor="let estudiante of estudiantes" class="text-tertiary">
             {{ estudiante.name }}
           </li>
         </ul>
-        <button class="mt-4 text-primary" (click)="mostrarCursos">Cerrar</button>
+        <button class="mt-4 text-primary" (click)="cursos">Cerrar</button>
       </div>
     </main>
   </div>

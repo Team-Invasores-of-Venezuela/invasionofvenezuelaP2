@@ -18,7 +18,8 @@ import {Observable} from 'rxjs';
 export class DocenteComponent implements OnInit{
   docente: { id: string, nombre: string, cursos: string[] } = { id: '', nombre: '', cursos: [] };
   estudiantes: any [] | any;
-  mostrarCursos: { id: string, titulo: string, docente: string, aprendizajes:string[],ano:number,semestre:number }[] = [];
+  cursos: any[] = [];
+  cursosFiltrados: any[] = [];
   private apiUrlGetCursos = 'http://localhost:8080/curso/getall';
   private apiUrldocente = 'http://localhost:8080/usuario/';
   docenteId = localStorage.getItem('userId');
@@ -31,6 +32,7 @@ constructor(private router: Router, private authService: AuthService, private ht
 
   ngOnInit() {
     this.cargarDatosDocente();
+    this.getCursoAnioSemestre(1,1);
 
   }
 
@@ -43,7 +45,7 @@ constructor(private router: Router, private authService: AuthService, private ht
       next: (data) => {
         console.log(this.nombre);
         console.log('Datos:', data);
-        this.mostrarCursos = data.filter(curso => curso.docente === this.nombre);
+        this.cursos = data.filter(curso => curso.docente === this.nombre);
       },
       error: (error) => {
         console.error('Error al obtener los cursos:', error);
@@ -51,9 +53,6 @@ constructor(private router: Router, private authService: AuthService, private ht
       },
     });
   }
-
-
-
 
   cerrarSesion() {
     // Elimina los datos almacenados de sesión
@@ -64,6 +63,33 @@ constructor(private router: Router, private authService: AuthService, private ht
     this.router.navigate(['/login']);
   }
 
+  //Retorna los cursos impartidos por el profesor impartidos en un año y semestre en específico
+  getCursoAnioSemestre(anio: number, semestre: number){
 
+    //Obtiene todos los cursos
+    this.http.get<any>('http://localhost:8080/curso/getall').subscribe({
+      next: (data) => {
+        this.cursos = data;
+        this.filtraCursos(2022, 1);
+      },
+      error: (error) => {
+        console.error('Error al obtener los cursos:', error);
+        alert('No se pudieron cargar los cursos. Intente nuevamente más tarde.');
+      },
+    });
+
+  }
+
+  filtraCursos(anio: number, semestre: number){
+    this.cursosFiltrados = [];
+
+    for (let i = 0; i < this.cursos.length; i++) {
+      if(this.cursos[i].ano == anio && this.cursos[i].semestre == semestre){
+        this.cursosFiltrados.push(this.cursos[i]);
+      }
+    }
+    console.log("Cursos filtrados",this.cursosFiltrados);
+
+  }
 
 }
