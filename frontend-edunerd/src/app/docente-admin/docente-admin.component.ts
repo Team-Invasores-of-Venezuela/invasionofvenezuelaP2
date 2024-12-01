@@ -45,7 +45,7 @@ export class DocenteAdminComponent implements OnInit{
   tituloEditar: string = '';
   gradoEditar: string = '';
   modoEliminar: boolean = false;
-  private apiUrlDescargarEstudiantes = 'http://localhost:8080/svc/descargarestudiantes';
+  private apiUrlDescargarDocentes = 'http://localhost:8080/svc/descargardocentes';
   nuevoDocente: Docente = {
     nombre: '',
     apellidoPaterno: '',
@@ -355,13 +355,13 @@ export class DocenteAdminComponent implements OnInit{
     this.docente = {};
   }
 
-  descargarExcelEstudiantes() {
-    this.http.get(this.apiUrlDescargarEstudiantes, { responseType: 'blob' }).subscribe(
+  descargarExcelDocentes() {
+    this.http.get(this.apiUrlDescargarDocentes, { responseType: 'blob' }).subscribe(
       (response) => {
         const a = document.createElement('a');
         const url = window.URL.createObjectURL(response);
         a.href = url;
-        a.download = 'estudiantes.xlsx';
+        a.download = 'docentes.xlsx';
         a.click();
         window.URL.revokeObjectURL(url);
       },
