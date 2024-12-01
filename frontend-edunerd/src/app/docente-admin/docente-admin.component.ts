@@ -45,6 +45,7 @@ export class DocenteAdminComponent implements OnInit{
   tituloEditar: string = '';
   gradoEditar: string = '';
   modoEliminar: boolean = false;
+  private apiUrlDescargarDocentes = 'http://localhost:8080/svc/descargardocentes';
   nuevoDocente: Docente = {
     nombre: '',
     apellidoPaterno: '',
@@ -362,6 +363,23 @@ export class DocenteAdminComponent implements OnInit{
     this.showModal = false;
     // @ts-ignore
     this.docente = {};
+  }
+
+  descargarExcelDocentes() {
+    this.http.get(this.apiUrlDescargarDocentes, { responseType: 'blob' }).subscribe(
+      (response) => {
+        const a = document.createElement('a');
+        const url = window.URL.createObjectURL(response);
+        a.href = url;
+        a.download = 'docentes.xlsx';
+        a.click();
+        window.URL.revokeObjectURL(url);
+      },
+      (error) => {
+        console.error('Error al generar el Excel de estudiantes:', error);
+        alert('Hubo un problema al generar el archivo Excel de estudiantes.');
+      }
+    );
   }
 
   navegarAdmin() {

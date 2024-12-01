@@ -36,6 +36,7 @@ export class EstudianteAdminComponent implements OnInit{
   verEditarEstudianteModal = false;
   visible = false;
   selectedFile: File | null = null;
+  private apiUrlDescargarEstudiantes = 'http://localhost:8080/svc/descargarestudiantes';
 
   slideBarvisible = false;
 
@@ -260,6 +261,24 @@ export class EstudianteAdminComponent implements OnInit{
           console.error('Error al actualizar el estudiante:', error);
         }
       );
+  }
+
+  descargarExcelEstudiantes() {
+    this.http.get(this.apiUrlDescargarEstudiantes, { responseType: 'blob' }).subscribe(
+      (response) => {
+        // Crear un enlace temporal para descargar el archivo
+        const a = document.createElement('a');
+        const url = window.URL.createObjectURL(response);
+        a.href = url;
+        a.download = 'estudiantes.xlsx'; // Nombre del archivo a descargar
+        a.click();
+        window.URL.revokeObjectURL(url); // Liberar el objeto URL
+      },
+      (error) => {
+        console.error('Error al generar el Excel de estudiantes:', error);
+        alert('Hubo un problema al generar el archivo Excel de estudiantes.');
+      }
+    );
   }
 
   navegarAdmin() {

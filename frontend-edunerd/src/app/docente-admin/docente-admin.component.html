@@ -37,7 +37,7 @@
     class="fixed px-2 py-2 top-0 left-0 h-full w-[18.5%] z-50 bg-primary dark:bg-celeste transform transition-transform duration-300 ease-in-out"
     [ngClass]="{'translate-x-0': slideBarvisible, '-translate-x-full': !slideBarvisible}">
     <button
-      class="absolute top-4 right-4 text-2xl font-medium text-primary dark:text-azul"
+      class="absolute top-4 right-4 text-2xl font-medium text-white dark:text-azul"
       (click)="CerrartoggleSidebar()">X</button>
     <h2 class="dark:text-claro text-2xl font-semibold text-white mb-4">Opciones</h2>
     <button
@@ -46,6 +46,10 @@
     <button
       class="dark:bg-azulClaro dark:text-azul w-full px-4 py-2 text-lg font-semibold text-primary bg-white rounded-full shadow-lg hover:scale-105 mb-4"
       (click)="mostrarFormularioRegistro()">Registrar nuevo docente</button>
+    <button
+      class="dark:bg-azulClaro dark:text-azul w-full px-4 py-2 text-lg font-semibold text-primary bg-white rounded-full shadow-lg hover:scale-105 mb-4"
+      (click)="descargarExcelDocentes()">Descargar Docentes</button>
+
   </div>
 
   <!-- Lista de docentes -->
