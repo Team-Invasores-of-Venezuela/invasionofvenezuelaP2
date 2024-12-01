@@ -53,6 +53,7 @@ public class ControladorUsuario {
         if (usuario!= null) {
             response.put("admin", usuario.isAdmin());
             response.put("rut", usuario.getRut());
+            response.put("imagenurl",usuario.getImageurl());
             repositorioUsuario.save(usuario);
             return ResponseEntity.ok(response);
         } else {

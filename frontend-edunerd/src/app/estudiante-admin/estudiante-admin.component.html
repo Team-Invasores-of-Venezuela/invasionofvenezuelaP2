@@ -5,6 +5,11 @@
 </header>
 
 <div class="flex justify-between items-center ">
+  <button
+    class="ml-2 dark:bg-celeste px-4 py-2 text-lg font-semibold text-white bg-primary rounded-full"
+    (click)="toggleSidebar()">
+    ☰
+  </button>
   <h2 class="dark:text-azul text-3xl text-white m-10 ml-64 mr-36">Estudiantes</h2>
 
   <button
@@ -15,6 +20,21 @@
   <button (click)="modoOscuro()" class=" dark:bg-celeste dark:bg-opacity-40 dark:text-claro px-4 py-2 mr-5 mt-1  text-lg rounded font-semibold bg-primary text-white hover:bg-secondary transition-colors">
     {{ claro ? 'Modo Oscuro' : 'Modo Claro' }}
   </button>
+</div>
+<div
+  *ngIf="slideBarvisible"
+  class="fixed px-2 py-2 top-0 left-0 h-full w-[18.5%] z-50 bg-primary dark:bg-celeste transform transition-transform duration-300 ease-in-out"
+  [ngClass]="{'translate-x-0': slideBarvisible, '-translate-x-full': !slideBarvisible}">
+  <button
+    class="absolute top-4 right-4 text-2xl font-medium text-primary dark:text-azul"
+    (click)="CerrartoggleSidebar()">X</button>
+  <h2 class="dark:text-claro text-2xl font-semibold text-white mb-4">Opciones</h2>
+  <button
+    class="dark:text-azul dark:bg-azulClaro w-full px-4 py-2 text-lg font-semibold text-primary bg-white rounded-full shadow-lg hover:scale-105 mb-4"
+    (click)="modalEleccion()">Añadir estudiante</button>
+  <button
+    class="dark:bg-azulClaro dark:text-azul w-full px-4 py-2 text-lg font-semibold text-primary bg-white rounded-full shadow-lg hover:scale-105 mb-4"
+    (click)="abrirEliminarEstudianteModal()">Eliminar estudiantes</button>
 </div>
 <div class="flex justify-center items-center">
   <ul role="list" class="dark:bg-opacity-50 dark:bg-azulClaro max-w-2xl rounded bg-primary shadow-2xl p-10">

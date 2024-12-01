@@ -38,6 +38,8 @@ export class EstudianteAdminComponent implements OnInit{
   selectedFile: File | null = null;
   private apiUrlDescargarEstudiantes = 'http://localhost:8080/svc/descargarestudiantes';
 
+  slideBarvisible = false;
+
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
@@ -74,6 +76,14 @@ export class EstudianteAdminComponent implements OnInit{
       htmlElement.classList.remove('dark');
       localStorage.setItem('theme', 'light');
     }
+  }
+
+  CerrartoggleSidebar(){
+    this.slideBarvisible=false;
+  }
+
+  toggleSidebar() {
+    this.slideBarvisible = !this.slideBarvisible;
   }
 
   getEstudiantes(): void {
