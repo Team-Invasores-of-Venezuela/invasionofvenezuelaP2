@@ -64,7 +64,7 @@ public class ServicioEstudiante {
             EstudianteDTO2 estudianteDTO2 = new EstudianteDTO2(estudiante);
             estudianteDTOS.add(estudianteDTO2);
         }
-        return estudianteDTOS;
+        return estudianteDTOS.reversed();
     }
 
     @Transactional
