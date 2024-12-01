@@ -162,6 +162,10 @@ export class DocenteComponent implements OnInit{
     this.router.navigate(['/login']);
   }
 
+  navegaEstudiante(){
+    this.router.navigate(['/estudiante']);
+  }
+
   //Retorna los cursos impartidos por el profesor impartidos en un año y semestre en específico
   getCursoAnioSemestre(anio: number, semestre: number){
 
@@ -223,7 +227,6 @@ export class DocenteComponent implements OnInit{
       for (let j = 0; j < this.alumnos.length; j++) { //Recorro todos los alumnos
         if(this.alumnos[j].matricula == curso.alumnos[i]  ){
           this.alumnosSeleccionados.push(this.alumnos[j]);
-          console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
         }
       }
     }

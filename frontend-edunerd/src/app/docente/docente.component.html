@@ -12,7 +12,7 @@
   <div class="ml-10 mr-10 dark:bg-azulClaro max-w-full mx-auto p-4 lg:p-6 rounded-lg mt-14 bg-secondary shadow-2xl">
 
     <h2 class="text-xl md:text-2xl font-semibold text-tertiary mb-4 dark:text-azul">Cursos</h2>
-    
+
 
       <!-- Botones de los periodos -->
       <div class="flex justify-center items-center min-h-screen -m-96">
@@ -67,12 +67,19 @@
             Alumnos de {{ cursoSeleccionado?.nombre }}
           </h2>
 
-          <!-- Lista de alumnos -->
-          <ul class="list-disc pl-6 text-white">
-            <li *ngFor="let alumno of alumnosSeleccionados" class="mb-2 text-tertiary">
-              {{ alumno.nombre }} {{alumno.apellidoPaterno}} {{alumno.apellidoMaterno}}
-            </li>
-          </ul>
+          <!-- Lista de alumnos con scroll -->
+          <div class="overflow-y-auto max-h-[60vh]">
+            <ul class="list-disc pl-6 text-white">
+              <li
+                *ngFor="let alumno of alumnosSeleccionados"
+                class="flex justify-between border-b border-b-tertiary gap-x-6 p-5">
+                {{ alumno.nombre }} {{ alumno.apellidoPaterno }} {{ alumno.apellidoMaterno }}
+                <button (click)="navegaEstudiante();" class="bg-midSecondary text-white px-4 rounded hover:bg-primary transition">
+                  Ver historial
+                </button>
+              </li>
+            </ul>
+          </div>
 
           <!-- Botón cerrar -->
           <div class="flex justify-end mt-6">
