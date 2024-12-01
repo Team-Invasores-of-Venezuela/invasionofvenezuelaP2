@@ -37,6 +37,8 @@ export class EstudianteAdminComponent implements OnInit{
   visible = false;
   selectedFile: File | null = null;
 
+  slideBarvisible = false;
+
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
@@ -73,6 +75,14 @@ export class EstudianteAdminComponent implements OnInit{
       htmlElement.classList.remove('dark');
       localStorage.setItem('theme', 'light');
     }
+  }
+
+  CerrartoggleSidebar(){
+    this.slideBarvisible=false;
+  }
+
+  toggleSidebar() {
+    this.slideBarvisible = !this.slideBarvisible;
   }
 
   getEstudiantes(): void {

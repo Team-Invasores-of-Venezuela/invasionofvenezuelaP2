@@ -12,7 +12,15 @@
   <button (click)="cerrarSesion()" class="font-medium text-white">Cerrar sesión</button>
 </header>
 <main class="flex-grow">
-<h2 class="dark:text-azul dark:text-opacity-40 text-xl text-white text-center mt-2 mb-2">Seleccione categoría que desea administrar</h2>
+  <div class="flex">
+    <button
+      (click)="modoOscuro()"
+      class="absolute right-4 mt-1 dark:bg-celeste dark:bg-opacity-40 dark:text-claro px-2 py-1 text-lg rounded font-semibold bg-primary text-white hover:bg-secondary transition-colors">
+      {{ claro ? 'Modo Oscuro' : 'Modo Claro' }}
+    </button>
+  </div>
+
+  <h2 class="dark:text-azul dark:text-opacity-40 text-xl text-white text-center mt-2 mb-2">Seleccione categoría que desea administrar</h2>
 <div class="flex items-center justify-center ">
   <div class="flex gap-5 mt-2 ">
     <!-- Botón para navegar a cursos -->
@@ -99,8 +107,8 @@
   </div>
   </div>
 </main>
-<footer class="flex justify-center p-4 mt-8 bg-transparent">
-  <button (click)="alternarFormulario()" class="w-11/12 sm:w-1/2 lg:w-1/4 py-4 text-lg font-semibold text-white bg-secondary rounded shadow-lg transition transform hover:bg-gray-600 hover:scale-105 dark:bg-celeste dark:hover:bg-azulClaro dark:hover:text-claro">
+<footer class="flex justify-center p-4  bg-transparent">
+  <button (click)="alternarFormulario()" class="md:w-1/2 sm:w-0 lg:w-1/4 py-2 text-lg font-semibold text-white bg-secondary rounded shadow-lg transition transform hover:bg-gray-600 hover:scale-105 dark:bg-celeste dark:hover:bg-azulClaro dark:hover:text-claro">
     Registrar Administrador
   </button>
 </footer>
