@@ -38,6 +38,8 @@ public class ControladorUsuario {
             response.put("id", usuario.get().getId());
             response.put("admin", usuario.get().isAdmin());
             response.put("nombre", usuario.get().getRut());
+            response.put("email", usuario.get().getEmail());
+            response.put("imagen",usuario.get().getImageurl());
 
             return ResponseEntity.ok(response);
         } else {
