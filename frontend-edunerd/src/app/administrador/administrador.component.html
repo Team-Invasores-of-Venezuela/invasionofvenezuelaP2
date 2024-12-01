@@ -1,16 +1,9 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Administrador</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body class="bg-primary dark:bg-claro">
-<header class="bg-midSecondary text-white p-4  flex items-center justify-between dark:bg-celeste">
+
+<div class="bg-primary dark:bg-claro min-h-screen">
+<div class="bg-midSecondary text-white p-4  flex items-center justify-between dark:bg-celeste">
   <div class="relative">
     <h2
-      class="text-2xl font-semibold cursor-pointer relative"
+      class="text-2xl font-semibold cursor-pointer relative dark:text-claro"
       (mouseover)="showModal = true"
       (mouseout)="showModal = false">
       Bienvenido {{ nombre }}
@@ -23,17 +16,16 @@
       <p class="text-center text-sm">Rol: {{ isadmin === 'true' ? 'Administrador' : 'Usuario' }}</p>
     </div>
   </div>
-  <button (click)="cerrarSesion()" class="font-medium text-white">Cerrar sesión</button>
-</header>
-<main class="flex-grow">
+  <button (click)="cerrarSesion()" class="font-medium text-white dark:text-claro">Cerrar sesión</button>
+</div>
+<div class="flex-grow">
   <div class="flex">
     <button
       (click)="modoOscuro()"
-      class="absolute right-4 mt-1 dark:bg-celeste dark:bg-opacity-40 dark:text-claro px-2 py-1 text-lg rounded font-semibold bg-primary text-white hover:bg-secondary transition-colors">
+      class="absolute right-4 mt-1 dark:bg-transparent dark:text-celeste px-2 py-1 text-lg rounded font-semibold bg-primary text-white hover:bg-secondary transition-colors">
       {{ claro ? 'Modo Oscuro' : 'Modo Claro' }}
     </button>
   </div>
-
   <h2 class="dark:text-azul dark:text-opacity-40 text-xl text-white text-center mt-2 mb-2">Seleccione categoría que desea administrar</h2>
 <div class="flex items-center justify-center ">
   <div class="flex gap-5 mt-2 ">
@@ -120,22 +112,22 @@
     </button>
   </div>
   </div>
-</main>
-<footer class="flex justify-center p-4  bg-transparent">
+</div>
+<div class="flex justify-center p-4  bg-transparent">
   <button (click)="alternarFormulario()" class="md:w-1/2 sm:w-0 lg:w-1/4 py-2 text-lg font-semibold text-white bg-secondary rounded shadow-lg transition transform hover:bg-gray-600 hover:scale-105 dark:bg-celeste dark:hover:bg-azulClaro dark:hover:text-claro">
     Registrar Administrador
   </button>
-</footer>
+</div>
   <!-- Modal -->
   <div *ngIf="mostrarFormulario" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-    <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
-      <div class="flex justify-between items-center mb-4">
+    <div class="bg-white rounded-lg shadow-lg max-w-sm w-full">
+      <div class="flex justify-between items-center ">
         <h1 class="text-2xl font-bold">Registrar Nuevo Administrador</h1>
         <button (click)="alternarFormulario()" class="text-gray-500 hover:text-red-500">
           &times; <!-- Botón para cerrar -->
         </button>
       </div>
-      <form (ngSubmit)="registrarAdmin()" class="space-y-4">
+      <form (ngSubmit)="registrarAdmin()" class="">
         <div>
           <label for="email" class="block text-lg font-semibold">Email:</label>
           <input type="email" id="email" [(ngModel)]="adminData.email" name="email" class="w-full p-2 border rounded" required />
@@ -156,5 +148,4 @@
   </div>
 
 
-</body>
-</html>
+</div>
