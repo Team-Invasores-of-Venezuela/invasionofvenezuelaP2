@@ -54,15 +54,17 @@ export class DocenteComponent implements OnInit{
   alumnos: any[] = [];
   alumnosSeleccionados: any;
   nombreProfesor: string | null ='';
+  claro:boolean = false;
 
   constructor(private router: Router, private authService: AuthService, private http: HttpClient) {
     for (let year = 2016; year <= 2024; year++) {
       for (let semester = 1; semester <= 2; semester++) {
-        this.periodos.push({ anio: year, semestre: semester });
+        this.periodos.push({anio: year, semestre: semester});
       }
     }
-  constructor(private router: Router, private authService: AuthService, private http: HttpClient) {}
-  claro = false;
+
+    this.claro = false;
+  }
 
   modoOscuro(): void {
     this.claro = !this.claro;
