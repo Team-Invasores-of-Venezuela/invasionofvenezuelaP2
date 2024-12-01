@@ -13,17 +13,34 @@ import {Router, RouterLink} from '@angular/router';
 })
 export class AdministradorComponent implements OnInit{
   mostrarFormulario = false;
-
+  email : string | null | undefined
+  nombre:string | null | undefined;
+  image: string | null | undefined;
+  isadmin: string | null |undefined
+  showModal: boolean = false;
   adminData = {
     email: '',
     contrasena: '',
     admin: true,
     rut: ''
   };
+
+
   backendUrl = 'http://localhost:8080/usuario/registeradmin';
 
   ngOnInit() {
     this.cargarTema();
+    this.image=localStorage.getItem("imagen");
+    this.email=localStorage.getItem("email")
+    this.isadmin=localStorage.getItem("isAdmin");
+
+    console.log(this.email, "locura");
+    console.log(this.image," locura");
+    if (this.email) {
+      this.nombre = this.email.split('@')[0];
+    }
+
+
   }
   claro = false;
 
