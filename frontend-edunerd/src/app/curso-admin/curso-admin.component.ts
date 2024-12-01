@@ -28,6 +28,7 @@ export class CursoAdminComponent implements OnInit{
   private apiUrlSubirArchivo = 'http://localhost:8080/svc/importarCursos';
   private apiUrlcrear = 'http://localhost:8080/curso/create';
   private apiUrleliminar = 'http://localhost:8080/curso/delete';
+  private apiUrlDescargarCursos = 'http://localhost:8080/svc/descargarcursos';
   private amniocenteses: any[] | undefined;
   nombreProfesor: string = '';
 
@@ -393,6 +394,24 @@ export class CursoAdminComponent implements OnInit{
     } else {
       alert('Por favor, seleccione un archivo antes de subir.');
     }
+  }
+
+  descargarExcel() {
+    this.http.get(this.apiUrlDescargarCursos, { responseType: 'blob' }).subscribe(
+      (response) => {
+        // Crear un enlace temporal para descargar el archivo
+        const a = document.createElement('a');
+        const url = window.URL.createObjectURL(response);
+        a.href = url;
+        a.download = 'cursos.xlsx';  // Nombre del archivo a descargar
+        a.click();
+        window.URL.revokeObjectURL(url);  // Limpiar el objeto URL
+      },
+      (error) => {
+        console.error('Error al generar el Excel:', error);
+        alert('Hubo un problema al generar el archivo Excel.');
+      }
+    );
   }
 
   navegarAdmin() {
