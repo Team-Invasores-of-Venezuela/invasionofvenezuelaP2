@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.PrivateKey;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,5 +33,25 @@ public class ServicioReporte {
             }
 
         return Optional.empty();
+    }
+
+    public List<ReporteDTO> getReportes(){
+        List<ReporteDTO> reportesDTO = new ArrayList<>();
+        List<Reporte> reportes = repositorioReporte.findAll();
+        for (Reporte reporte : reportes) {
+            ReporteDTO reporteDTO = new ReporteDTO(reporte);
+            reportesDTO.add(reporteDTO);
+        }
+        return reportesDTO;
+    }
+
+    public List<ReporteDTO> getReporte(String matricula){
+        List<ReporteDTO> reportesDTO = new ArrayList<>();
+        List<Reporte> reportes = repositorioReporte.findAllByMatricula(matricula);
+        for (Reporte reporte : reportes) {
+            ReporteDTO reporteDTO = new ReporteDTO(reporte);
+            reportesDTO.add(reporteDTO);
+        }
+        return reportesDTO;
     }
 }
