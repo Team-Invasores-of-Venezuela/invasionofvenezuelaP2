@@ -13,8 +13,9 @@ public class ProfesorDTO2 {
     private String rut;
     private String titulo;
     private String gradoMax;
+    private String imageurl;
 
-    public ProfesorDTO2(String id, String nombre, String apellidoPaterno, String apellidoMaterno, String rut, String titulo, String gradoMax) {
+    public ProfesorDTO2(String id, String nombre, String apellidoPaterno, String apellidoMaterno, String rut, String titulo, String gradoMax,String imageurl) {
         this.id = id;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
@@ -22,6 +23,7 @@ public class ProfesorDTO2 {
         this.rut = rut;
         this.titulo = titulo;
         this.gradoMax = gradoMax;
+        this.imageurl = imageurl;
     }
 
     public ProfesorDTO2(Profesor profesor) {
@@ -32,6 +34,7 @@ public class ProfesorDTO2 {
         this.rut = profesor.getRut();
         this.titulo = profesor.getTitulo();
         this.gradoMax = profesor.getGradoMax();
+
     }
 
     public String getId() {
@@ -88,5 +91,13 @@ public class ProfesorDTO2 {
 
     public void setGradoMax(String gradoMax) {
         this.gradoMax = gradoMax;
+    }
+
+    public String getImageurl() {
+        return imageurl;
+    }
+
+    public void setImageurl(String imageurl) {
+        this.imageurl = imageurl;
     }
 }
