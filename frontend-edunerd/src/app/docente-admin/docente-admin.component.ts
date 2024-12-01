@@ -12,7 +12,7 @@ interface Docente {
   rut: string;
   titulo: string;
   gradoMax: string;
-  //id: string;
+  id: string;
 }
 
 @Component({
@@ -52,7 +52,7 @@ export class DocenteAdminComponent implements OnInit{
     rut: '',
     titulo: '',
     gradoMax: '',
-    //id: ''
+    id: ''
   };
   slideBarvisible = false;
 
@@ -130,6 +130,18 @@ export class DocenteAdminComponent implements OnInit{
     this.slideBarvisible = !this.slideBarvisible;
   }
 
+  docenteAEliminar: any = null;
+  mostrarConfirmacionEliminar = false;
+
+  confirmarEliminacion(docente:any) {
+    this.docenteAEliminar = docente;
+    this.mostrarConfirmacionEliminar = true;
+  }
+
+  cancelarEliminacion() {
+    this.docenteAEliminar = null;
+    this.mostrarConfirmacionEliminar = false;
+  }
   eliminarDocentes(): void {
     if (this.selectedDocentes.size === 0) {
       console.error('No hay docentes seleccionados para eliminar');
@@ -160,12 +172,13 @@ export class DocenteAdminComponent implements OnInit{
     });
   }
 
-  eliminarDocente(docenteId: string): void {
-    this.http.post(`http://localhost:8080/profesor/delete?id=${docenteId}`, {})
+  eliminarDocente(): void {
+    this.http.post(`http://localhost:8080/profesor/delete?id=${this.docenteAEliminar.id}`, {})
       .subscribe(
         (response) => {
-          console.log(`Docente ${docenteId} eliminado`, response);
+          console.log(`Docente ${this.docenteAEliminar} eliminado`, response);
           this.getDocentes();
+          this.mostrarConfirmacionEliminar = false;
           alert('Docente eliminado con éxito');
         },
         (error) => {
@@ -264,7 +277,8 @@ export class DocenteAdminComponent implements OnInit{
       apellidoMaterno: this.nuevoDocenteApellidoM,
       rut: this.nuevoDocenteRut,
       titulo: this.nuevoDocenteTitulo,
-      gradoMax: this.nuevoDocenteGrado
+      gradoMax: this.nuevoDocenteGrado,
+      id:this.nuevoDocenteId
     };
 
     const docenteDatos: Docente = { ...this.nuevoDocente };
@@ -328,7 +342,7 @@ export class DocenteAdminComponent implements OnInit{
       rut: this.rutEditar,
       titulo: this.tituloEditar,
       gradoMax: this.gradoEditar,
-      //id: this.idEditar
+      id: this.idEditar
     };
 
     this.http.post('http://localhost:8080/profesor/update', docenteActualizado).subscribe(
