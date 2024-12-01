@@ -1,16 +1,9 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Administrador</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body class="bg-primary dark:bg-claro">
-<header class="bg-midSecondary text-white p-4  flex items-center justify-between dark:bg-celeste">
+
+<div class="bg-primary dark:bg-claro min-h-screen">
+<div class="bg-midSecondary text-white p-4  flex items-center justify-between dark:bg-celeste">
   <div class="relative">
     <h2
-      class="text-2xl font-semibold cursor-pointer relative"
+      class="text-2xl font-semibold cursor-pointer relative dark:text-claro"
       (mouseover)="showModal = true"
       (mouseout)="showModal = false">
       Bienvenido {{ nombre }}
@@ -23,13 +16,13 @@
       <p class="text-center text-sm">Rol: {{ isadmin === 'true' ? 'Administrador' : 'Usuario' }}</p>
     </div>
   </div>
-  <button (click)="cerrarSesion()" class="font-medium text-white">Cerrar sesión</button>
+  <button (click)="cerrarSesion()" class="font-medium text-white dark:text-claro">Cerrar sesión</button>
 </div>
 <div class="flex-grow">
   <div class="flex">
     <button
       (click)="modoOscuro()"
-      class="absolute right-4 mt-1 dark:bg-celeste dark:bg-opacity-40 dark:text-claro px-2 py-1 text-lg rounded font-semibold bg-primary text-white hover:bg-secondary transition-colors">
+      class="absolute right-4 mt-1 dark:bg-transparent dark:text-celeste px-2 py-1 text-lg rounded font-semibold bg-primary text-white hover:bg-secondary transition-colors">
       {{ claro ? 'Modo Oscuro' : 'Modo Claro' }}
     </button>
   </div>
@@ -155,5 +148,4 @@
   </div>
 
 
-</body>
-</html>
+</div>
