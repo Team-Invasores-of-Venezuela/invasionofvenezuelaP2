@@ -353,20 +353,21 @@ export class CursoAdminComponent implements OnInit{
     this.abrirAgregarCurso = false;
   }
 
-  abrirModal() {
-    this.visible = true;
-  }
-
-  cerrarModal() {
-    this.visible = false;
-    this.archivo = null;
-  }
-
   toggleSidebar() {
     this.slideBarvisible = !this.slideBarvisible;
   }
 
-  onArchivoSeleccionado(event: Event) {
+  abrirModal(): void {
+    this.visible = true;
+  }
+
+  cerrarModal(): void {
+    this.visible = false;
+    this.archivo = null;
+  }
+
+  // Captura el archivo seleccionado
+  onArchivoSeleccionado(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       this.archivo = input.files[0];
@@ -374,7 +375,7 @@ export class CursoAdminComponent implements OnInit{
     }
   }
 
-  subirArchivo() {
+  subirArchivo(): void {
     if (this.archivo) {
       const formData = new FormData();
       formData.append('file', this.archivo);

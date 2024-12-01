@@ -26,7 +26,14 @@
       <div class="dark:bg-celeste bg-primary w-64 h-full p-4 shadow-lg transform transition-all duration-300 ease-in-out" [ngClass]="{'translate-x-0': slideBarvisible, '-translate-x-full': !slideBarvisible}">
         <button class="absolute top-4 right-4 text-2xl font-medium text-primary dark:text-azul" (click)="CerrartoggleSidebar()">X</button>
         <h2 class="text-2xl font-semibold text-white mb-4 dark:text-azul">Opciones</h2>
-        <button class="dark:bg-azulClaro dark:text-azul w-full px-4 py-2 text-lg font-semibold text-primary bg-white rounded-full shadow-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white mb-4" (click)="abrirModal()">Subir Excel</button>
+        <button
+          class="dark:bg-azulClaro dark:text-azul w-full px-4 py-2 text-lg font-semibold text-primary bg-white rounded-full shadow-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white mb-4"
+          (click)="abrirModal()">
+          Subir Excel
+        </button>
+
+
+
         <button class="dark:bg-azulClaro dark:text-azul w-full px-4 py-2 text-lg font-semibold text-primary bg-white rounded-full shadow-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white mb-4" (click)="abrir()">Agregar curso</button>
         <button class="dark:bg-azulClaro dark:text-azul w-full px-4 py-2 text-lg font-semibold text-white bg-secondary rounded-full shadow-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white mb-4" (click)="CerrartoggleSidebar()">Cerrar SlideBar</button>
       </div>
@@ -162,6 +169,49 @@
               </ul>
             </div>
           </div>
+
+          <!-- Modal para subir archivo -->
+          <div
+            *ngIf="visible"
+            class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50"
+          >
+            <div class="bg-white rounded-lg shadow-xl p-6 w-1/2 max-w-lg transform">
+              <h2 class="text-xl font-semibold mb-4 text-center">Subir Archivo Excel</h2>
+              <form (ngSubmit)="subirArchivo()" class="flex flex-col space-y-4">
+                <!-- Input para seleccionar archivo -->
+                <div>
+                  <label for="archivo" class="block text-gray-700 font-medium mb-2">
+                    Seleccionar Archivo
+                  </label>
+                  <input
+                    type="file"
+                    id="archivo"
+                    (change)="onArchivoSeleccionado($event)"
+                    accept=".xlsx, .xls"
+                    class="border rounded-lg px-4 py-2 w-full"
+                    required
+                  />
+                </div>
+                <!-- Botones -->
+                <div class="flex justify-between mt-6">
+                  <button
+                    type="submit"
+                    class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+                  >
+                    Subir
+                  </button>
+                  <button
+                    type="button"
+                    class="bg-gray-300 text-gray-700 px-6 py-2 rounded hover:bg-gray-400"
+                    (click)="cerrarModal()"
+                  >
+                    Cancelar
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
 
         </div>
       </div>
