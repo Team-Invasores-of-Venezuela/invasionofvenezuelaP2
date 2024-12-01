@@ -399,13 +399,12 @@ export class CursoAdminComponent implements OnInit{
   descargarExcel() {
     this.http.get(this.apiUrlDescargarCursos, { responseType: 'blob' }).subscribe(
       (response) => {
-        // Crear un enlace temporal para descargar el archivo
         const a = document.createElement('a');
         const url = window.URL.createObjectURL(response);
         a.href = url;
-        a.download = 'cursos.xlsx';  // Nombre del archivo a descargar
+        a.download = 'cursos.xlsx';
         a.click();
-        window.URL.revokeObjectURL(url);  // Limpiar el objeto URL
+        window.URL.revokeObjectURL(url);
       },
       (error) => {
         console.error('Error al generar el Excel:', error);
