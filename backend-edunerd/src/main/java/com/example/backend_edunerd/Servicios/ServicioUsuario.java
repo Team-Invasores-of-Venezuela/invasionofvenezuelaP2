@@ -35,7 +35,7 @@ public class ServicioUsuario {
 
         if (usuario.isEmpty()) {
             if(admin.getContrasena() != null && !admin.getContrasena().isEmpty() && admin.getEmail() != null && !admin.getEmail().isEmpty() && admin.getRut() != null && !admin.getRut().isEmpty() && !repositorioUsuario.existsByRut(admin.getRut())) {
-                return new Usuario(true, admin.getContrasena(), admin.getEmail(), admin.getRut());
+                return new Usuario(true, admin.getContrasena(), admin.getEmail(), admin.getRut(),admin.getImageurl());
             }else{
                 return null;
             }

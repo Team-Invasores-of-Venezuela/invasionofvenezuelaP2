@@ -12,7 +12,7 @@ interface Docente {
   rut: string;
   titulo: string;
   gradoMax: string;
-  //id: string;
+  id: string;
 }
 
 @Component({
@@ -45,6 +45,7 @@ export class DocenteAdminComponent implements OnInit{
   tituloEditar: string = '';
   gradoEditar: string = '';
   modoEliminar: boolean = false;
+  private apiUrlDescargarDocentes = 'http://localhost:8080/svc/descargardocentes';
   nuevoDocente: Docente = {
     nombre: '',
     apellidoPaterno: '',
@@ -52,14 +53,44 @@ export class DocenteAdminComponent implements OnInit{
     rut: '',
     titulo: '',
     gradoMax: '',
-    //id: ''
+    id: ''
   };
-
+  slideBarvisible = false;
 
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
     this.getDocentes();
+    this.cargarTema();
+  }
+
+  claro = false;
+
+  modoOscuro(): void {
+    this.claro = !this.claro;
+    this.actualizarTema();
+  }
+
+  private cargarTema(): void {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      this.claro = true;
+      document.documentElement.classList.add('dark');
+    } else {
+      this.claro = false;
+      document.documentElement.classList.remove('dark');
+    }
+  }
+
+  private actualizarTema(): void {
+    const htmlElement = document.documentElement;
+    if (this.claro) {
+      htmlElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      htmlElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
   }
 
   getDocentes(): void {
@@ -92,7 +123,26 @@ export class DocenteAdminComponent implements OnInit{
   }
 
 
+  CerrartoggleSidebar(){
+    this.slideBarvisible=false;
+  }
 
+  toggleSidebar() {
+    this.slideBarvisible = !this.slideBarvisible;
+  }
+
+  docenteAEliminar: any = null;
+  mostrarConfirmacionEliminar = false;
+
+  confirmarEliminacion(docente:any) {
+    this.docenteAEliminar = docente;
+    this.mostrarConfirmacionEliminar = true;
+  }
+
+  cancelarEliminacion() {
+    this.docenteAEliminar = null;
+    this.mostrarConfirmacionEliminar = false;
+  }
   eliminarDocentes(): void {
     if (this.selectedDocentes.size === 0) {
       console.error('No hay docentes seleccionados para eliminar');
@@ -123,17 +173,13 @@ export class DocenteAdminComponent implements OnInit{
     });
   }
 
-
-
-
-
-
-  eliminarDocente(docenteId: string): void {
-    this.http.post(`http://localhost:8080/profesor/delete?id=${docenteId}`, {})
+  eliminarDocente(): void {
+    this.http.post(`http://localhost:8080/profesor/delete?id=${this.docenteAEliminar.id}`, {})
       .subscribe(
         (response) => {
-          console.log(`Docente ${docenteId} eliminado`, response);
+          console.log(`Docente ${this.docenteAEliminar} eliminado`, response);
           this.getDocentes();
+          this.mostrarConfirmacionEliminar = false;
           alert('Docente eliminado con éxito');
         },
         (error) => {
@@ -141,13 +187,6 @@ export class DocenteAdminComponent implements OnInit{
           alert('Ocurrió un error al eliminar el docente.');
         }
       );
-  }
-  ActivarModoEliminacion(): void {
-    this.modoEliminar = true;
-  }
-
-  VolverModoNormal(): void {
-    this.modoEliminar = false;
   }
 
   abrirModal() {
@@ -239,7 +278,8 @@ export class DocenteAdminComponent implements OnInit{
       apellidoMaterno: this.nuevoDocenteApellidoM,
       rut: this.nuevoDocenteRut,
       titulo: this.nuevoDocenteTitulo,
-      gradoMax: this.nuevoDocenteGrado
+      gradoMax: this.nuevoDocenteGrado,
+      id:this.nuevoDocenteId
     };
 
     const docenteDatos: Docente = { ...this.nuevoDocente };
@@ -303,7 +343,7 @@ export class DocenteAdminComponent implements OnInit{
       rut: this.rutEditar,
       titulo: this.tituloEditar,
       gradoMax: this.gradoEditar,
-      //id: this.idEditar
+      id: this.idEditar
     };
 
     this.http.post('http://localhost:8080/profesor/update', docenteActualizado).subscribe(
@@ -323,6 +363,23 @@ export class DocenteAdminComponent implements OnInit{
     this.showModal = false;
     // @ts-ignore
     this.docente = {};
+  }
+
+  descargarExcelDocentes() {
+    this.http.get(this.apiUrlDescargarDocentes, { responseType: 'blob' }).subscribe(
+      (response) => {
+        const a = document.createElement('a');
+        const url = window.URL.createObjectURL(response);
+        a.href = url;
+        a.download = 'docentes.xlsx';
+        a.click();
+        window.URL.revokeObjectURL(url);
+      },
+      (error) => {
+        console.error('Error al generar el Excel de estudiantes:', error);
+        alert('Hubo un problema al generar el archivo Excel de estudiantes.');
+      }
+    );
   }
 
   navegarAdmin() {

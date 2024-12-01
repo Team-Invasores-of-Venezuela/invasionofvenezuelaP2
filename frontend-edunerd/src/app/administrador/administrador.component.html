@@ -6,18 +6,39 @@
   <title>Administrador</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="bg-primary">
-<header class="bg-midSecondary text-white p-4 w-full flex items-center justify-between">
-  <h2 class="text-2xl font-semibold">Bienvenido Administrador</h2>
+<body class="bg-primary dark:bg-claro">
+<header class="bg-midSecondary text-white p-4  flex items-center justify-between dark:bg-celeste">
+  <div class="relative">
+    <h2
+      class="text-2xl font-semibold cursor-pointer relative"
+      (mouseover)="showModal = true"
+      (mouseout)="showModal = false">
+      Bienvenido {{ nombre }}
+    </h2>
+    <!-- Modal flotante -->
+    <div *ngIf="showModal"
+         class="absolute top-full left-0 mt-2 w-48 bg-white text-black shadow-lg rounded-lg p-4 z-50 dark:bg-gray-700 dark:text-white">
+      <img *ngIf="isadmin === 'true'" [src]="image || 'ruta_a_imagen_por_defecto.jpg'" alt="Imagen de Admin" class="rounded-full w-12 h-12 mx-auto mb-2" />
+      <p class="text-center text-sm">Correo: {{ email }}</p>
+      <p class="text-center text-sm">Rol: {{ isadmin === 'true' ? 'Administrador' : 'Usuario' }}</p>
+    </div>
+  </div>
   <button (click)="cerrarSesion()" class="font-medium text-white">Cerrar sesión</button>
 </header>
-<h2 class="text-4xl text-white m-10 ml-48 mt-24">Seleccione categoría que desea administrar</h2>
-<div class="flex items-center justify-center min-h-screen -mt-40">
-  <div class="flex space-x-20">
-    <!-- Botón para navegar a cursos -->
+<main class="flex-grow">
+  <div class="flex">
     <button
-      (click)="navegarCursoAdmin()"
-      class="group relative w-80 h-96 p-6 text-left rounded-lg bg-midSecondary shadow-lg transition transform hover:bg-gray-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white"
+      (click)="modoOscuro()"
+      class="absolute right-4 mt-1 dark:bg-celeste dark:bg-opacity-40 dark:text-claro px-2 py-1 text-lg rounded font-semibold bg-primary text-white hover:bg-secondary transition-colors">
+      {{ claro ? 'Modo Oscuro' : 'Modo Claro' }}
+    </button>
+  </div>
+
+  <h2 class="dark:text-azul dark:text-opacity-40 text-xl text-white text-center mt-2 mb-2">Seleccione categoría que desea administrar</h2>
+<div class="flex items-center justify-center ">
+  <div class="flex gap-5 mt-2 ">
+    <!-- Botón para navegar a cursos -->
+    <button (click)="navegarCursoAdmin()" class="dark:bg-celeste dark:text-claro dark:hover:bg-azulClaro dark:hover:text-claro group relative w-80 h-96 p-6 text-left rounded-lg bg-midSecondary shadow-lg transition transform hover:bg-gray-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white"
     >
       <!-- Imagen de fondo con superposición -->
       <div
@@ -45,7 +66,7 @@
     <!-- Botón para navegar a docentes -->
     <button
       (click)="navegarDocenteAdmin()"
-      class="group relative w-80 h-96 p-6 text-left rounded-lg bg-midSecondary shadow-lg transition transform hover:bg-gray-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white"
+      class="dark:bg-celeste dark:text-claro dark:hover:bg-azulClaro dark:hover:text-claro group relative w-80 h-96 p-6 text-left rounded-lg bg-midSecondary shadow-lg transition transform hover:bg-gray-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white"
     >
       <!-- Imagen de fondo con superposición -->
       <div
@@ -73,7 +94,7 @@
     <!-- Botón para navegar a estudiantes -->
     <button
       (click)="navegarEstudianteAdmin()"
-      class="group relative w-80 h-96 p-6 text-left rounded-lg bg-midSecondary shadow-lg transition transform hover:bg-gray-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white"
+      class="dark:bg-celeste dark:text-claro dark:hover:bg-azulClaro dark:hover:text-claro group relative w-80 h-96 p-6 text-left rounded-lg bg-midSecondary shadow-lg transition transform hover:bg-gray-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white"
     >
       <!-- Imagen de fondo con superposición -->
       <div
@@ -97,18 +118,14 @@
         </ul>
       </div>
     </button>
-      </div>
   </div>
-<div class="flex justify-center -mt-48 mb-40">
-  <button (click)="alternarFormulario()" class=" py-4 w-60 text-lg font-semibold text-white transition transform bg-secondary rounded shadow-lg hover:bg-gray-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white">
+  </div>
+</main>
+<footer class="flex justify-center p-4  bg-transparent">
+  <button (click)="alternarFormulario()" class="md:w-1/2 sm:w-0 lg:w-1/4 py-2 text-lg font-semibold text-white bg-secondary rounded shadow-lg transition transform hover:bg-gray-600 hover:scale-105 dark:bg-celeste dark:hover:bg-azulClaro dark:hover:text-claro">
     Registrar Administrador
   </button>
-</div>
-
-<div class="flex justify-center">
-</div>
-
-
+</footer>
   <!-- Modal -->
   <div *ngIf="mostrarFormulario" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
     <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
@@ -131,11 +148,13 @@
           <label for="rut" class="block text-lg font-semibold">RUT:</label>
           <input type="text" id="rut" [(ngModel)]="adminData.rut" name="rut" class="w-full p-2 border rounded" required />
         </div>
-        <button type="submit" class="w-full bg-midSecondary text-white p-2 rounded hover:bg-gray-600">
+        <button type="submit" class=" bg-midSecondary text-white p-2 rounded hover:bg-gray-600">
           Registrar
         </button>
       </form>
     </div>
   </div>
+
+
 </body>
 </html>

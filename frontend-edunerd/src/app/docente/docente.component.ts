@@ -3,7 +3,8 @@ import {NgForOf, NgIf} from '@angular/common';
 import {Router} from '@angular/router';
 import {AuthService} from '../AuthService';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {info} from 'autoprefixer';
+
 
 @Component({
   selector: 'app-docente',
@@ -20,8 +21,28 @@ export class DocenteComponent implements OnInit{
   estudiantes: any [] | any;
   cursos: any[] = [];
   cursosFiltrados: any[] = [];
+  mostrarCursos:
+    { id: string;
+      carrera:string;
+      nombre: string;
+      ano:number;
+      semestre:number;
+      seccion: string;
+      alumnos: { matricula: string, nombre: string, apellidoPaterno:string, apellidoMaterno:string }[];
+      profesor: string }[] = [];
+
+  infoProfesor:{
+    id : string;
+    nombre : string;
+    apellidoPaterno: string;
+    apellidoMaterno : string;
+    rut : string;
+    titulo: string;
+    gradoMax : string;
+  }[]=[];
+
   private apiUrlGetCursos = 'http://localhost:8080/curso/getall';
-  private apiUrldocente = 'http://localhost:8080/usuario/';
+  private apiUrldocente = 'http://localhost:8080/profesor/getall';
   docenteId = localStorage.getItem('userId');
   nombre= localStorage.getItem('nombre');
   periodos: { anio: number; semestre: number }[] = [];
@@ -32,6 +53,7 @@ export class DocenteComponent implements OnInit{
   cursoSeleccionado: any = null;
   alumnos: any[] = [];
   alumnosSeleccionados: any;
+  nombreProfesor: string | null ='';
 
   constructor(private router: Router, private authService: AuthService, private http: HttpClient) {
     for (let year = 2016; year <= 2024; year++) {
@@ -39,6 +61,44 @@ export class DocenteComponent implements OnInit{
         this.periodos.push({ anio: year, semestre: semester });
       }
     }
+  constructor(private router: Router, private authService: AuthService, private http: HttpClient) {}
+  claro = false;
+
+  modoOscuro(): void {
+    this.claro = !this.claro;
+    this.actualizarTema();
+  }
+
+  private cargarTema(): void {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      this.claro = true;
+      document.documentElement.classList.add('dark');
+    } else {
+      this.claro = false;
+      document.documentElement.classList.remove('dark');
+    }
+  }
+
+  private actualizarTema(): void {
+    const htmlElement = document.documentElement;
+    if (this.claro) {
+      htmlElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      htmlElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }
+
+  dividirMatriculas(curso: any): any[] {
+    const alumnos = curso.alumnos;
+    const grupos: any[] = [];
+
+    for (let i = 0; i < alumnos.length; i += 5) {
+      grupos.push(alumnos.slice(i, i + 5));
+    }
+    return grupos;
   }
 
   ngOnInit() {
@@ -46,7 +106,10 @@ export class DocenteComponent implements OnInit{
     this.getEstudiantes();
     console.log("Datos docente",localStorage);
     this.getCursoAnioSemestre(1,1);
+    this.cargarDatosDocenteParaNombre()
+    this.cargarTema();
   }
+
 
   cargarDatosDocente() {
 
@@ -66,6 +129,27 @@ export class DocenteComponent implements OnInit{
       },
     });
   }
+
+  cargarDatosDocenteParaNombre() {
+
+    console.log('ID del docente desde localStorage:', this.docenteId);  // Verificar el valor
+
+    this.http.get<any[]>(this.apiUrldocente).subscribe({
+
+      next: (data) => {
+        console.log(this.nombre);
+        this.infoProfesor = data.filter(profesor => profesor.rut === this.nombre);
+        this.nombreProfesor = this.infoProfesor.length > 0 ? this.infoProfesor[0].nombre : null;
+        console.log('Nombre del profesor:', this.nombreProfesor);
+
+      },
+      error: (error) => {
+        console.error('Error al obtener los cursos:', error);
+        alert('No se pudieron cargar los cursos. Intente nuevamente más tarde.');
+      },
+    });
+  }
+
 
   cerrarSesion() {
     // Elimina los datos almacenados de sesión
@@ -147,4 +231,5 @@ export class DocenteComponent implements OnInit{
   }
 
 
+  protected readonly info = info;
 }

@@ -9,15 +9,17 @@ public class AdministradorDTO {
     private String email;
     private String contrasena;
     private boolean admin;
-    private String rut;;
+    private String rut;
+    private String imageurl;
 
     public AdministradorDTO() {}
 
-   public AdministradorDTO(String email, String contrasena, boolean admin, String rut) {
+   public AdministradorDTO(String email, String contrasena, boolean admin, String rut,String imageurl) {
         this.email = email;
         this.contrasena = contrasena;
         this.admin = admin;
         this.rut = rut;
+        this.imageurl = imageurl;
    }
 
     public String getId() {
@@ -58,5 +60,13 @@ public class AdministradorDTO {
 
     public void setRut(String rut) {
         this.rut = rut;
+    }
+
+    public String getImageurl() {
+        return imageurl;
+    }
+
+    public void setImageurl(String imageurl) {
+        this.imageurl = imageurl;
     }
 }
