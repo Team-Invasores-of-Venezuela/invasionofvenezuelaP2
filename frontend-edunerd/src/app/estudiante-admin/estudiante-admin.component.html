@@ -35,6 +35,13 @@
   <button
     class="dark:bg-azulClaro dark:text-azul w-full px-4 py-2 text-lg font-semibold text-primary bg-white rounded-full shadow-lg hover:scale-105 mb-4"
     (click)="abrirEliminarEstudianteModal()">Eliminar estudiantes</button>
+
+  <button
+    class="dark:bg-azulClaro dark:text-azul w-full px-4 py-2 text-lg font-semibold text-primary bg-white rounded-full shadow-lg hover:scale-105 mb-4"
+    style="margin-right: 25px"
+    (click)="descargarExcelEstudiantes()">
+    Descargar Estudiantes
+  </button>
 </div>
 <div class="flex justify-center items-center">
   <ul role="list" class="dark:bg-opacity-50 dark:bg-azulClaro max-w-2xl rounded bg-primary shadow-2xl p-10">
@@ -80,6 +87,9 @@
     </div>
   </div>
 </div>
+
+
+<!-- Botón para añadir estudiante -->
 
 <!-- Modal para elegir el método para agregar estudiante/s -->
 <div *ngIf="verEleccion" id="eleccion" class="dark:bg-azul dark:bg-opacity-60 fixed inset-0 flex items-center justify-center bg-primary bg-opacity-60">

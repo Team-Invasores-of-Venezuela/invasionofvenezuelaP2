@@ -67,7 +67,6 @@ export class LoginComponent implements OnInit{
 
 
   onSubmit() {
-    console.log("hola");
     const { email, contrasena } = this.loginForm.value;
 
     if (!email || !contrasena) {
@@ -79,19 +78,20 @@ export class LoginComponent implements OnInit{
       (response) => {
         console.log('Respuesta del servidor:', response);
         if (response) {
+          this.errorMessage = null;
+          console.log(response)
+
           localStorage.setItem('userId', response.id);
           localStorage.setItem('isAdmin', response.admin.toString());
+          localStorage.setItem("email",response.email);
           localStorage.setItem('nombre', response.nombre);
-          console.log("Funcionó el login");
+          localStorage.setItem("imagen",response.imagen);
 
           if (response.admin) {
-
-            this.router.navigate(['/administrador']); // Ruta para el administrador
+            this.router.navigate(['/administrador']);
           } else {
-            this.router.navigate(['/docente']); // Ruta para el usuario regular
+            this.router.navigate(['/docente']);
           }
-          //Aqui hay que poner la ruta a la pestaña que tiene que llevar el login
-          //this.router.navigate(['/home']);
         } else {
           this.errorMessage = 'Usuario o contraseña incorrectos';
         }
