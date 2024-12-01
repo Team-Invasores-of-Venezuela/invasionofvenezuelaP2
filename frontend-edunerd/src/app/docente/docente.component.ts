@@ -25,7 +25,11 @@ export class DocenteComponent implements OnInit{
   docenteId = localStorage.getItem('userId');
   nombre= localStorage.getItem('nombre');
   periodos: { anio: number; semestre: number }[] = [];
-  hayCursos: boolean = false;
+  hayCursos: boolean = true;
+  general: boolean = false;
+  profesor: any[] = [];
+  mostrarModal = false;
+  cursoSeleccionado: any = null;
 
   constructor(private router: Router, private authService: AuthService, private http: HttpClient) {
     for (let year = 2016; year <= 2024; year++) {
@@ -37,6 +41,7 @@ export class DocenteComponent implements OnInit{
 
   ngOnInit() {
     this.cargarDatosDocente();
+    console.log("Datos docente",localStorage);
     this.getCursoAnioSemestre(1,1);
   }
 
@@ -44,12 +49,13 @@ export class DocenteComponent implements OnInit{
 
     console.log('ID del docente desde localStorage:', this.docenteId);  // Verificar el valor
 
-    this.http.get<any[]>(this.apiUrlGetCursos).subscribe({
+    this.http.get<any[]>('http://localhost:8080/profesor/getall').subscribe({
 
       next: (data) => {
         console.log(this.nombre);
         console.log('Datos:', data);
-        this.cursos = data.filter(curso => curso.docente === this.nombre);
+        this.profesor = data.filter(profAux => profAux.rut === localStorage.getItem('nombre'));
+        console.log('Datos Profesor', this.profesor);
       },
       error: (error) => {
         console.error('Error al obtener los cursos:', error);
@@ -74,27 +80,38 @@ export class DocenteComponent implements OnInit{
     this.http.get<any>('http://localhost:8080/curso/getall').subscribe({
       next: (data) => {
         this.cursos = data;
-        this.filtraCursos(2022, 1);
+        console.log("Cursos", data)
       },
       error: (error) => {
         console.error('Error al obtener los cursos:', error);
         alert('No se pudieron cargar los cursos. Intente nuevamente más tarde.');
       },
     });
-
   }
 
   filtraCursos(anio: number, semestre: number){
+    this.general = true;
     this.cursosFiltrados = [];
-
+    console.log("RUT DEL PROFESOR: ",this.profesor[0].rut)
     for (let i = 0; i < this.cursos.length; i++) {
-      if(this.cursos[i].ano == anio && this.cursos[i].semestre == semestre){
+      console.log(this.cursos[i].profesor)
+      if(this.cursos[i].ano == anio && this.cursos[i].semestre == semestre && this.cursos[i].profesor == this.profesor[0].rut  ){
         this.cursosFiltrados.push(this.cursos[i]);
       }
     }
     console.log("Cursos filtrados",this.cursosFiltrados);
-    this.hayCursos = this.cursosFiltrados.length > 0;
-
+    this.hayCursos = !(this.cursosFiltrados.length > 0);
   }
+
+  abrirModal(curso: any) {
+    this.cursoSeleccionado = curso;
+    this.mostrarModal = true;
+  }
+
+  cerrarModal() {
+    this.mostrarModal = false;
+    this.cursoSeleccionado = null;
+  }
+
 
 }

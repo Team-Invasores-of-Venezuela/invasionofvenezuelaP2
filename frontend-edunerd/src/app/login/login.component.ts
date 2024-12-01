@@ -53,6 +53,7 @@ export class LoginComponent {
         console.log('Respuesta del servidor:', response);
         if (response) {
           localStorage.setItem('userId', response.id);
+          localStorage.setItem('rut', response.rut);
           localStorage.setItem('isAdmin', response.admin.toString());
           localStorage.setItem('nombre',response.nombre);
           console.log(response.nombre);
