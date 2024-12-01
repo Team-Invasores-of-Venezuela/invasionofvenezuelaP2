@@ -30,6 +30,8 @@ export class DocenteComponent implements OnInit{
   profesor: any[] = [];
   mostrarModal = false;
   cursoSeleccionado: any = null;
+  alumnos: any[] = [];
+  alumnosSeleccionados: any;
 
   constructor(private router: Router, private authService: AuthService, private http: HttpClient) {
     for (let year = 2016; year <= 2024; year++) {
@@ -41,6 +43,7 @@ export class DocenteComponent implements OnInit{
 
   ngOnInit() {
     this.cargarDatosDocente();
+    this.getEstudiantes();
     console.log("Datos docente",localStorage);
     this.getCursoAnioSemestre(1,1);
   }
@@ -105,12 +108,42 @@ export class DocenteComponent implements OnInit{
 
   abrirModal(curso: any) {
     this.cursoSeleccionado = curso;
+
     this.mostrarModal = true;
   }
 
   cerrarModal() {
     this.mostrarModal = false;
     this.cursoSeleccionado = null;
+  }
+
+  getEstudiantes(): void {
+    this.http.get<any[]>('http://localhost:8080/estudiante/getall')
+      .subscribe(
+        (data: any[]) => {
+          console.log('Estudiantes obtenidos', data);
+          this.alumnos = data;
+        },
+        (error: any) => {
+          console.error('Error al obtener los estudiantes', error);
+        }
+      );
+  }
+
+  //Filtra todos los alumnos a los que pertenecen al curso
+  mapAlumnos(curso: any){
+    this.alumnosSeleccionados = []
+    for(let i = 0; i < curso.alumnos.length; i++){ //Recorro los alumnos del curso
+      for (let j = 0; j < this.alumnos.length; j++) { //Recorro todos los alumnos
+        if(this.alumnos[j].matricula == curso.alumnos[i]  ){
+          this.alumnosSeleccionados.push(this.alumnos[j]);
+          console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+        }
+      }
+    }
+
+    console.log("ALUMNOS SELECCIONADOS", this.alumnosSeleccionados)
+
   }
 
 
