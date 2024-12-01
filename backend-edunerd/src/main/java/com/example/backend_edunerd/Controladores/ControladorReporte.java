@@ -10,9 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/reporte")
@@ -36,6 +34,20 @@ public class ControladorReporte {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
 
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/getreporte")
+    public ResponseEntity<List<ReporteDTO>> getReporte(@RequestParam("matricula") String matricula){
+        List<ReporteDTO> reportes = servicioReporte.getReporte(matricula);
+        return ResponseEntity.ok(reportes);
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/getreportes")
+    public ResponseEntity<List<ReporteDTO>> getReportes(){
+        List<ReporteDTO> reportes = servicioReporte.getReportes();
+        return ResponseEntity.ok(reportes);
     }
 
 
