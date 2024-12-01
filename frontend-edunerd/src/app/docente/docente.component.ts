@@ -162,7 +162,10 @@ export class DocenteComponent implements OnInit{
     this.router.navigate(['/login']);
   }
 
-  navegaEstudiante(){
+  navegaEstudiante(nombre: string, apellidoP: string, apellidoM: string){
+    localStorage.setItem('nombreEstudiante', nombre);
+    localStorage.setItem('apellidoPaterno', apellidoP);
+    localStorage.setItem("apellidoMaterno", apellidoM);
     this.router.navigate(['/estudiante']);
   }
 

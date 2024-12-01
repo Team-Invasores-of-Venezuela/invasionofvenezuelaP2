@@ -74,7 +74,7 @@
                 *ngFor="let alumno of alumnosSeleccionados"
                 class="flex justify-between border-b border-b-tertiary gap-x-6 p-5">
                 {{ alumno.nombre }} {{ alumno.apellidoPaterno }} {{ alumno.apellidoMaterno }}
-                <button (click)="navegaEstudiante();" class="bg-midSecondary text-white px-4 rounded hover:bg-primary transition">
+                <button (click)="navegaEstudiante(alumno.nombre,alumno.apellidoPaterno,alumno.apellidoMaterno);" class="bg-midSecondary text-white px-4 rounded hover:bg-primary transition">
                   Ver historial
                 </button>
               </li>
