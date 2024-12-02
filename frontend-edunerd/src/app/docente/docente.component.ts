@@ -162,10 +162,16 @@ export class DocenteComponent implements OnInit{
     this.router.navigate(['/login']);
   }
 
-  navegaEstudiante(nombre: string, apellidoP: string, apellidoM: string){
+  navegaEstudiante(nombre: string, apellidoP: string, apellidoM: string, rut: string, numMatricula: string, fecIngreso: any, imagen: string, positivas: number, negativas: number){
     localStorage.setItem('nombreEstudiante', nombre);
     localStorage.setItem('apellidoPaterno', apellidoP);
     localStorage.setItem("apellidoMaterno", apellidoM);
+    localStorage.setItem("rutEstudiante", rut);
+    localStorage.setItem("numMatricula", numMatricula);
+    localStorage.setItem("fecIngreso", fecIngreso);
+    localStorage.setItem("imagen", imagen);
+    localStorage.setItem("positivas", String(positivas));
+    localStorage.setItem("negativas", String(negativas));
     this.router.navigate(['/estudiante']);
   }
 
@@ -233,9 +239,7 @@ export class DocenteComponent implements OnInit{
         }
       }
     }
-
     console.log("ALUMNOS SELECCIONADOS", this.alumnosSeleccionados)
-
   }
 
 
