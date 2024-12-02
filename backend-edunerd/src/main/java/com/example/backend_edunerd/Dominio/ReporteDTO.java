@@ -1,5 +1,6 @@
 package com.example.backend_edunerd.Dominio;
 
+import com.example.backend_edunerd.Modelos.Reporte;
 import org.bson.types.ObjectId;
 
 public class ReporteDTO {
@@ -13,6 +14,13 @@ public class ReporteDTO {
         this.descripcion = descripcion;
         this.cursoId = cursoId;
         this.matricula = matricula;
+    }
+
+    public ReporteDTO(Reporte reporte) {
+        this.matricula = reporte.getMatricula();
+        this.puntaje = reporte.getPuntaje();
+        this.descripcion = reporte.getDescripcion();
+        this.cursoId = reporte.getCursoId();
     }
 
 
