@@ -11,6 +11,7 @@ public class Usuario {
     private String contrasena;
     private boolean admin;
     private String rut;
+    private String imageurl;
 
     public Usuario(boolean admin, String contrasena, String email, String nombre) {
         this.admin = admin;
@@ -18,6 +19,16 @@ public class Usuario {
         this.email = email;
         this.rut = nombre;
     }
+
+    public Usuario(boolean admin, String contrasena, String email, String nombre, String imageurl) {
+        this.admin = admin;
+        this.contrasena = contrasena;
+        this.email = email;
+        this.rut = nombre;
+        this.imageurl = imageurl;
+    }
+
+
  public Usuario(){
 
  }
@@ -60,4 +71,13 @@ public class Usuario {
     public void setRut(String rut) {
         this.rut = rut;
     }
+
+    public String getImageurl() {
+        return imageurl;
+    }
+
+    public void setImageurl(String imageurl) {
+        this.imageurl = imageurl;
+    }
+
 }

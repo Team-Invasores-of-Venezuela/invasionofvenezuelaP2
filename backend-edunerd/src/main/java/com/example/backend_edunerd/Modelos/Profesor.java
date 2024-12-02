@@ -18,10 +18,11 @@ public class Profesor {
     private String rut;
     private String titulo;
     private String gradoMax;
+    private String imageurl;
 
     public Profesor() {}
 
-    public Profesor(String id, String nombre, String apellidoPaterno, String apellidoMaterno, String rut, String titulo, String gradoMax) {
+    public Profesor(String id, String nombre, String apellidoPaterno, String apellidoMaterno, String rut, String titulo, String gradoMax,String imageurl) {
         this.id = id;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
@@ -29,6 +30,7 @@ public class Profesor {
         this.rut = rut;
         this.titulo = titulo;
         this.gradoMax = gradoMax;
+        this.imageurl = imageurl;
     }
 
     public Profesor(ProfesorDTO profesorDTO) {

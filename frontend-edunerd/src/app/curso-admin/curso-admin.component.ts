@@ -22,23 +22,56 @@ export class CursoAdminComponent implements OnInit{
   abrireliminar = false;
   slideBarvisible = false;
   CURSOS: any[] = []
+  estudiantes: any[] = [];
 
   private apiUrlGetCursos = 'http://localhost:8080/curso/getall';
   private apiUrlSubirArchivo = 'http://localhost:8080/svc/importarCursos';
   private apiUrlcrear = 'http://localhost:8080/curso/create';
   private apiUrleliminar = 'http://localhost:8080/curso/delete';
+  private apiUrlDescargarCursos = 'http://localhost:8080/svc/descargarcursos';
   private amniocenteses: any[] | undefined;
   nombreProfesor: string = '';
 
   constructor(private http: HttpClient, private router:Router) {}
-  mostrarCursos: { nombreProfesor: any; id: any; ano: any; alumnos: any; nombre: any; profesor: any;seccion: any; semestre: any }[] = [];
+  mostrarCursos: { nombreProfesor: any; id: any; ano: any; alumnos: any; nombre: any; profesor: any; carrera:any ;seccion: any; semestre: any }[] = [];
   verEditarEstudianteModal = false;
-  protected cursoEditado: any = {};
+  //protected cursoEditado: any = {};
 
   ngOnInit() {
     this.obtenerCursos();
     this.getDocentes()
+    this.getEstudiantes()
     this.transformarCursos()
+    this.cargarTema();
+  }
+
+  claro = false;
+
+  modoOscuro(): void {
+    this.claro = !this.claro;
+    this.actualizarTema();
+  }
+
+  private cargarTema(): void {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      this.claro = true;
+      document.documentElement.classList.add('dark');
+    } else {
+      this.claro = false;
+      document.documentElement.classList.remove('dark');
+    }
+  }
+
+  private actualizarTema(): void {
+    const htmlElement = document.documentElement;
+    if (this.claro) {
+      htmlElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      htmlElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
   }
 
   transformarCursos() {
@@ -50,6 +83,7 @@ export class CursoAdminComponent implements OnInit{
       seccion: curso.seccion,
       nombre: curso.nombre,
       profesor: curso.profesor,
+      carrera: curso.carrera,
       alumnos: curso.alumnos.join(', ')
     }));
   }
@@ -68,20 +102,80 @@ export class CursoAdminComponent implements OnInit{
       );
   }
 
-  compararNombreProfesor(): void {
+  getEstudiantes(): void {
+    this.http.get<any[]>('http://localhost:8080/estudiante/getall').subscribe(
+      (response: any[]) => {
+        this.estudiantes = response;
+        console.log('Estudiantes obtenidos', this.estudiantes);
+        this.compararEstudiantes();
+      },
+      (error) => {
+        console.error('Error al obtener estudiantes:', error);
+      }
+    );
+  }
+
+  compararEstudiantes(): void {
     this.mostrarCursos.forEach(curso => {
+      //console.log('Curso.alumnos:', curso.alumnos);
+
+      // Validar que `curso.alumnos` no sea nulo
+      const alumnosCurso = curso.alumnos || [];
+      const alumnosCursoValidados = alumnosCurso.filter((alumno: string) => alumno);
+
+      if (alumnosCursoValidados.length === 0) {
+        curso.alumnos = ['No hay estudiantes asignados'];
+        //console.log(`Curso: ${curso.nombre}, sin estudiantes asignados`);
+        return;
+      }
+
+      // Realizar el mapeo entre `d.alumnos` y `estudiantes.matricula`
+      curso.alumnos = alumnosCursoValidados.map((matricula: string) => {
+        const estudiante = this.estudiantes.find(e => e.matricula?.trim() === matricula.trim());
+
+        if (estudiante) {
+          const nombreCompleto = `${estudiante.nombre} ${estudiante.apellidoPaterno || ''} ${estudiante.apellidoMaterno || ''}`.trim();
+          return nombreCompleto;
+        } else {
+          return `Estudiante no encontrado (${matricula})`;
+        }
+      });
+
+      //console.log(`Curso: ${curso.nombre}, Estudiantes: ${curso.listaEstudiantes.join(', ')}`);
+    });
+  }
+
+
+
+  compararNombreProfesor(): void {
+    //console.log("Todos los docentes", this.amniocenteses);
+    this.mostrarCursos.forEach(curso => {
+      //console.log("Curso.profesor", curso.profesor);
+
+      const profesorRut = curso.profesor ? curso.profesor.trim() : null;
+
+      if (!profesorRut) {
+        curso.nombreProfesor = 'Profesor no encontrado';
+        //console.log(`Curso: ${curso.nombre}, Profesor no encontrado (RUT inválido)`);
+        return;
+      }
+
       // @ts-ignore
-      const docente = this.amniocenteses.find(d => d.rut.trim() === curso.profesor.trim());
+      const docente = this.amniocenteses.find(d => {
+        const docenteRut = d.rut ? d.rut.trim() : null;
+        return docenteRut === profesorRut;
+      });
 
       if (docente) {
         curso.nombreProfesor = docente.nombre;
-        console.log(`Curso: ${curso.nombre}, Profesor: ${curso.nombreProfesor}`);
+        //console.log(`Curso: ${curso.nombre}, Profesor: ${curso.nombreProfesor}`);
       } else {
         curso.nombreProfesor = 'Profesor no encontrado';
-        console.log(`Curso: ${curso.nombre}, Profesor no encontrado`);
+        //console.log(`Curso: ${curso.nombre}, Profesor no encontrado`);
       }
     });
   }
+
 
   dividirMatriculas(curso: any): any[] {
     const alumnos = curso.alumnos;
@@ -166,33 +260,28 @@ export class CursoAdminComponent implements OnInit{
   mostrarConfirmacionEliminar = false;
   cursoAEliminar: any = null;
 
-  confirmarEliminacion(curso: any) {
+  abrirModalEliminar(curso: any): void {
     this.cursoAEliminar = curso;
     this.mostrarConfirmacionEliminar = true;
   }
 
-  cancelarEliminacion() {
+  cancelarEliminacion(): void {
     this.cursoAEliminar = null;
     this.mostrarConfirmacionEliminar = false;
   }
-  eliminarCurso() {
-    if (!this.cursoSeleccionadoId) {
+
+  eliminarCurso(): void {
+    if (!this.cursoAEliminar) {
       alert('Por favor, selecciona un curso para eliminar.');
       return;
     }
 
-    const cursoSeleccionado = this.mostrarCursos.find((curso) => curso.id === this.cursoSeleccionadoId);
-    if (!cursoSeleccionado) {
-      alert('No se encontró el curso seleccionado.');
-      return;
-    }
-
     // @ts-ignore
-    this.http.post<any>(`${this.apiUrleliminar}?id=${cursoSeleccionado.id}`).subscribe({
+    this.http.post<any>(`${this.apiUrleliminar}?id=${this.cursoAEliminar.id}`).subscribe({
       next: () => {
-        alert(`El curso "${cursoSeleccionado.nombre}" ha sido eliminado.`);
-        this.mostrarCursos = this.mostrarCursos.filter((curso) => curso.id !== this.cursoSeleccionadoId);
-        this.cerrarFormularioEliminar();
+        alert(`El curso "${this.cursoAEliminar.nombre}" ha sido eliminado.`);
+        this.mostrarCursos = this.mostrarCursos.filter(curso => curso.id !== this.cursoAEliminar.id);
+        this.cancelarEliminacion();
       },
       error: (error) => {
         console.error('Error al eliminar el curso:', error);
@@ -201,40 +290,51 @@ export class CursoAdminComponent implements OnInit{
     });
   }
 
-  editarCurso(): void {
-    const cursoModificado = this.cursoEditado;
+  verEditarCursoModal: boolean = false;
+  cursoEditado: any = {};
 
-    const curso = {
+  abrirEditarCurso(curso: any): void {
+    this.cursoEditado = { ...curso }; // Copiar el curso para evitar mutaciones
+    this.verEditarCursoModal = true;
+  }
+
+  cerrarEditarCursoModal(): void {
+    this.cursoEditado = null;
+    this.verEditarCursoModal = false;
+  }
+
+  editarCurso(): void {
+    const { carrera, nombre, ano, semestre, seccion, profesor } = this.cursoEditado;
+
+    if (!carrera || !nombre || !ano || !semestre || !seccion || !profesor) {
+      alert('Por favor, completa todos los campos antes de guardar.');
+      return;
+    }
+
+    const cursoActualizado = {
       id: this.cursoEditado.id,
-      titulo: this.cursoEditado.titulo,
-      docente: this.cursoEditado.docente,
-      aprendizajes:this.cursoEditado.aprendizajes,
-      semestre:this.cursoEditado.semestre,
-      ano:this.cursoEditado.ano
+      carrera,
+      nombre,
+      ano,
+      semestre,
+      seccion,
+      profesor,
     };
 
-    this.http.post('http://localhost:8080/curso/update',curso)
-      .subscribe(
-        (response) => {
-
-          this.obtenerCursos();
-          this.cerrarEditarCursoModal();
-        },
-        error => {
-          console.error('Error al actualizar el curso:', error);
-        }
-      );
+    this.http.post('http://localhost:8080/curso/update', cursoActualizado).subscribe({
+      next: () => {
+        alert('El curso se ha actualizado exitosamente.');
+        this.obtenerCursos(); // Actualizar la lista de cursos
+        this.cerrarEditarCursoModal();
+      },
+      error: (error) => {
+        console.error('Error al actualizar el curso:', error);
+        alert('Hubo un error al actualizar el curso.');
+      },
+    });
   }
 
 
-
-  cerrarEditarCursoModal() {
-    this.verEditarEstudianteModal=false;
-  }
-  abrirEditarCurso(curso: any) {
-    this.cursoEditado = { ...curso };
-    this.verEditarEstudianteModal = true;
-  }
   abrirFormularioEliminar() {
     this.abrireliminar=true;
   }
@@ -254,20 +354,21 @@ export class CursoAdminComponent implements OnInit{
     this.abrirAgregarCurso = false;
   }
 
-  abrirModal() {
-    this.visible = true;
-  }
-
-  cerrarModal() {
-    this.visible = false;
-    this.archivo = null;
-  }
-
   toggleSidebar() {
     this.slideBarvisible = !this.slideBarvisible;
   }
 
-  onArchivoSeleccionado(event: Event) {
+  abrirModal(): void {
+    this.visible = true;
+  }
+
+  cerrarModal(): void {
+    this.visible = false;
+    this.archivo = null;
+  }
+
+  // Captura el archivo seleccionado
+  onArchivoSeleccionado(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       this.archivo = input.files[0];
@@ -275,7 +376,7 @@ export class CursoAdminComponent implements OnInit{
     }
   }
 
-  subirArchivo() {
+  subirArchivo(): void {
     if (this.archivo) {
       const formData = new FormData();
       formData.append('file', this.archivo);
@@ -295,9 +396,24 @@ export class CursoAdminComponent implements OnInit{
     }
   }
 
+  descargarExcel() {
+    this.http.get(this.apiUrlDescargarCursos, { responseType: 'blob' }).subscribe(
+      (response) => {
+        const a = document.createElement('a');
+        const url = window.URL.createObjectURL(response);
+        a.href = url;
+        a.download = 'cursos.xlsx';
+        a.click();
+        window.URL.revokeObjectURL(url);
+      },
+      (error) => {
+        console.error('Error al generar el Excel:', error);
+        alert('Hubo un problema al generar el archivo Excel.');
+      }
+    );
+  }
+
   navegarAdmin() {
     this.router.navigate(['/administrador']);
   }
-
-
 }

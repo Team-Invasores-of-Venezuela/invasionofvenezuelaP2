@@ -1,165 +1,219 @@
-<div class="flex items-center justify-center min-h-screen dark:bg-claro">
+<div class="flex flex-col items-center justify-center min-h-screen dark:bg-claro">
+  <div class="flex flex-col items-center justify-center w-full px-4 md:px-8 min-h-screen">
 
+    <div class="mt-4 flex justify-between items-center w-full px-4 md:px-8">
+      <button class="-ml-12 dark:bg-celeste px-4 py-2 text-lg font-semibold text-white bg-primary rounded-full" (click)="toggleSidebar()">☰</button>
+      <div class="flex-grow"></div>
 
-<div class="flex items-center justify-center min-h-screen">
-  <!-- Botón en la esquina superior derecha -->
-  <button
-    class="absolute top-4 right-4 px-4 py-2 text-lg font-semibold text-white bg-midSecondary rounded shadow-lg hover:bg-secondary hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white"
-    (click)="navegarAdmin()">
-    Volver
-  </button>
-  <div *ngIf="slideBarvisible" class="fixed inset-0 flex z-50 right-full dark:bg-azul">
-    <div class="dark:bg-celeste bg-primary bg-opacity-50 w-full h-full" (click)="toggleSidebar()"></div>
-    <div class="dark:bg-celeste bg-primary min-w-60 h-full p-4 shadow-lg transform transition-all duration-300 ease-in-out" [ngClass]="{'translate-x-0': slideBarvisible, 'translate-x-[-100%]': !slideBarvisible}">
-
-      <button class="absolute top-4 right-4 text-2xl font-medium text-primary hover:text-white dark:text-azul dark:font-medium" (click)="CerrartoggleSidebar()">X</button>
-
-      <h2 class="text-2xl font-semibold text-white mb-4 dark:text-azul">Opciones</h2>
-      <button class="dark:bg-azulClaro dark:text-azul w-full px-4 py-2 text-lg font-semibold text-primary transition transform bg-white rounded-full shadow-lg hover:bg-white hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white mb-4" (click)="abrirModal()">
-        Subir Excel
-      </button>
-      <button class="dark:bg-azulClaro dark:text-azul  w-full px-4 py-2 text-lg font-semibold text-primary transition transform bg-white rounded-full shadow-lg hover:bg-white hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white mb-4" (click)="abrir()">
-        Agregar curso de forma manual
-      </button>
+      <div class="flex space-x-4 ">
+        <button
+          class=" dark:bg-azulClaro dark:text-claro px-4 py-2 text-lg font-semibold text-white bg-midSecondary rounded shadow-lg hover:bg-secondary hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white"
+          (click)="navegarAdmin()">
+          Volver
+        </button>
+        <button
+          (click)="modoOscuro()"
+          class="dark:bg-transparent dark:text-celeste px-4 py-2 text-lg rounded font-semibold bg-primary text-white hover:bg-secondary transition-colors">
+          {{ claro ? 'Modo Oscuro' : 'Modo Claro' }}
+        </button>
+      </div>
     </div>
-  </div>
 
-  <button class="absolute top-4 left-4 px-4 py-2 text-lg font-semibold text-white bg-primary rounded-full" (click)="toggleSidebar()">☰</button>
 
-  <button  class="dark:bg-celeste dark:text-claro absolute top-4 left-4 px-4 py-2 text-lg font-semibold text-white transition transform bg-primary rounded-full shadow-lg hover:bg-secondary hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white" (click)="toggleSidebar()">
-    ☰
-  </button>
+    <!-- Sidebar -->
+    <div *ngIf="slideBarvisible" class="fixed inset-0 flex z-50">
+      <div class="dark:bg-celeste bg-primary bg-opacity-95 h-full" (click)="toggleSidebar()"></div>
+      <div class="dark:bg-celeste bg-primary w-64 h-full p-4 shadow-lg transform transition-all duration-300 ease-in-out" [ngClass]="{'translate-x-0': slideBarvisible, '-translate-x-full': !slideBarvisible}">
+        <button class="absolute top-4 right-4 text-2xl font-medium text-primary dark:text-azul" (click)="CerrartoggleSidebar()">X</button>
+        <h2 class="text-2xl font-semibold text-white mb-4 dark:text-azul">Opciones</h2>
+        <button class="dark:bg-azulClaro dark:text-azul w-full px-4 py-2 text-lg font-semibold text-primary bg-white rounded-full shadow-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white mb-4" (click)="abrirModal()">Subir Excel</button>
+        <button class="dark:bg-azulClaro dark:text-azul w-full px-4 py-2 text-lg font-semibold text-primary bg-white rounded-full shadow-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white mb-4" (click)="abrir()">Agregar curso</button>
+        <button class="dark:bg-azulClaro dark:text-azul w-full px-4 py-2 text-lg font-semibold text-primary bg-white rounded-full shadow-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white mb-4" (click)="descargarExcel()">Generar Excel</button>
+        <button class="dark:bg-azulClaro dark:text-azul w-full px-4 py-2 text-lg font-semibold text-white bg-secondary rounded-full shadow-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white mb-4" (click)="CerrartoggleSidebar()">Cerrar SlideBar</button>
+      </div>
+    </div>
 
-  <!-- Apartado de Mostrar los cursos-->
-  <div class="dark:bg-azulClaro ml-64 max-w-6xl mx-auto p-6 rounded-lg mt-8 bg-secondary shadow-2xl">
-    <h2 class="text-2xl font-semibold text-tertiary mb-4 dark:text-azul">Cursos</h2>
+    <!-- Cursos -->
+    <div class="dark:bg-azulClaro w-full max-w-5xl mx-auto p-6 rounded-lg mt-8 bg-secondary shadow-2xl">
+      <h2 class="text-2xl font-semibold text-tertiary mb-4 dark:text-azul">Cursos</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div *ngFor="let curso of mostrarCursos" class="dark:text-azul dark:bg-claro w-full rounded overflow-hidden shadow-lg bg-midSecondary text-tertiary">
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
-      <div *ngFor="let curso of mostrarCursos" class="dark:bg-claro w-90 h-50 rounded overflow-hidden shadow-lg bg-midSecondary text-tertiary">
-
-        <div class="flex justify-between items-center ml-5 mt-2 dark:text-azul">
-          <span>{{ curso.ano }} - {{ curso.semestre }} / Sección: {{ curso.seccion }}</span>
-          <button class="text-secondary px-4 py-2 rounded focus:bg-white" (click)="abrirEditarCurso(curso)">
-            Editar
-          </button>
-          |
-          <button (click)="confirmarEliminacion(curso)">
-            <img width="25" height="25" src="https://img.icons8.com/sf-regular/48/003064/trash.png" alt="trash" />
-          </button>
-        </div>
-
-        <div class="px-6 py-4">
-          <div class="font-extrabold text-xl mb-2">
-            {{ curso.nombre }}
-            <div class="dark:text-primary font-medium text-tertiary"> Profesor(a): {{ curso.nombreProfesor }}</div>
+          <div class="flex justify-between items-center p-4 dark:text-azul">
+            <span>{{ curso.ano }} - {{ curso.semestre }} / Sección: {{ curso.seccion }}</span>
+            <button
+              class="dark:text-claro dark:bg-celeste dark:bg-opacity-60 bg-secondary text-tertiary px-4 py-2 rounded focus:bg-white"
+              (click)="abrirEditarCurso(curso)"
+            >
+              Editar
+            </button>
+            <button (click)="abrirModalEliminar(curso)">
+              <img width="25" height="25" src="https://img.icons8.com/sf-regular/48/003064/trash.png" alt="trash" />
+            </button>
           </div>
 
-          <div class="dark:text-primary text-secondary text-base text-tertiary">
-            <div *ngFor="let grupo of dividirMatriculas(curso)">
-              <p>{{ grupo.join(', ') }}</p>
+          <!-- Modal para editar curso -->
+          <div *ngIf="verEditarCursoModal" class="dark:bg-azul dark:bg-opacity-20 fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
+            <div
+              class="dark:bg-claro bg-white rounded-lg shadow-xl p-6 w-full max-w-lg mx-4 h-auto max-h-[90vh] overflow-y-auto"
+            >
+              <h2 class="text-primary text-xl font-semibold mb-4 text-center">Editar Curso</h2>
+              <form (ngSubmit)="editarCurso()">
+                <div class="mb-4">
+                  <label class="block text-primary font-medium mb-2">Carrera</label>
+                  <input
+                    [(ngModel)]="cursoEditado.carrera"
+                    name="carrera"
+                    class="border rounded-lg px-4 py-2 w-full"
+                    required
+                  />
+                </div>
+                <div class="mb-4">
+                  <label class="block text-primary font-medium mb-2">Nombre</label>
+                  <input
+                    [(ngModel)]="cursoEditado.nombre"
+                    name="nombre"
+                    class="border rounded-lg px-4 py-2 w-full"
+                    required
+                  />
+                </div>
+                <div class="mb-4">
+                  <label class="block text-primary font-medium mb-2">Año</label>
+                  <input
+                    type="number"
+                    [(ngModel)]="cursoEditado.ano"
+                    name="ano"
+                    class="border rounded-lg px-4 py-2 w-full"
+                    required
+                  />
+                </div>
+                <div class="mb-4">
+                  <label class="block text-primary font-medium mb-2">Semestre</label>
+                  <input
+                    type="number"
+                    [(ngModel)]="cursoEditado.semestre"
+                    name="semestre"
+                    class="border rounded-lg px-4 py-2 w-full"
+                    required
+                  />
+                </div>
+                <div class="mb-4">
+                  <label class="block text-primary font-medium mb-2">Sección</label>
+                  <input
+                    [(ngModel)]="cursoEditado.seccion"
+                    name="seccion"
+                    class="border rounded-lg px-4 py-2 w-full"
+                    required
+                  />
+                </div>
+                <div class="mb-4">
+                  <label class="block text-primary font-medium mb-2">Profesor</label>
+                  <input
+                    [(ngModel)]="cursoEditado.profesor"
+                    name="profesor"
+                    class="border rounded-lg px-4 py-2 w-full"
+                    required
+                  />
+                </div>
+                <div class="flex justify-around mt-6">
+                  <button
+                    type="button"
+                    class="dark:bg-claro bg-tertiary text-primary px-4 py-2 rounded hover:bg-gray-400"
+                    (click)="cerrarEditarCursoModal()"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    type="submit"
+                    class="dark:bg-celeste dark:text-claro bg-secondary text-white px-4 py-2 rounded hover:bg-midSecondary"
+                  >
+                    Guardar
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
 
+
+          <!-- Modal de confirmación -->
+          <div *ngIf="mostrarConfirmacionEliminar" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
+            <div class="bg-white rounded-lg shadow-xl p-6 w-1/3">
+              <h2 class="text-primary text-xl font-semibold mb-4 text-center">¿Estás seguro de que deseas eliminar este curso?</h2>
+              <p class="text-center mb-6 text-primary">El curso "{{ cursoAEliminar.nombre }}" será eliminado de forma permanente.</p>
+              <div class="flex justify-around">
+                <button class="dark:bg-celeste dark:text-claro bg-secondary text-white px-4 py-2 rounded hover:bg-midSecondary"
+                  (click)="eliminarCurso()">
+                  OK
+                </button>
+                <button class="dark:bg-azulClaro dark:text-claro bg-tertiary text-primary px-4 py-2 rounded hover:bg-midSecondary"
+                  (click)="cancelarEliminacion()">
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="px-6 py-4">
+            <div class="font-extrabold text-xl mb-2">
+              {{ curso.nombre }}
+              <div class="dark:text-primary font-medium text-tertiary"> Profesor(a): {{ curso.nombreProfesor }}</div>
+              <div class="dark:text-primary font-medium text-tertiary"> Carrera: {{curso.carrera}} </div>
+            </div>
+
+            <div class="dark:text-secondary text-secondary text-base mt-4">
+              <div class="font-bold text-tertiary mb-2 dark:text-primary">Estudiantes:</div>
+              <ul class="list-disc text-tertiary list-inside dark:text-primary">
+                <li *ngFor="let estudiante of curso.alumnos">{{ estudiante }}</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Modal para subir archivo -->
+          <div
+            *ngIf="visible"
+            class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50"
+          >
+            <div class="bg-white rounded-lg shadow-xl p-6 w-1/2 max-w-lg transform">
+              <h2 class="text-xl font-semibold mb-4 text-center text-primary">Subir Archivo Excel</h2>
+              <form (ngSubmit)="subirArchivo()" class="flex flex-col space-y-4">
+                <!-- Input para seleccionar archivo -->
+                <div>
+                  <label for="archivo" class="block text-primary font-medium mb-2">
+                    Seleccionar Archivo
+                  </label>
+                  <input
+                    type="file"
+                    id="archivo"
+                    (change)="onArchivoSeleccionado($event)"
+                    accept=".xlsx, .xls"
+                    class="border rounded-lg px-4 py-2 w-full"
+                    required
+                  />
+                </div>
+                <!-- Botones -->
+                <div class="flex justify-between mt-6">
+                  <button
+                    type="button"
+                    class="dark:bg-claro dark:hover:bg-azulClaro bg-tertiary text-primary px-6 py-2 rounded hover:bg-midSecondary"
+                    (click)="cerrarModal()"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    type="submit"
+                    class="dark:bg-azulClaro dark:text-primary dark:hover:bg-celeste bg-secondary text-white px-6 py-2 rounded hover:bg-midSecondary"
+                  >
+                    Subir
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+
         </div>
       </div>
     </div>
   </div>
-
-  <!-- Modal de confirmación para eliminar curso -->
-  <div *ngIf="mostrarConfirmacionEliminar" class="fixed inset-0 flex items-center justify-center bg-primary bg-opacity-20 dark:bg-azul dark:bg-opacity-60">
-    <div class="dark:bg-claro bg-white rounded-lg shadow-lg p-6 max-w-sm w-full">
-      <h2 class="text-xl font-semibold mb-4 dark:text-azul">Confirmar Eliminación</h2>
-      <p class="mb-4 dark:text-azul">¿Estás seguro de que deseas eliminar el curso <strong>{{ cursoAEliminar?.titulo }}</strong>?</p>
-      <div class="flex justify-end space-x-4">
-        <button (click)="cancelarEliminacion()" class="dark:bg-transparent dark:text-primary bg-tertiary text-secondary px-4 py-2 rounded">Cancelar</button>
-        <button (click)="eliminarCurso()" class="dark:bg-celeste bg-secondary text-white px-4 py-2 rounded">Eliminar</button>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- Modal de subir archivo -->
-  <div *ngIf="visible" id="uploadModal" class=" fixed inset-0 flex items-center justify-center bg-primary bg-opacity-20 dark:bg-azul dark:bg-opacity-60">
-    <div class="dark:bg-claro bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
-      <h2 class="text-xl font-bold mb-4">Subir Archivo</h2>
-      <p class="mb-4">Seleccione un archivo Excel para cargar.</p>
-      <input type="file" accept=".xlsx, .xls" (change)="onArchivoSeleccionado($event)" class="block w-full text-sm text-gray-700 border border-gray-300 rounded-md p-2 mb-4" />
-      <div class="flex justify-end space-x-4">
-        <button (click)="cerrarModal()" class="dark:bg-transparent px-4 py-2 bg-tertiary rounded-md ">Cancelar</button>
-        <button (click)="subirArchivo()" class="dark:bg-celeste dark:text-claro px-4 py-2 bg-secondary text-white rounded-md">Subir</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal de agregar curso -->
-  <div *ngIf="abrirAgregarCurso" id="agregarCurso" class="dark:bg-azul dark:bg-opacity-60 fixed inset-0 flex items-center justify-center bg-primary bg-opacity-20">
-    <div class="dark:bg-azulClaro bg-white p-6 rounded shadow-lg max-w-md w-full">
-      <h3 class="text-xl font-semibold">Agregar Curso</h3>
-      <form (ngSubmit)="agregarCurso()" class="space-y-4">
-        <div>
-          <label class="block">Nombre</label>
-          <input type="text" [(ngModel)]="cursosTotales.titulo" name="titulo" class="w-full rounded p-2" />
-        </div>
-        <div>
-          <label class="block">Docente</label>
-          <input type="text" [(ngModel)]="cursosTotales.docente" name="docente" class="w-full  rounded p-2" />
-        </div>
-        <div>
-          <label class="block">Mátricula de Alumnos (separados por comas)</label>
-          <input type="text" [(ngModel)]="cursosTotales.aprendizajes" name="aprendizajes" class="w-full rounded p-2" />
-        </div>
-        <div>
-          <label class="block">Semestre</label>
-          <input type="text" [(ngModel)]="cursosTotales.semestre" name="semestre" class="w-full  rounded p-2" />
-        </div>
-        <div>
-          <label class="block">Año</label>
-          <input type="text" [(ngModel)]="cursosTotales.ano" name="año" class="w-full  rounded p-2" />
-        </div>
-        <div class="flex justify-end space-x-4">
-          <button type="button" (click)="cerrar()" class="dark:bg-transparent dark:text-primary bg-tertiary text-secondary px-4 py-2 rounded">Cancelar</button>
-          <button type="submit" class="dark:bg-celeste  font-medium bg-secondary text-white px-4 py-2 rounded">Agregar</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Modal para editar curso -->
-  <div *ngIf="verEditarEstudianteModal" class="dark:bg-azul dark:bg-opacity-60 fixed inset-0 flex items-center justify-center bg-primary bg-opacity-20">
-    <div class="dark:bg-azulClaro bg-white p-6 rounded shadow-lg max-w-md w-full">
-      <h3 class="text-xl font-semibold mb-4">Editar Curso</h3>
-      <form (ngSubmit)="editarCurso()">
-        <div class="space-y-4">
-          <div>
-            <label class="block">Título</label>
-            <input type="text" [(ngModel)]="cursoEditado.titulo" name="titulo" class="w-full rounded p-2" />
-          </div>
-          <div>
-            <label class="block">Docente</label>
-            <input type="text" [(ngModel)]="cursoEditado.docente" name="docente" class="w-full  rounded p-2" />
-          </div>
-          <div>
-            <label class="block">Aprendizajes (separados por comas)</label>
-            <input type="text" [(ngModel)]="cursoEditado.aprendizajes" name="aprendizajes" class="w-full  rounded p-2" />
-          </div>
-          <div>
-            <label class="block">Semestre</label>
-            <input type="text" [(ngModel)]="cursoEditado.semestre" name="semestre" class="w-full rounded p-2" />
-          </div>
-          <div>
-            <label class="block">Año</label>
-            <input type="text" [(ngModel)]="cursoEditado.ano" name="ano" class="w-full rounded p-2" />
-          </div>
-        </div>
-        <div class="flex justify-end space-x-4 mt-4">
-          <button type="button" class="dark:bg-transparent dark:text-azul text-primary bg-tertiary px-4 py-2 rounded hover:bg-tertiary" (click)="cerrarEditarCursoModal()">
-            Cancelar
-          </button>
-          <button type="submit" (click)="editarCurso()" class="dark:bg-celeste dark:font-medium bg-primary text-white px-4 py-2 rounded hover:bg-secondary">
-            Guardar Cambios
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
+</div>
