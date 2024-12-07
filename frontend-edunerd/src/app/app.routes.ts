@@ -9,6 +9,7 @@ import { NgModule } from '@angular/core';
 import {AppComponent} from './app.component';
 import {DocenteComponent} from './docente/docente.component';
 import {AuthGuard} from './auth.guard';
+import {EstudianteComponent} from './estudiante/estudiante.component';
 
 
 export const routes: Routes = [
@@ -16,6 +17,7 @@ export const routes: Routes = [
   { path: 'docenteadmin', component: DocenteAdminComponent, canActivate: [AuthGuard] },
   { path: 'cursoadmin', component: CursoAdminComponent, canActivate: [AuthGuard]},
   { path: 'estudianteadmin', component: EstudianteAdminComponent, canActivate: [AuthGuard] },
+  { path: 'estudiante', component: EstudianteComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'docente', component: DocenteComponent, canActivate: [AuthGuard] },
   { path: '', component: LoginComponent },

@@ -10,27 +10,89 @@
   </header>
 
   <div class="ml-10 mr-10 dark:bg-azulClaro max-w-full mx-auto p-4 lg:p-6 rounded-lg mt-14 bg-secondary shadow-2xl">
+
     <h2 class="text-xl md:text-2xl font-semibold text-tertiary mb-4 dark:text-azul">Cursos</h2>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-      <!-- Contenedor de tarjetas -->
-      <div *ngFor="let curso of mostrarCursos" class="dark:bg-claro w-full rounded overflow-hidden shadow-lg bg-midSecondary text-tertiary">
-        <div class="flex justify-between items-center p-4 dark:text-azul">
-          <span>{{ curso.ano }} - {{ curso.semestre }} / Sección: {{ curso.seccion }}</span>
+
+      <!-- Botones de los periodos -->
+      <div class="flex justify-center items-center min-h-screen -m-96">
+        <div class="grid grid-cols-9 gap-6 bg-white p-6 rounded-lg shadow-md">
+          <!-- Generar los botones con un bucle -->
+          <button *ngFor="let periodo of periodos" (click)="filtraCursos(periodo.anio, periodo.semestre)"
+                  class="bg-secondary hover:bg-blue-700 text-white w-40 font-bold py-2 px-4 rounded transition-transform hover:scale-105 hover:bg-midSecondary ">
+            {{ periodo.anio }}-{{ periodo.semestre }}
+          </button>
         </div>
+      </div>
 
-        <div class="px-6 py-4">
-          <div class="dark:text-primary font-extrabold text-lg md:text-xl mb-2">
-            {{ curso.nombre }}
-          </div>
+      <!-- Mensaje en caso de que no hayan cursos en el periodo seleccionado -->
+      <div *ngIf="hayCursos" class="text-3xl ml-20 px-4 py-2 mt-10">
+        No hay cursos disponibles para este periodo.
+      </div>
 
-          <div class="dark:text-primary text-secondary text-sm md:text-base">
-            <div *ngFor="let grupo of dividirMatriculas(curso)">
-              <p>{{ grupo.join(', ') }}</p>
+      <!-- Cursos correspondientes al periodo seleccionado -->
+      <div *ngIf="general" class="flex justify-center items-center bg-secondary rounded m-20 p-5">
+        <div class="grid grid-cols-6 gap-6">
+          <div *ngFor="let curso of cursosFiltrados" class="w-96 h-50 rounded overflow-hidden shadow-lg bg-midSecondary text-white">
+            <div class="px-6 py-4">
+              <!-- Nombre del curso -->
+              <div class="font-extrabold text-xl mb-1">
+                {{ curso.nombre }}
+              </div>
+              <!-- Sección -->
+              <div class="text-sm text-gray-300 mb-2">
+                Sección: {{ curso.seccion }}
+              </div>
+              <!-- Carrera -->
+              <div class="font-medium text-white">
+                Carrera: {{ curso.carrera }}
+              </div>
+              <!-- Botón para abrir modal -->
+              <div class="flex justify-center mt-4">
+                <button  (click)="abrirModal(curso); mapAlumnos(curso);" class="bg-primary hover:bg-secondary text-white font-bold py-2 px-4 rounded shadow-2xl">
+                  Ver alumnos
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+
+
+      <!-- Modal -->
+      <div *ngIf="mostrarModal" class="fixed inset-0 bg-primary bg-opacity-50 flex justify-center items-center z-50">
+        <div class="bg-secondary rounded-lg shadow-2xl p-8 w-1/3 relative text-white">
+          <!-- Título -->
+          <h2 class="text-3xl font-bold mb-6 border-b border-tertiary pb-2">
+            Alumnos de {{ cursoSeleccionado?.nombre }}
+          </h2>
+
+          <!-- Lista de alumnos con scroll -->
+          <div class="overflow-y-auto max-h-[60vh]">
+            <ul class="list-disc pl-6 text-white">
+              <li
+                *ngFor="let alumno of alumnosSeleccionados"
+                class="flex justify-between border-b border-b-tertiary gap-x-6 p-5">
+                {{ alumno.nombre }} {{ alumno.apellidoPaterno }} {{ alumno.apellidoMaterno }}
+                <button (click)="navegaEstudiante(alumno.nombre,alumno.apellidoPaterno,alumno.apellidoMaterno,
+                                                  alumno.rut, alumno.matricula, alumno.fechaIngreso,
+                                                  alumno.urlfoto, alumno.contadorPositivo, alumno.contadorNegativo);
+                " class="bg-midSecondary text-white px-4 rounded hover:bg-primary transition">
+                  Ver historial
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Botón cerrar -->
+          <div class="flex justify-end mt-6">
+            <button
+              (click)="cerrarModal()"
+              class="bg-primary text-white hover:bg-tertiary text-secondary font-semibold py-2 px-6 rounded shadow-md transition-all duration-200">
+              Cerrar
+            </button>
+          </div>
+        </div>
+      </div>
   </div>
 </div>
