@@ -40,13 +40,40 @@
     </div>
   </div>
 
-  <!-- Botón para ver observaciones -->
-  <div class="text-center mb-4">
+  <!-- Contenedor para los botones -->
+  <div class="text-center mb-4 flex justify-center gap-4">
+    <!-- Botón para ver observaciones -->
     <button
       (click)="mostrarObservaciones = !mostrarObservaciones"
       class="bg-secondary text-white px-6 py-3 rounded hover:bg-tertiary hover:text-primary transition text-lg">
       {{ mostrarObservaciones ? 'Dejar de Ver Observaciones' : 'Ver Observaciones' }}
     </button>
+
+    <!-- Botón para crear un reporte -->
+    <button
+      (click)="mostrarFormulario = !mostrarFormulario"
+      class="bg-secondary text-white px-6 py-3 rounded hover:bg-green-600 hover:text-gray-100 transition text-lg">
+      {{ mostrarFormulario ? 'Cancelar' : 'Crear Reporte' }}
+    </button>
+  </div>
+
+  <!-- Formulario para crear un nuevo reporte -->
+  <div *ngIf="mostrarFormulario" class="bg-gray-50 rounded-lg shadow-inner p-6 mt-4">
+    <h2 class="text-xl font-bold mb-4 text-gray-800">Nuevo Reporte</h2>
+    <form (ngSubmit)="crearReporte()">
+      <div class="mb-4">
+        <label class="block text-gray-700" for="puntaje">Puntaje:</label>
+        <select id="puntaje" [(ngModel)]="nuevoReporte.puntaje" name="puntaje" required class="border rounded w-full py-2 px-3 text-gray-700">
+          <option value="" disabled selected>Selecciona un puntaje</option>
+          <option *ngFor="let option of puntajeOptions" [value]="option.value">{{ option.label }}</option>
+        </select>
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700" for="descripcion">Descripción:</label>
+        <textarea id="descripcion" [(ngModel)]="nuevoReporte.descripcion" name="descripcion" required class="border rounded w-full py-2 px-3 text-gray-700"></textarea>
+      </div>
+      <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">Crear Reporte</button>
+    </form>
   </div>
 
   <!-- Lista de observaciones -->
