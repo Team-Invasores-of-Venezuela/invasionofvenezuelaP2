@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { NgIf, CommonModule } from '@angular/common'; // Asegúrate de importar CommonModule
@@ -17,14 +17,16 @@ export class AdministradorComponent implements OnInit{
   nombre:string | null | undefined;
   image: string | null | undefined;
   isadmin: string | null |undefined
+  cambiarFoto:boolean=false;
   showModal: boolean = false;
+  newImageUrl: string='';
+  timeoutId: any;
   adminData = {
     email: '',
     contrasena: '',
     admin: true,
     rut: ''
   };
-
 
   backendUrl = 'http://localhost:8080/usuario/registeradmin';
 
@@ -116,4 +118,51 @@ export class AdministradorComponent implements OnInit{
     // Redirige al usuario a la página de login
     this.router.navigate(['/login']);
   }
+
+  cerrarCambioFotoAdmin(){
+    this.cambiarFoto = !this.cambiarFoto;
+  }
+
+  cambiarFotoAdmin() {
+    if (this.email && this.newImageUrl) {
+      const imagenDTO = {
+        email: this.email,
+        imagen: this.newImageUrl
+      };
+
+      console.log(this.email)
+
+      this.http.post('http://localhost:8080/usuario/cambiarimagen', imagenDTO).subscribe(
+        (response: any) => {
+          console.log('Respuesta del servidor:', response);
+          if (response.success) {
+            alert('Imagen cambiada exitosamente');
+            localStorage.setItem('imagen', imagenDTO.imagen);
+            this.image=imagenDTO.imagen;
+          } else {
+            alert('Error al cambiar la imagen');
+          }
+        },
+        (error) => {
+          console.error('Error de la solicitud:', error);
+          alert('Hubo un error al cambiar la imagen');
+        }
+      );
+    } else {
+      alert('Por favor, complete todos los campos');
+    }
+  }
+
+
+  cambiarModalAdmin() {
+
+    this.showModal = !this.showModal ;
+
+  }
+
+
+
+
+
+
 }
