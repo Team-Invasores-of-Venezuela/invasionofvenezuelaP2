@@ -17,7 +17,7 @@
     (click)="navegarAdmin()">
     Volver
   </button>
-  <button (click)="modoOscuro()" class=" dark:bg-celeste dark:bg-opacity-40 dark:text-claro px-4 py-2 mr-5 mt-1  text-lg rounded font-semibold bg-primary text-white hover:bg-secondary transition-colors">
+  <button (click)="modoOscuro()" class=" dark:bg-transparent dark:bg-opacity-40 dark:text-celeste px-4 py-2 mr-5 mt-1  text-lg rounded font-semibold bg-primary text-white hover:bg-secondary transition-colors">
     {{ claro ? 'Modo Oscuro' : 'Modo Claro' }}
   </button>
 </div>
@@ -26,7 +26,7 @@
   class="fixed px-2 py-2 top-0 left-0 h-full w-[18.5%] z-50 bg-primary dark:bg-celeste transform transition-transform duration-300 ease-in-out"
   [ngClass]="{'translate-x-0': slideBarvisible, '-translate-x-full': !slideBarvisible}">
   <button
-    class="absolute top-4 right-4 text-2xl font-medium text-primary dark:text-azul"
+    class="absolute top-4 right-4 text-2xl font-medium text-white dark:text-azul"
     (click)="CerrartoggleSidebar()">X</button>
   <h2 class="dark:text-claro text-2xl font-semibold text-white mb-4">Opciones</h2>
   <button
@@ -82,23 +82,20 @@
 
     <!-- Botones de acción -->
     <div class="flex justify-end space-x-4">
-      <button (click)="cerrarModal();abrirExcelModal()" class="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400">Cancelar</button>
+      <button (click)="cerrarModal()" class="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400">Cancelar</button>
       <button (click)="subirArchivo()" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Subir</button>
     </div>
   </div>
 </div>
 
-
-<!-- Botón para añadir estudiante -->
-
-<!-- Modal para elegir el método para agregar estudiante/s -->
+<!-- Modal para elegir el método para agregar estudiante -->
 <div *ngIf="verEleccion" id="eleccion" class="dark:bg-azul dark:bg-opacity-60 fixed inset-0 flex items-center justify-center bg-primary bg-opacity-60">
   <div class="dark:bg-claro bg-midSecondary h-58 w-auto shadow-2xl rounded p-10 flex flex-col items-center space-y-4">
     <button class="ml-64 -mt-2" (click)="cerrarModalEleccion()">X</button>
     <button class="dark:bg-azulClaro dark:text-primary bg-secondary text-white px-4 py-2 rounded hover:bg-secondary h-11 w-48 hover:scale-105" (click)="modalEleccion(); modalManual()">
       Añadir manual
     </button>
-    <button class="dark:bg-azulClaro dark:text-primary bg-secondary text-white px-4 py-2 rounded hover:bg-secondary h-11 w-48 hover:scale-105" (click)="modalEleccion()">
+    <button class="dark:bg-azulClaro dark:text-primary bg-secondary text-white px-4 py-2 rounded hover:bg-secondary h-11 w-48 hover:scale-105" (click)="abrirExcelModal()">
       Subir excel
     </button>
   </div>
@@ -107,7 +104,7 @@
 <!-- Modal para agregar un estudiante manualmente -->
 <div *ngIf="verManual" id="manual" class="dark:bg-azul dark:bg-opacity-60 fixed inset-0 flex items-center justify-center bg-secondary bg-opacity-50 shadow-2xl">
 
-  <form (ngSubmit)="onSubmit()" class="dark:bg-azulClaro w-1/4 mx-auto p-6 bg-primary shadow-lg rounded-lg space-y-6 text-white">
+  <form (ngSubmit)="onSubmit()" class="dark:bg-white w-1/4 mx-auto p-6 bg-primary shadow-lg rounded-lg space-y-6 text-white">
     <button class="dark:text-azul text-white -mt-30 ml-60" (click)="cerrarModalManual()">X</button>
     <!-- Campo: Nombre -->
     <div>
@@ -223,7 +220,7 @@
 
 <!-- Modal de edición -->
 <div *ngIf="verEditarEstudianteModal" id="editarModal" class="dark:bg-azul dark:bg-opacity-60 fixed inset-0 flex items-center justify-center bg-primary bg-opacity-50">
-  <div class="dark:bg-azulClaro bg-midSecondary h-auto w-auto shadow-2xl rounded p-10 flex flex-col items-center space-y-4 relative">
+  <div class="dark:bg-white bg-midSecondary h-auto w-auto shadow-2xl rounded p-10 flex flex-col items-center space-y-4 relative">
     <button class="absolute top-2 right-2 text-white bg-red-500 rounded-full h-8 w-8 flex items-center justify-center" (click)="cerrarEditarEstudianteModal()">×</button>
     <h2 class="dark:text-azul text-xl font-bold text-white">Editar Estudiante</h2>
     <!-- Formulario de edición -->

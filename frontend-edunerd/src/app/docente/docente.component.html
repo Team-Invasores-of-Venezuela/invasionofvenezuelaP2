@@ -4,7 +4,7 @@
       Bienvenido(a) <a *ngIf="nombre" class="font-light">{{ nombreProfesor }}</a>
     </h1>
     <button (click)="cerrarSesion()" class="dark:text-claro font-medium text-tertiary">Cerrar sesión</button>
-    <button (click)="modoOscuro()" class=" dark:bg-celeste dark:bg-opacity-30 dark:text-primary absolute right-0 mt-28 text-sm px-2  rounded-md font-semibold bg-primary text-white hover:bg-secondary transition-colors">
+    <button (click)="modoOscuro()" class=" dark:bg-transparent dark:text-celeste  absolute right-0 mt-28 text-sm px-2  rounded-md font-semibold text-white hover:bg-secondary transition-colors">
       {{ claro ? 'Modo Oscuro' : 'Modo Claro' }}
     </button>
   </header>
