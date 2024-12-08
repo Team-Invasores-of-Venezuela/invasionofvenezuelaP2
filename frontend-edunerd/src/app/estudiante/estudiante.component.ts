@@ -1,16 +1,31 @@
 import {Component, OnInit} from '@angular/core';
 import { NgModule } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import {Router} from '@angular/router';
+
+interface Reporte {
+  puntaje: number;
+  descripcion: string;
+}
+
+interface newReporte {
+  matricula: string|null;
+  puntaje: number;
+  descripcion: string;
+  cursoId: string|null;
+}
 
 @Component({
   selector: 'app-estudiante',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './estudiante.component.html',
   styleUrl: './estudiante.component.css'
 })
 export class EstudianteComponent implements OnInit{
+  private apiURL = "http://localhost:8080/reporte/nuevoreporte";
   nombre: string | null = "";
   apellidoPaterno: string | null ="";
   apellidoMaterno: string | null ="";
@@ -21,6 +36,27 @@ export class EstudianteComponent implements OnInit{
   positivas: string | null = "";
   negativas:  string | null = "";
   mostrarObservaciones: boolean = false;
+  mostrarFormulario: boolean = false;
+
+  reportesAPI: Reporte[] = [];
+
+  nuevoReporte: Reporte = {
+    puntaje: 0,
+    descripcion: ''
+  };
+
+  puntajeOptions = [
+    { value: -5, label: 'Plagio (-5)' },
+    { value: 2, label: 'Participación en clases (2)' },
+    { value: 2, label: 'Chistes chistosos (2)' },
+    { value: -2, label: 'Mal olor (-2)' },
+    { value: -3, label: 'Lenguaje obsceno (-3)' },
+    { value: 3, label: 'Tareas entregadas a tiempo (3)' },
+    { value: -4, label: 'Uso de dispositivos no autorizados (-4)' },
+    { value: 2, label: 'Ayuda a compañeros (2)' },
+    { value: 1, label: 'Puntualidad (1)' },
+    { value: -3, label: 'Distracción (-3)' }
+  ];
 
   reportes: any[] =[
     { observacion: "Participa activamente de la clase", puntaje: 4 },
@@ -39,8 +75,9 @@ export class EstudianteComponent implements OnInit{
     { observacion: "Se ausenta sin justificación frecuente", puntaje: -4 },
     { observacion: "Muestra una actitud respetuosa hacia sus compañeros y el docente", puntaje: 5 },
   ];
+  private matricula: any;
 
-  constructor(private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(){
     this.nombre = localStorage.getItem('nombreEstudiante');
@@ -54,11 +91,16 @@ export class EstudianteComponent implements OnInit{
     this.negativas = localStorage.getItem('negativas');
 
     console.log("Estudiante: ",this.nombre,this.apellidoPaterno,this.apellidoMaterno,this.rut,this.numMatricula,this.fecIngreso,this.imagen);
-    console.log("Reportes: ",this.reportes)
+    console.log("Reportes: ",this.reportes);
+    console.log("Id del Curso", localStorage.getItem('SOYUNCURSO'));
+    console.log("Matricula del Alumno", localStorage.getItem('numMatricula'));
   }
 
   navegarDocente(): void {
     // Limpia el localStorage
+    localStorage.removeItem('SOYUNCURSO')
+    localStorage.removeItem('idDocente');
+    localStorage.removeItem('idAlumno')
     localStorage.removeItem('nombreEstudiante');
     localStorage.removeItem('apellidoPaterno');
     localStorage.removeItem('apellidoMaterno');
@@ -73,4 +115,32 @@ export class EstudianteComponent implements OnInit{
     this.router.navigate(['/docente']);
   }
 
+
+
+  crearReporte(): void {
+    if (this.nuevoReporte.puntaje && this.nuevoReporte.descripcion) {
+      const newReporte2: newReporte = {
+        matricula: this.numMatricula,
+        puntaje: this.nuevoReporte.puntaje,
+        descripcion: this.nuevoReporte.descripcion,
+        cursoId: localStorage.getItem('SOYUNCURSO')
+      };
+
+      this.http.post<newReporte>(this.apiURL, newReporte2).subscribe(
+        (response: newReporte) => {
+          console.log('Reporte registrado exitosamente', response);
+          alert('Reporte registrado con éxito.');
+        },
+        (error) => {
+          console.log('Detalles del error:', error);
+          console.error('Error al registrar el docente:', error);
+          alert('Ocurrió un error al registrar el docente.');
+        }
+      );
+
+      this.nuevoReporte = { puntaje: 0, descripcion: '' };
+      this.mostrarFormulario = false;
+      console.log(this.reportesAPI);
+    }
+  }
 }

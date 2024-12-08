@@ -202,12 +202,14 @@ export class DocenteComponent implements OnInit{
       }
     }
     console.log("Cursos filtrados",this.cursosFiltrados);
+
     this.hayCursos = !(this.cursosFiltrados.length > 0);
   }
 
   abrirModal(curso: any) {
     this.cursoSeleccionado = curso;
-
+    localStorage.setItem("SOYUNCURSO", curso.id);
+    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAA", curso.id);
     this.mostrarModal = true;
   }
 
