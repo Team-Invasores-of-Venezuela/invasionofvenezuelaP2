@@ -42,7 +42,7 @@
     <h2 class="dark:text-claro text-2xl font-semibold text-white mb-4">Opciones</h2>
     <button
       class="dark:text-azul dark:bg-azulClaro w-full px-4 py-2 text-lg font-semibold text-primary bg-white rounded-full shadow-lg hover:scale-105 mb-4"
-      (click)="abrirModal()">Cargar docente</button>
+      (click)="abrirModal()">Subir Excel</button>
     <button
       class="dark:bg-azulClaro dark:text-azul w-full px-4 py-2 text-lg font-semibold text-primary bg-white rounded-full shadow-lg hover:scale-105 mb-4"
       (click)="mostrarFormularioRegistro()">Registrar nuevo docente</button>
@@ -68,17 +68,20 @@
             <p class="dark:text-primary text-sm text-white">Grado: {{ docente.gradoMax }}</p>
           </div>
         </div>
+
         <button
           (click)="abrirModalEditar(docente)"
           class="dark:text-primary dark:bg-azulClaro dark:border-b-2 dark:border-celeste bg-midSecondary  text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-11"
           [disabled]="modoEliminacion">
           Editar Docente
         </button>
+
         <button
-          (click)="eliminarDocente()"
+          (click)="seleccionarDocenteParaEliminar(docente)"
           class="dark:text-primary dark:bg-azulClaro dark:bg-opacity-50 bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-red-700 h-11">
           Eliminar Docente
         </button>
+
       </li>
     </ul>
   </div>
@@ -137,24 +140,106 @@
     </div>
   </div>
 
-
-
   <!-- Modal para editar docente existente -->
-  <div *ngIf="showModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10">
+  <div
+    *ngIf="showModal"
+    class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10"
+  >
     <div class="dark:bg-claro bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
       <h2 class="text-xl font-bold mb-4">Editar Docente</h2>
 
-      <label for="idEditar" class="block text-sm font-medium text-gray-700">ID del docente</label>
-      <input type="text" id="idEditar" [(ngModel)]="idEditar" name="idEditar" class="block w-full text-sm text-gray-700 border border-gray-300 rounded-md p-2">
+      <label for="rutEditar" class="block text-sm font-medium text-gray-700">RUT del docente</label>
+      <input
+        type="text"
+        id="rutEditar"
+        [(ngModel)]="rutEditar"
+        name="idEditar"
+        class="block w-full text-sm text-gray-700 border border-gray-300 rounded-md p-2"
+      />
 
-      <label for="nombreEditar" class="block text-sm font-medium text-gray-700">Nuevo nombre del docente</label>
-      <input type="text" [(ngModel)]="nombreEditar" id="nombreEditar" name="nombreEditar" class="block w-full text-sm text-gray-700 border border-gray-300 rounded-md p-2">
+      <label for="nombreEditar" class="block text-sm font-medium text-gray-700">Nombre</label>
+      <input
+        type="text"
+        id="nombreEditar"
+        [(ngModel)]="nombreEditar"
+        name="nombreEditar"
+        class="block w-full text-sm text-gray-700 border border-gray-300 rounded-md p-2"
+      />
 
-      <div class="flex justify-end space-x-4">
-        <button (click)="cerrarModalEditar()" class=" dark:text-claro dark:bg-azulClaro bg-primary text-white px-4 py-2 rounded-2xl hover:bg-gray-400">Cancelar</button>
-        <button (click)="guardarEdicion()" class="dark:text-claro dark:bg-celeste bg-primary text-white px-4 py-2 rounded-2xl hover:bg-primary-light">Guardar</button>
+      <label for="apellidoPEditar" class="block text-sm font-medium text-gray-700">Apellido Paterno</label>
+      <input
+        type="text"
+        id="apellidoPEditar"
+        [(ngModel)]="apellidoPEditar"
+        name="apellidoPEditar"
+        class="block w-full text-sm text-gray-700 border border-gray-300 rounded-md p-2"
+      />
+
+      <label for="apellidoMEditar" class="block text-sm font-medium text-gray-700">Apellido Materno</label>
+      <input
+        type="text"
+        id="apellidoMEditar"
+        [(ngModel)]="apellidoMEditar"
+        name="apellidoMEditar"
+        class="block w-full text-sm text-gray-700 border border-gray-300 rounded-md p-2"
+      />
+
+      <label for="tituloEditar" class="block text-sm font-medium text-gray-700">Título</label>
+      <input
+        type="text"
+        id="tituloEditar"
+        [(ngModel)]="tituloEditar"
+        name="tituloEditar"
+        class="block w-full text-sm text-gray-700 border border-gray-300 rounded-md p-2"
+      />
+
+      <label for="gradoEditar" class="block text-sm font-medium text-gray-700">Grado Máximo</label>
+      <input
+        type="text"
+        id="gradoEditar"
+        [(ngModel)]="gradoEditar"
+        name="gradoEditar"
+        class="block w-full text-sm text-gray-700 border border-gray-300 rounded-md p-2"
+      />
+
+      <!-- Botones -->
+      <div class="flex justify-end space-x-4 mt-4">
+        <button
+          (click)="cerrarModalEditar()"
+          class="dark:text-claro dark:bg-azulClaro bg-primary text-white px-4 py-2 rounded hover:bg-gray-400"
+        >
+          Cancelar
+        </button>
+        <button
+          (click)="guardarEdicion()"
+          class="dark:text-claro dark:bg-celeste bg-primary text-white px-4 py-2 rounded hover:bg-primary-light"
+        >
+          Guardar
+        </button>
       </div>
     </div>
   </div>
+
+  <!-- Modal de confirmación de eliminación de un docente -->
+  <div *ngIf="mostrarConfirmacionEliminar" class="modal fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div class="bg-white p-6 rounded-lg shadow-md">
+      <h2 class="text-xl font-bold mb-4">Confirmar eliminación</h2>
+      <p class="mb-4">¿Estás seguro de que deseas eliminar al docente <strong>{{ docenteAEliminar?.nombre }}</strong>?</p>
+      <div class="flex justify-end gap-4">
+        <button
+          (click)="cancelarEliminacionDocente()"
+          class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400">
+          Cancelar
+        </button>
+        <button
+          (click)="eliminarDocente()"
+          class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700">
+          Confirmar
+        </button>
+      </div>
+    </div>
+  </div>
+
+
 
 </div>

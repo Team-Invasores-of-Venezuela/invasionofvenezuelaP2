@@ -51,7 +51,9 @@ public class ControladorProfesor {
     @CrossOrigin(origins = "*")
     @PostMapping("/update")
     public ResponseEntity<Profesor> updateProfesor(@RequestBody ProfesorDTO2 profesorDTO2) {
+        System.out.println("wakala:"+profesorDTO2.getNombre());
         Profesor profesor = servicioProfesor.updateProfesor(profesorDTO2);
+        System.out.println("Profeta:"+profesor);
         if (profesor != null) {
             return ResponseEntity.ok().body(profesor);
         } else {
