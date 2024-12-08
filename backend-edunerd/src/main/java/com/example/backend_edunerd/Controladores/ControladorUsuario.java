@@ -1,6 +1,7 @@
 package com.example.backend_edunerd.Controladores;
 
 import com.example.backend_edunerd.Dominio.AdministradorDTO;
+import com.example.backend_edunerd.Dominio.ImagenDTO;
 import com.example.backend_edunerd.Dominio.ProfesorDTO;
 import com.example.backend_edunerd.Dominio.UsuarioDTO;
 import com.example.backend_edunerd.Modelos.Profesor;
@@ -60,6 +61,68 @@ public class ControladorUsuario {
             return ResponseEntity.ok(response);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+
+    }
+
+    @CrossOrigin(origins = "*")
+    @PostMapping("/existeusuario")
+    public ResponseEntity<Map<String, Boolean>>  existeUsuario(@RequestParam("email") String email){
+        if(repositorioUsuario.existsByEmail(email)){
+            return ResponseEntity.ok(Map.of("exist", true));
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @CrossOrigin(origins = "*")
+    @PostMapping("/cambiarcontraseña")
+    public ResponseEntity<Map<String, Boolean>> cambiarContraseña (@RequestBody UsuarioDTO usuarioDTO){
+        Map<String, Boolean> response = new HashMap<>();
+
+        try {
+            Optional<Usuario> usuarioOptional = repositorioUsuario.findByEmail(usuarioDTO.getEmail());
+            if (usuarioOptional.isPresent()) {
+                Usuario usuario = usuarioOptional.get();
+                usuario.setContrasena(usuarioDTO.getContrasena()); // Asegúrate de encriptar si es necesario
+                repositorioUsuario.save(usuario);
+                response.put("success", true);
+                return ResponseEntity.ok(response);
+            } else {
+                response.put("success", false);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+        } catch (Exception e) {
+            response.put("success", false);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+
+    @CrossOrigin(origins = "*")
+    @PostMapping("/cambiarimagen")
+    public ResponseEntity<Map<String, Boolean>> cambiarImagen (@RequestBody ImagenDTO imagen){
+        Map<String, Boolean> response = new HashMap<>();
+        System.out.println(imagen.getEmail());
+        try {
+            Optional<Usuario> usuarioOptional = repositorioUsuario.findByEmail(imagen.getEmail());
+            if (usuarioOptional.isPresent()) {
+                Usuario usuario = usuarioOptional.get();
+                usuario.setImageurl(imagen.getImagen());
+                repositorioUsuario.save(usuario);
+                response.put("success", true);
+                return ResponseEntity.ok(response);
+            } else {
+                System.out.println("no encuenta al usuario por algun motivo");
+                response.put("success", false);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+        } catch (Exception e) {
+            System.out.println("exception for any reason");
+            response.put("success", false);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 
