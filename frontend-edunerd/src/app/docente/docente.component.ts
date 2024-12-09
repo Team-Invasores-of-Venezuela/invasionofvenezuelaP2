@@ -320,7 +320,6 @@ export class DocenteComponent implements OnInit{
       ctx.fillStyle = '#000';
       ctx.font = '12px Arial';
       ctx.fillText(labels[index], x, canvas.height - 10);
-      console.log("ALOOOOOOOOOOOOOOOOOOOOOO")
     });
   }
 

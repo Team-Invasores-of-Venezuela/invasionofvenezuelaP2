@@ -5,97 +5,111 @@
   class="absolute top-4 left-4 bg-gray-100 text-gray-800 px-4 py-2 rounded-lg shadow hover:bg-gray-200 transition">
   Volver
 </button>
-<div class="bg-white rounded-lg shadow-lg p-10 w-4/5 max-w-6xl relative">
+<div class="bg-white rounded-lg shadow-lg p-6 sm:p-10 w-full max-w-6xl relative">
 
   <!-- Cabecera del perfil -->
-  <div class="flex items-center justify-between mb-8">
-    <div class="flex items-center gap-6">
-      <img src="{{imagen}}" alt="Foto del estudiante" class="w-40 h-40 rounded-full shadow-md">
-      <div>
-        <h1 class="text-4xl font-bold text-gray-800">{{nombre}} {{apellidoPaterno}} {{apellidoMaterno}}</h1>
-        <p class="text-lg text-gray-600">Rut: {{rut}}</p>
+  <div class="flex flex-wrap items-center justify-between mb-8 gap-6">
+    <div class="flex items-center gap-6 flex-wrap">
+      <img src="{{imagen}}" alt="Foto del estudiante" class="w-32 h-32 sm:w-40 sm:h-40 rounded-full shadow-md">
+      <div class="text-center sm:text-left">
+        <h1 class="text-3xl sm:text-4xl font-bold text-gray-800">{{nombre}} {{apellidoPaterno}} {{apellidoMaterno}}</h1>
+        <p class="text-base sm:text-lg text-gray-600">Rut: {{rut}}</p>
       </div>
     </div>
-    <div class="grid grid-cols-3 gap-6 text-center">
+    <div class="grid grid-cols-3 gap-4 sm:gap-6 text-center w-full sm:w-auto">
       <div>
-        <p class="text-3xl font-bold text-primary">{{positivas}}</p>
-        <p class="text-gray-500">Positivas</p>
+        <p class="text-2xl sm:text-3xl font-bold text-primary">{{positivas}}</p>
+        <p class="text-sm sm:text-base text-gray-500">Positivas</p>
       </div>
       <div>
-        <p class="text-3xl font-bold text-primary">{{negativas}}</p>
-        <p class="text-gray-500">Negativas</p>
+        <p class="text-2xl sm:text-3xl font-bold text-primary">{{negativas}}</p>
+        <p class="text-sm sm:text-base text-gray-500">Negativas</p>
       </div>
-      <div [ngClass]="{'bg-green-200 text-green-800': total >= 0, 'bg-red-200 text-red-800': total < 0}" class="p-4 rounded-md -mt-4">
-        <p class="text-3xl font-bold">{{total}}</p>
-        <p class="text-gray-500">Puntaje Total</p>
+      <div
+        [ngClass]="{'bg-green-200 text-green-800': total >= 0, 'bg-red-200 text-red-800': total < 0}"
+        class="p-2 sm:p-4 rounded-md -mt-4">
+        <p class="text-2xl sm:text-3xl font-bold">{{total}}</p>
+        <p class="text-sm sm:text-base text-gray-500">Puntaje Total</p>
       </div>
     </div>
   </div>
 
   <!-- Información adicional del estudiante -->
-  <div class="grid grid-cols-2 gap-8 mb-8">
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8 mb-6">
     <div>
-      <p class="text-lg"><span class="font-semibold">Número de Matrícula:</span> {{numMatricula}}</p>
-      <p class="text-lg"><span class="font-semibold">Fecha de Ingreso:</span> {{fecIngreso}}</p>
+      <p class="text-sm sm:text-lg"><span class="font-semibold">Número de Matrícula:</span> {{numMatricula}}</p>
+      <p class="text-sm sm:text-lg"><span class="font-semibold">Fecha de Ingreso:</span> {{fecIngreso}}</p>
     </div>
   </div>
 
   <!-- Contenedor para los botones -->
-  <div class="text-center mb-4 flex justify-center gap-4">
+  <div class="text-center mb-4 flex flex-wrap justify-center gap-4">
     <!-- Botón para ver observaciones -->
     <button
       (click)="(mostrarObservaciones = !mostrarObservaciones); getReportes(numMatricula)"
-      class="bg-secondary text-white px-6 py-3 rounded hover:bg-tertiary hover:text-primary transition text-lg">
+      class="bg-secondary text-white px-6 py-3 rounded hover:bg-tertiary hover:text-primary transition text-sm sm:text-lg">
       {{ mostrarObservaciones ? 'Dejar de Ver Observaciones' : 'Ver Observaciones' }}
     </button>
 
     <!-- Botón para crear un reporte -->
     <button
       (click)="mostrarFormulario = !mostrarFormulario"
-      class="bg-secondary text-white px-6 py-3 rounded hover:bg-green-600 hover:text-gray-100 transition text-lg">
+      class="bg-secondary text-white px-6 py-3 rounded hover:bg-green-600 hover:text-gray-100 transition text-sm sm:text-lg">
       {{ mostrarFormulario ? 'Cancelar' : 'Crear Reporte' }}
     </button>
 
     <button
-      (click)="mostrarModalConReportes()"
-      class="bg-secondary text-white px-6 py-3 rounded hover:bg-green-600 hover:text-gray-100 transition text-lg">
-      Mostrar Reportes
-    </button>
-
-    <button
       (click)="descargarCartaPDF()"
-      class="bg-secondary text-white px-6 py-3 rounded hover:bg-green-600 hover:text-gray-100 transition text-lg">
+      class="bg-secondary text-white px-6 py-3 rounded hover:bg-green-600 hover:text-gray-100 transition text-sm sm:text-lg">
       Descargar Carta
     </button>
-
   </div>
 
   <!-- Formulario para crear un nuevo reporte -->
-  <div *ngIf="mostrarFormulario" class="bg-gray-50 rounded-lg shadow-inner p-6 mt-4">
-    <h2 class="text-xl font-bold mb-4 text-gray-800">Nuevo Reporte</h2>
+  <div *ngIf="mostrarFormulario" class="bg-gray-50 rounded-lg shadow-inner p-4 sm:p-6 mt-4">
+    <h2 class="text-lg sm:text-xl font-bold mb-4 text-gray-800">Nuevo Reporte</h2>
     <form (ngSubmit)="crearReporte()">
       <div class="mb-4">
-        <label class="block text-gray-700" for="puntaje">Puntaje:</label>
-        <select id="puntaje" [(ngModel)]="nuevoReporte.puntaje" name="puntaje" required class="border rounded w-full py-2 px-3 text-gray-700">
+        <label class="block text-sm sm:text-base text-gray-700" for="puntaje">Puntaje:</label>
+        <select
+          id="puntaje"
+          [(ngModel)]="nuevoReporte.puntaje"
+          name="puntaje"
+          required
+          class="border rounded w-full py-2 px-3 text-sm sm:text-base text-gray-700">
           <option value="" disabled selected>Selecciona un puntaje</option>
           <option *ngFor="let option of puntajeOptions" [value]="option.value">{{ option.label }}</option>
         </select>
       </div>
       <div class="mb-4">
-        <label class="block text-gray-700" for="descripcion">Descripción:</label>
-        <textarea id="descripcion" [(ngModel)]="nuevoReporte.descripcion" name="descripcion" required class="border rounded w-full py-2 px-3 text-gray-700"></textarea>
+        <label class="block text-sm sm:text-base text-gray-700" for="descripcion">Descripción:</label>
+        <textarea
+          id="descripcion"
+          [(ngModel)]="nuevoReporte.descripcion"
+          name="descripcion"
+          required
+          class="border rounded w-full py-2 px-3 text-sm sm:text-base text-gray-700"></textarea>
       </div>
-      <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">Crear Reporte</button>
+      <button
+        type="submit"
+        class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition text-sm sm:text-base">
+        Crear Reporte
+      </button>
     </form>
   </div>
 
   <!-- Lista de observaciones -->
-  <div *ngIf="mostrarObservaciones" class="bg-gray-50 rounded-lg shadow-inner p-6 mt-4">
-    <h2 class="text-xl font-bold mb-4 text-gray-800">Observaciones</h2>
+  <div *ngIf="mostrarObservaciones" class="bg-gray-50 rounded-lg shadow-inner p-4 sm:p-6 mt-4">
+    <h2 class="text-lg sm:text-xl font-bold mb-4 text-gray-800">Observaciones</h2>
     <ul class="space-y-4">
-      <li *ngFor="let obs of reportes" class="flex justify-between items-center border-b pb-2">
-        <p>{{ obs.descripcion }}</p>
-        <p [class.text-green-500]="obs.puntaje > 0" [class.text-red-500]="obs.puntaje < 0" class="font-bold">
+      <li
+        *ngFor="let obs of reportes"
+        class="flex justify-between items-center border-b pb-2">
+        <p class="text-sm sm:text-base">{{ obs.descripcion }}</p>
+        <p
+          [class.text-green-500]="obs.puntaje > 0"
+          [class.text-red-500]="obs.puntaje < 0"
+          class="font-bold text-sm sm:text-base">
           {{ obs.puntaje > 0 ? '+' : '' }}{{ obs.puntaje }}
         </p>
       </li>
@@ -103,47 +117,3 @@
   </div>
 </div>
 </body>
-
-<!-- Modal -->
-<div
-  *ngIf="mostrarModal"
-  class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
-  <div class="bg-white rounded-lg shadow-lg p-6 w-1/2">
-    <h2 class="text-2xl font-bold mb-4 text-center">Reportes del Estudiante</h2>
-
-    <!-- Si no hay reportes -->
-    <div *ngIf="reportes.length === 0" class="text-center">
-      <p class="text-gray-600">El estudiante no tiene reportes.</p>
-      <button
-        (click)="cerrarModal()"
-        class="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">
-        Cerrar
-      </button>
-    </div>
-
-    <!-- Si hay reportes -->
-    <div *ngIf="reportes.length > 0">
-      <table class="table-auto w-full border-collapse border border-gray-300">
-        <thead>
-        <tr class="bg-gray-200">
-          <th class="border px-4 py-2">Descripción</th>
-          <th class="border px-4 py-2">Puntaje</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let reporte of reportes">
-          <td class="border px-4 py-2">{{ reporte.descripcion }}</td>
-          <td class="border px-4 py-2">{{ reporte.puntaje }}</td>
-        </tr>
-        </tbody>
-      </table>
-      <div class="text-center mt-4">
-        <button
-          (click)="cerrarModal()"
-          class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
-          Cerrar
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
