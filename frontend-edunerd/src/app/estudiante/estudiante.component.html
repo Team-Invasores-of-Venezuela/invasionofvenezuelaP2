@@ -55,6 +55,19 @@
       class="bg-secondary text-white px-6 py-3 rounded hover:bg-green-600 hover:text-gray-100 transition text-lg">
       {{ mostrarFormulario ? 'Cancelar' : 'Crear Reporte' }}
     </button>
+
+    <button
+      (click)="mostrarModalConReportes()"
+      class="bg-secondary text-white px-6 py-3 rounded hover:bg-green-600 hover:text-gray-100 transition text-lg">
+      Mostrar Reportes
+    </button>
+
+    <button
+      (click)="descargarCartaPDF()"
+      class="bg-secondary text-white px-6 py-3 rounded hover:bg-green-600 hover:text-gray-100 transition text-lg">
+      Descargar Carta
+    </button>
+
   </div>
 
   <!-- Formulario para crear un nuevo reporte -->
@@ -90,3 +103,47 @@
   </div>
 </div>
 </body>
+
+<!-- Modal -->
+<div
+  *ngIf="mostrarModal"
+  class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
+  <div class="bg-white rounded-lg shadow-lg p-6 w-1/2">
+    <h2 class="text-2xl font-bold mb-4 text-center">Reportes del Estudiante</h2>
+
+    <!-- Si no hay reportes -->
+    <div *ngIf="reportes.length === 0" class="text-center">
+      <p class="text-gray-600">El estudiante no tiene reportes.</p>
+      <button
+        (click)="cerrarModal()"
+        class="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">
+        Cerrar
+      </button>
+    </div>
+
+    <!-- Si hay reportes -->
+    <div *ngIf="reportes.length > 0">
+      <table class="table-auto w-full border-collapse border border-gray-300">
+        <thead>
+        <tr class="bg-gray-200">
+          <th class="border px-4 py-2">Descripción</th>
+          <th class="border px-4 py-2">Puntaje</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let reporte of reportes">
+          <td class="border px-4 py-2">{{ reporte.descripcion }}</td>
+          <td class="border px-4 py-2">{{ reporte.puntaje }}</td>
+        </tr>
+        </tbody>
+      </table>
+      <div class="text-center mt-4">
+        <button
+          (click)="cerrarModal()"
+          class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
