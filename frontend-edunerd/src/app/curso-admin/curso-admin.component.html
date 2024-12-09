@@ -2,7 +2,7 @@
   <div class="flex flex-col items-center justify-center w-full px-4 md:px-8 min-h-screen">
 
     <div class="mt-4 flex justify-between items-center w-full px-4 md:px-8">
-      <button class="-ml-12 dark:bg-celeste px-4 py-2 text-lg font-semibold text-white bg-primary rounded-full text-claro" (click)="toggleSidebar()">☰</button>
+      <button class="-ml-12 dark:bg-celeste px-4 py-2 text-lg font-semibold bg-primary rounded-full text-claro" (click)="toggleSidebar()">☰</button>
       <div class="flex-grow"></div>
 
       <div class="flex space-x-4 ">
@@ -200,7 +200,7 @@
                 <div class="flex justify-between mt-6">
                   <button
                     type="button"
-                    class="dark:bg-claro dark:hover:bg-azulClaro bg-tertiary text-primary px-6 py-2 rounded hover:bg-midSecondary"
+                    class="dark:bg-transparent dark:hover:bg-azulClaro bg-tertiary text-primary px-6 py-2 rounded hover:bg-midSecondary"
                     (click)="cerrarModal()"
                   >
                     Cancelar
@@ -219,9 +219,11 @@
           <!-- Modal Agregar Curso -->
           <div
             *ngIf="mostrarModalAgregar"
-            class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+            class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50 p-4"
           >
-            <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
+            <div
+              class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg lg:max-w-2xl overflow-auto max-h-full transform"
+            >
               <h2 class="text-xl font-semibold mb-4 text-center text-primary">Agregar Curso</h2>
 
               <!-- Formulario -->
@@ -256,49 +258,68 @@
                   />
                 </div>
 
-                <div>
-                  <label for="ano" class="block mb-2 text-sm font-medium text-gray-700">
-                    Año:
-                  </label>
-                  <input
-                    id="ano"
-                    type="number"
-                    [(ngModel)]="cursosTotales.ano"
-                    name="ano"
-                    class="w-full border-gray-300 rounded-lg shadow-sm p-2 focus:ring-secondary focus:border-secondary"
-                    placeholder="Ingresa el año del curso"
-                    required
-                  />
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label for="ano" class="block mb-2 text-sm font-medium text-gray-700">
+                      Año:
+                    </label>
+                    <input
+                      id="ano"
+                      type="number"
+                      [(ngModel)]="cursosTotales.ano"
+                      name="ano"
+                      class="w-full border-gray-300 rounded-lg shadow-sm p-2 focus:ring-secondary focus:border-secondary"
+                      placeholder="Ingresa el año del curso"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label for="semestre" class="block mb-2 text-sm font-medium text-gray-700">
+                      Semestre:
+                    </label>
+                    <input
+                      id="semestre"
+                      type="number"
+                      [(ngModel)]="cursosTotales.semestre"
+                      name="semestre"
+                      class="w-full border-gray-300 rounded-lg shadow-sm p-2 focus:ring-secondary focus:border-secondary"
+                      placeholder="Ingresa el semestre del curso"
+                      required
+                    />
+                  </div>
                 </div>
 
-                <div>
-                  <label for="semestre" class="block mb-2 text-sm font-medium text-gray-700">
-                    Semestre:
-                  </label>
-                  <input
-                    id="semestre"
-                    type="number"
-                    [(ngModel)]="cursosTotales.semestre"
-                    name="semestre"
-                    class="w-full border-gray-300 rounded-lg shadow-sm p-2 focus:ring-secondary focus:border-secondary"
-                    placeholder="Ingresa el semestre del curso"
-                    required
-                  />
-                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label for="seccion" class="block mb-2 text-sm font-medium text-gray-700">
+                      Sección:
+                    </label>
+                    <input
+                      id="seccion"
+                      type="text"
+                      [(ngModel)]="cursosTotales.seccion"
+                      name="seccion"
+                      class="w-full border-gray-300 rounded-lg shadow-sm p-2 focus:ring-secondary focus:border-secondary"
+                      placeholder="Ingresa la sección del curso"
+                      required
+                    />
+                  </div>
 
-                <div>
-                  <label for="seccion" class="block mb-2 text-sm font-medium text-gray-700">
-                    Sección:
-                  </label>
-                  <input
-                    id="seccion"
-                    type="text"
-                    [(ngModel)]="cursosTotales.seccion"
-                    name="seccion"
-                    class="w-full border-gray-300 rounded-lg shadow-sm p-2 focus:ring-secondary focus:border-secondary"
-                    placeholder="Ingresa la sección del curso"
-                    required
-                  />
+                  <div>
+                    <label for="profesor" class="block mb-2 text-sm font-medium text-gray-700">
+                      Profesor:
+                    </label>
+                    <input
+                      id="profesor"
+                      type="text"
+                      [(ngModel)]="cursosTotales.profesor"
+                      name="profesor"
+                      class="w-full border-gray-300 rounded-lg shadow-sm p-2 focus:ring-secondary focus:border-secondary"
+                      placeholder="Ingresa el rut del profesor"
+                      required
+                    />
+                  </div>
                 </div>
 
                 <div>
@@ -316,40 +337,23 @@
                   />
                 </div>
 
-                <div>
-                  <label for="profesor" class="block mb-2 text-sm font-medium text-gray-700">
-                    Profesor:
-                  </label>
-                  <input
-                    id="profesor"
-                    type="text"
-                    [(ngModel)]="cursosTotales.profesor"
-                    name="profesor"
-                    class="w-full border-gray-300 rounded-lg shadow-sm p-2 focus:ring-secondary focus:border-secondary"
-                    placeholder="Ingresa el rut del profesor"
-                    required
-                  />
-                </div>
-
                 <!-- Botones -->
-                <div class="flex justify-end space-x-4">
+                <div class="flex justify-end space-x-4 mt-4">
                   <button
                     type="button"
-                    class="bg-tertiary text-white px-4 py-2 rounded hover:bg-red-600"
+                    class="bg-transparent text-primary px-4 py-2 rounded hover:bg-red-600"
                     (click)="cerrarModalAgregar()">
                     Cancelar
                   </button>
                   <button
                     type="submit"
-                    class="bg-secondary text-white px-4 py-2 rounded hover:bg-primary">
+                    class="dark:bg-celeste dark:text-claro bg-secondary text-white px-4 py-2 rounded hover:bg-primary">
                     Agregar
                   </button>
                 </div>
               </form>
             </div>
           </div>
-
-
 
 
         </div>
