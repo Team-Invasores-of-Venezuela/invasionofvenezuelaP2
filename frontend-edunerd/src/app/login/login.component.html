@@ -1,7 +1,7 @@
 <div [ngClass]="{ 'bg-white text-white': claro, 'bg-primary text-white': !claro }"
      class="min-h-screen flex items-center justify-center p-4 sm:p-0 transition-colors duration-300 relative">
 
-  <button (click)="modoOscuro()" class="dark:bg-transparent dark:text-primary absolute top-4 right-4 px-4 py-2 rounded-md font-semibold bg-primary text-white hover:bg-secondary transition-colors">
+  <button (click)="modoOscuro()" class="dark:bg-transparent dark:text-celeste absolute top-4 right-4 px-4 py-2 rounded-md font-semibold bg-primary text-white hover:bg-secondary transition-colors">
     {{ claro ? 'Modo Oscuro' : 'Modo Claro' }}
   </button>
 
@@ -14,9 +14,9 @@
       </p>
 
       <div class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"  *ngIf="mostrarmodal" >
-        <div class="rounded-lg shadow-lg w-full max-w-lg p-6 "  [ngClass]="{ 'bg-azulClaro': claro, 'bg-midSecondary': !claro }">
-          <h2 class="text-2xl font-semibold mb-4 text-center">Recuperar Contraseña</h2>
-          <p class="mb-4 text-center" [ngClass]="{ 'text-secondary': claro, 'text-dark': !claro }">Ingresa tu correo electrónico y te enviaremos instrucciones para recuperarla.</p>
+        <div class="rounded-lg shadow-lg w-full max-w-lg p-6 "  [ngClass]="{ 'bg-white': claro, 'bg-midSecondary': !claro }">
+          <h2 class="text-2xl font-semibold mb-4 text-center text-primary">Recuperar Contraseña</h2>
+          <p class="mb-4 text-center" [ngClass]="{ 'text-primary': claro, 'text-dark': !claro }">Ingresa tu correo electrónico y te enviaremos instrucciones para recuperarla.</p>
           <input
             type="email"
             [(ngModel)]="recoveryEmail"
@@ -33,7 +33,7 @@
       </div>
 
       <div class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50" *ngIf="mostrarmodalcodigo">
-        <div class="rounded-lg shadow-lg w-full max-w-lg p-6" [ngClass]="{ 'bg-azulClaro': claro, 'bg-midSecondary': !claro }">
+        <div class="rounded-lg shadow-lg w-full max-w-lg p-6" [ngClass]="{ 'bg-white': claro, 'bg-midSecondary': !claro }">
           <h2 class="text-2xl font-semibold mb-4 text-center" [ngClass]="{ 'text-secondary': claro, 'text-dark': !claro }">
             Verificación de Código
           </h2>
@@ -107,7 +107,7 @@
         <button type="submit" class="dark:bg-celeste w-full font-bold py-2 rounded-lg mb-4 bg-primary text-[#ECEFF1] transition-transform transform hover:scale-105 hover:bg-[#37474F]">
           Inicia sesión
         </button>
-        <p class="text-center text-sm text-blue-500 cursor-pointer" (click)="showModal()">
+        <p class="text-center text-sm dark:text-celeste cursor-pointer text-primary" (click)="showModal()">
           ¿Olvidaste tu contraseña?
         </p>
 

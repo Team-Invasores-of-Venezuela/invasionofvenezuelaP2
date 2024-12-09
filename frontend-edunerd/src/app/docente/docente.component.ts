@@ -54,7 +54,7 @@ export class DocenteComponent implements OnInit{
   alumnos: any[] = [];
   alumnosSeleccionados: any;
   nombreProfesor: string | null ='';
-  claro:boolean = false;
+  claro= false;
 
   reportes: any;
   reportesFiltrados: any;
@@ -67,8 +67,6 @@ export class DocenteComponent implements OnInit{
         this.periodos.push({anio: year, semestre: semester});
       }
     }
-
-    this.claro = false;
   }
 
   modoOscuro(): void {

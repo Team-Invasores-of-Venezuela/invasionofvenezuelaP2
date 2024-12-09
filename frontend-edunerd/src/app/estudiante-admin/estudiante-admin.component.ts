@@ -122,6 +122,7 @@ export class EstudianteAdminComponent implements OnInit{
   cerrarModal() {
     this.visible = false;
     this.selectedFile = null;
+    this.verExcel = false;
   }
 
   cerrarModalExcel(){
@@ -166,6 +167,7 @@ export class EstudianteAdminComponent implements OnInit{
 
   abrirExcelModal() {
     this.verExcel = true;
+    this.verEleccion=false;
   }
 
   abrirEliminarEstudianteModal(): void {
