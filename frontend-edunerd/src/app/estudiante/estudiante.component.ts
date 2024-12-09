@@ -37,6 +37,7 @@ export class EstudianteComponent implements OnInit{
   negativas:  string | null = "";
   mostrarObservaciones: boolean = false;
   mostrarFormulario: boolean = false;
+  mostrarModal: boolean = false;
 
   reportesAPI: Reporte[] = [];
 
@@ -94,6 +95,12 @@ export class EstudianteComponent implements OnInit{
     console.log("Reportes: ",this.reportes);
     console.log("Id del Curso", localStorage.getItem('SOYUNCURSO'));
     console.log("Matricula del Alumno", localStorage.getItem('numMatricula'));
+
+    if (!this.numMatricula) {
+      console.error('No se encontró numMatricula en localStorage');
+    } else {
+      console.log('Matrícula cargada:', this.numMatricula);
+    }
   }
 
   navegarDocente(): void {
@@ -114,8 +121,6 @@ export class EstudianteComponent implements OnInit{
     // Navega a la ruta \docente
     this.router.navigate(['/docente']);
   }
-
-
 
   crearReporte(): void {
     if (this.nuevoReporte.puntaje && this.nuevoReporte.descripcion) {
@@ -143,4 +148,60 @@ export class EstudianteComponent implements OnInit{
       console.log(this.reportesAPI);
     }
   }
+
+  private apiUrlmostrar = 'http://localhost:8080/reporte/getreporte';
+
+  mostrarModalConReportes(): void {
+    this.mostrarModal = true;
+
+    if (!this.numMatricula) {
+      console.error('No se encontró la matrícula en localStorage');
+      this.reportes = [];
+      return;
+    }
+
+    this.http.get<any[]>(`${this.apiUrlmostrar}?matricula=${this.numMatricula}`).subscribe(
+      (data: any[]) => {
+        this.reportes = data;
+        console.log("Reportes obtenidos", data)
+      },
+      (error: any) => {
+        console.error('Error al obtener los reportes:', error);
+        this.reportes = [];
+      }
+    );
+  }
+
+  cerrarModal(): void {
+    this.mostrarModal = false;
+  }
+
+  descargarCartaPDF(): void {
+    if (!this.numMatricula) {
+      console.error('No se encontró la matrícula');
+      return;
+    }
+
+    this.http.get(`http://localhost:8080/svc/descargarpdf?matricula=${this.numMatricula}`, {
+      responseType: 'blob'
+    })
+      .subscribe(
+        (data: Blob) => {
+          const blob = new Blob([data], { type: 'application/pdf' });
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'carta_estudiante.pdf';
+          a.click();
+          window.URL.revokeObjectURL(url);
+        },
+        (error) => {
+          console.error('Error al descargar el PDF:', error);
+        }
+      );
+  }
+
+
+
+
 }

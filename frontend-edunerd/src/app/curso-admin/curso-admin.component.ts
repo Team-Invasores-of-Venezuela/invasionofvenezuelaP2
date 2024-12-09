@@ -16,13 +16,22 @@ export class CursoAdminComponent implements OnInit{
   cursoSeleccionadoId: string = '';
   archivo: File | null = null;
   cursos: { id: string; titulo: string; descripcion: string }[] = [];
-  cursosTotales: { titulo: string, docente: string,aprendizajes:string[], semestre:number,ano:number } = {titulo: '', docente: '', aprendizajes: [''], semestre: 0, ano: 0};
+  cursosTotales = {
+    carrera: '',
+    nombre: '',
+    ano: 0,
+    semestre: 0,
+    seccion: '',
+    alumnos: '',
+    profesor: '',
+  };
   visible = false;
   abrirAgregarCurso = false;
   abrireliminar = false;
   slideBarvisible = false;
   CURSOS: any[] = []
   estudiantes: any[] = [];
+  mostrarModalAgregar: boolean = false;
 
   private apiUrlGetCursos = 'http://localhost:8080/curso/getall';
   private apiUrlSubirArchivo = 'http://localhost:8080/svc/importarCursos';
@@ -203,58 +212,48 @@ export class CursoAdminComponent implements OnInit{
 
   protected title: string | undefined;
 
+  abrirModalAgregar() {
+    this.mostrarModalAgregar = true;
+  }
+
+  cerrarModalAgregar() {
+    this.mostrarModalAgregar = false;
+  }
+
   agregarCurso() {
-    if (this.cursosTotales.titulo.trim()) {
-      if (this.cursosTotales.ano.toString().trim()) {
-        if (this.cursosTotales.docente.trim()) {
-          let aprendizajesProcesados: string[] = [];
+    const alumnosProcesados = this.cursosTotales.alumnos
+      .split(',')
+      .map((matricula: string) => matricula.trim());
 
-          if (Array.isArray(this.cursosTotales.aprendizajes)) {
+    const curso = {
+      carrera: this.cursosTotales.carrera,
+      nombre: this.cursosTotales.nombre,
+      ano: this.cursosTotales.ano,
+      semestre: this.cursosTotales.semestre,
+      seccion: this.cursosTotales.seccion,
+      alumnos: alumnosProcesados,
+      profesor: this.cursosTotales.profesor,
+    };
 
-            aprendizajesProcesados = this.cursosTotales.aprendizajes.map((item: string) => item.trim());
-          } else if (typeof this.cursosTotales.aprendizajes === 'string') {
-            // @ts-ignore
-            aprendizajesProcesados = this.cursosTotales.aprendizajes.split(',').map((item: string) => item.trim());
-          } else {
-
-            console.warn('El campo de aprendizajes no tiene un formato válido');
-            aprendizajesProcesados = [];
-          }
-
-          const curso = {
-            titulo: this.cursosTotales.titulo,
-            docente: this.cursosTotales.docente,
-            aprendizajes: aprendizajesProcesados,
-            semestre: this.cursosTotales.semestre,
-            ano: this.cursosTotales.ano,
-          };
-
-          this.http.post(`${this.apiUrlcrear}`, curso).subscribe({
-            next: (response) => {
-              alert('Curso agregado exitosamente');
-              this.cursosTotales = {
-                titulo: '',
-                docente: '',
-                aprendizajes: [''],
-                semestre:0,
-                ano:0,
-              };
-              this.abrirAgregarCurso = false;
-            },
-            error: (error) => {
-              console.error('Error al agregar el curso:', error);
-              alert('Ocurrió un error al intentar agregar el curso.');
-            },
-          });
-        } else {
-          alert('Por favor, complete todos los campos del formulario.');
-        }
-      } else {
-        alert('Por favor, complete todos los campos del formulario.');
-      }
-    } else {
-      alert('Por favor, complete todos los campos del formulario.');
-    }
+    this.http.post(this.apiUrlcrear, curso).subscribe({
+      next: () => {
+        alert('Curso agregado exitosamente');
+        this.cerrarModalAgregar();
+        this.cursosTotales = {
+          carrera: '',
+          nombre: '',
+          ano: 0,
+          semestre: 0,
+          seccion: '',
+          alumnos: '',
+          profesor: '',
+        };
+      },
+      error: (error) => {
+        console.error('Error al agregar el curso:', error);
+        alert('Ocurrió un error al intentar agregar el curso.');
+      },
+    });
   }
 
   mostrarConfirmacionEliminar = false;
