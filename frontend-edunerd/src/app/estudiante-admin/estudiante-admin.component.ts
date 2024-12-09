@@ -122,6 +122,11 @@ export class EstudianteAdminComponent implements OnInit{
   cerrarModal() {
     this.visible = false;
     this.selectedFile = null;
+    this.verExcel = false;
+  }
+
+  cerrarModalExcel(){
+    this.verExcel = false;
   }
 
   onFileSelected(event: any) {
@@ -157,10 +162,12 @@ export class EstudianteAdminComponent implements OnInit{
 
   modalExcel() {
     this.verExcel = !this.verExcel;
+    this.cerrarModalEleccion()
   }
 
   abrirExcelModal() {
     this.verExcel = true;
+    this.verEleccion=false;
   }
 
   abrirEliminarEstudianteModal(): void {
@@ -168,31 +175,42 @@ export class EstudianteAdminComponent implements OnInit{
   }
 
   abrirEditarEstudianteModal(estudiante: any): void {
-    this.estudianteEditado = { ...estudiante };  // Cargar los datos del estudiante a editar
+    this.estudianteEditado = { ...estudiante };
     this.verEditarEstudianteModal = true;
   }
 
   cerrarEditarEstudianteModal(): void {
     this.verEditarEstudianteModal = false;
+    this.estudianteEditado = null;
   }
 
   onSubmit() {
     const estudianteCreado = {
       nombre: this.estudiante.nombre,
+      apellidoPaterno: this.estudiante.apellidoPaterno,
+      apellidoMaterno: this.estudiante.apellidoMaterno,
+      rut: this.estudiante.rut,
       matricula: this.estudiante.matricula,
-      anoIngreso: this.estudiante.anoIngreso
+      fechaNacimiento: this.estudiante.fechaNacimiento,
+      fechaIngreso: this.estudiante.fechaIngreso,
+      urlfoto: this.estudiante.urlfoto,
+      contadorPositvo: 0,
+      contadorNegativo: 0
     };
 
     this.http.post('http://localhost:8080/estudiante/create', estudianteCreado)
       .subscribe(
         (response: any) => {
           console.log('Estudiante añadido exitosamente', response);
+          this.getEstudiantes();
+          this.cerrarModalManual();
         },
         (error: any) => {
           console.error('Error al crear estudiante', error);
-        });
-
+        }
+      );
   }
+
 
   seleccionarEstudiante(estudiante: any): void {
     const index = this.estudiantesSeleccionados.findIndex(e => e.id === estudiante.id);
@@ -239,23 +257,32 @@ export class EstudianteAdminComponent implements OnInit{
     this.estudianteAEliminar = null;
     this.mostrarConfirmacionEliminar = false;
   }
+
   editarEstudiante(): void {
-    const estudianteModificado = this.estudianteEditado;
+    const estudianteModificado = {
+      ...this.estudianteEditado, // Incluimos los campos editados
+      fechaNacimiento: this.estudianteEditado.fechaNacimiento, // Mantenemos los valores originales
+      fechaIngreso: this.estudianteEditado.fechaIngreso
+    };
 
     const estudianteDTO2 = {
       id: estudianteModificado.id,
-      matricula: estudianteModificado.matricula,
       nombre: estudianteModificado.nombre,
-      anoIngreso: estudianteModificado.anoIngreso
+      apellidoPaterno: estudianteModificado.apellidoPaterno,
+      apellidoMaterno: estudianteModificado.apellidoMaterno,
+      matricula: estudianteModificado.matricula,
+      rut: estudianteModificado.rut,
+      urlfoto: estudianteModificado.urlfoto,
+      fechaNacimiento: estudianteModificado.fechaNacimiento,
+      fechaIngreso: estudianteModificado.fechaIngreso
     };
 
-    // Realizamos la llamada POST al endpoint de actualización
     this.http.post('http://localhost:8080/estudiante/update', estudianteDTO2)
       .subscribe(
         (response) => {
-          this.getEstudiantes();
+          console.log('Estudiante actualizado:', response);
+          this.getEstudiantes(); // Actualiza la lista de estudiantes
           this.cerrarEditarEstudianteModal();
-          this.router.navigate(['/estudianteadmin']);
         },
         error => {
           console.error('Error al actualizar el estudiante:', error);

@@ -4,16 +4,30 @@
   <div class="relative">
     <h2
       class="text-2xl font-semibold cursor-pointer relative dark:text-claro"
-      (mouseover)="showModal = true"
-      (mouseout)="showModal = false">
+      (click)="cambiarModalAdmin()">
       Bienvenido {{ nombre }}
     </h2>
     <!-- Modal flotante -->
     <div *ngIf="showModal"
-         class="absolute top-full left-0 mt-2 w-48 bg-white text-black shadow-lg rounded-lg p-4 z-50 dark:bg-gray-700 dark:text-white">
-      <img *ngIf="isadmin === 'true'" [src]="image || 'ruta_a_imagen_por_defecto.jpg'" alt="Imagen de Admin" class="rounded-full w-12 h-12 mx-auto mb-2" />
+         class="absolute top-full left-0 mt-2 w-60 bg-tertiary dark:bg-white text-primary dark:text-primary shadow-lg rounded-lg p-4 z-50">
+      <img *ngIf="isadmin === 'true'" [src]="image || 'ruta_a_imagen_por_defecto.jpg'" alt="Imagen de Admin"
+           class="rounded-full w-30 h-30 mb-2" />
       <p class="text-center text-sm">Correo: {{ email }}</p>
       <p class="text-center text-sm">Rol: {{ isadmin === 'true' ? 'Administrador' : 'Usuario' }}</p>
+      <div class="mt-3">
+        <button (click)="cerrarCambioFotoAdmin()"
+                class="w-full dark:bg-celeste dark:text-claro bg-primary text-white py-1 rounded hover:bg-secondary transition">
+          Cambiar foto
+        </button>
+        <div *ngIf="cambiarFoto" class="justify-items-center mt-4">
+          <input [(ngModel)]="newImageUrl" type="text" placeholder="Ingrese la URL de la imagen"
+                 class="rounded-full w-24 h-24 mx-auto mb-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-claro text-celeste" />
+          <div class="flex justify-between">
+            <button (click)="cerrarCambioFotoAdmin()" class="bg-transparent text-primary px-2 py-1 rounded">Cancelar</button>
+            <button (click)="cambiarFotoAdmin()" class="dark:bg-celeste bg-primary text-claro px-2 py-1 rounded">Enviar</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <button (click)="cerrarSesion()" class="font-medium text-white dark:text-claro">Cerrar sesión</button>
@@ -120,32 +134,55 @@
 </div>
   <!-- Modal -->
   <div *ngIf="mostrarFormulario" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-    <div class="bg-white rounded-lg shadow-lg max-w-sm w-full">
-      <div class="flex justify-between items-center ">
-        <h1 class="text-2xl font-bold">Registrar Nuevo Administrador</h1>
-        <button (click)="alternarFormulario()" class="text-gray-500 hover:text-red-500">
-          &times; <!-- Botón para cerrar -->
+    <div class="dark:bg-white dark:text-primary dark:shadow-4xl bg-midSecondary rounded-lg shadow-lg max-w-md w-full p-6">
+      <!-- Encabezado -->
+      <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold text-claro dark:text-primary">Registrar Nuevo Administrador</h1>
+        <button (click)="alternarFormulario()" class="text-gray-500 hover:text-red-500 text-2xl font-bold">
+          &times;
         </button>
       </div>
-      <form (ngSubmit)="registrarAdmin()" class="">
+      <!-- Formulario -->
+      <form (ngSubmit)="registrarAdmin()" class="space-y-4">
         <div>
-          <label for="email" class="block text-lg font-semibold">Email:</label>
-          <input type="email" id="email" [(ngModel)]="adminData.email" name="email" class="w-full p-2 border rounded" required />
+          <label for="email" class="block text-lg font-semibold mb-1 text-white dark:text-primary">Email:</label>
+          <input
+            type="email"
+            id="email"
+            [(ngModel)]="adminData.email"
+            name="email"
+            class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-celeste focus:border-transparent"
+            required />
         </div>
         <div>
-          <label for="contrasena" class="block text-lg font-semibold">Contraseña:</label>
-          <input type="password" id="contrasena" [(ngModel)]="adminData.contrasena" name="contrasena" class="w-full p-2 border rounded" required />
+          <label for="contrasena" class="block text-lg font-semibold mb-1 text-white dark:text-primary">Contraseña:</label>
+          <input
+            type="password"
+            id="contrasena"
+            [(ngModel)]="adminData.contrasena"
+            name="contrasena"
+            class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-celeste focus:border-transparent"
+            required />
         </div>
         <div>
-          <label for="rut" class="block text-lg font-semibold">RUT:</label>
-          <input type="text" id="rut" [(ngModel)]="adminData.rut" name="rut" class="w-full p-2 border rounded" required />
+          <label for="rut" class="block text-lg font-semibold mb-1 text-white dark:text-primary">RUT:</label>
+          <input
+            type="text"
+            id="rut"
+            [(ngModel)]="adminData.rut"
+            name="rut"
+            class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-celeste focus:border-transparent"
+            required />
         </div>
-        <button type="submit" class=" bg-midSecondary text-white p-2 rounded hover:bg-gray-600">
+        <button
+          type="submit"
+          class="w-full bg-secondary dark:bg-celeste font-semibold text-white p-3 rounded-lg hover:bg-secondary-dark transition duration-200">
           Registrar
         </button>
       </form>
     </div>
   </div>
+
 
 
 </div>
