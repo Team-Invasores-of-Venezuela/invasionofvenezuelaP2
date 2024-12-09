@@ -131,9 +131,6 @@ export class DocenteAdminComponent implements OnInit{
     this.slideBarvisible = !this.slideBarvisible;
   }
 
-  docenteAEliminar: any = null;
-  mostrarConfirmacionEliminar = false;
-
   confirmarEliminacion(docente:any) {
     this.docenteAEliminar = docente;
     this.mostrarConfirmacionEliminar = true;
@@ -173,21 +170,41 @@ export class DocenteAdminComponent implements OnInit{
     });
   }
 
-  eliminarDocente(): void {
-    this.http.post(`http://localhost:8080/profesor/delete?id=${this.docenteAEliminar.id}`, {})
-      .subscribe(
-        (response) => {
-          console.log(`Docente ${this.docenteAEliminar} eliminado`, response);
-          this.getDocentes();
-          this.mostrarConfirmacionEliminar = false;
-          alert('Docente eliminado con éxito');
-        },
-        (error) => {
-          console.error('Error al eliminar el docente:', error);
-          alert('Ocurrió un error al eliminar el docente.');
-        }
-      );
+  docenteAEliminar: any = null;
+  mostrarConfirmacionEliminar = false;
+
+  seleccionarDocenteParaEliminar(docente: any): void {
+    console.log('Docente seleccionado para eliminar:', docente);
+    this.docenteAEliminar = docente;
+    this.mostrarConfirmacionEliminar = true;
   }
+
+  cancelarEliminacionDocente(): void {
+    this.mostrarConfirmacionEliminar = false;
+    this.docenteAEliminar = null;
+  }
+
+  eliminarDocente(): void {
+    if (this.docenteAEliminar) {
+      this.http.post(`http://localhost:8080/profesor/delete?id=${this.docenteAEliminar.id}`, {})
+        .subscribe(
+          (response) => {
+            console.log(`Docente ${this.docenteAEliminar.id} eliminado`, response);
+            this.getDocentes();
+            this.mostrarConfirmacionEliminar = false;
+            alert('Docente eliminado con éxito');
+          },
+          (error) => {
+            console.error('Error al eliminar el docente:', error);
+            alert('Ocurrió un error al eliminar el docente.');
+          }
+        );
+    } else {
+      console.error('No se ha seleccionado un docente para eliminar');
+    }
+  }
+
+
 
   abrirModal() {
     this.visible = true;
@@ -304,8 +321,13 @@ export class DocenteAdminComponent implements OnInit{
 
   abrirModalEditar(docente: Docente): void {
     if (docente) {
-      //this.idEditar = docente.id;
+      this.idEditar = docente.id;
+      this.rutEditar = docente.rut;
       this.nombreEditar = docente.nombre;
+      this.apellidoPEditar = docente.apellidoPaterno;
+      this.apellidoMEditar = docente.apellidoMaterno;
+      this.tituloEditar = docente.titulo;
+      this.gradoEditar = docente.gradoMax;
       this.showModal = true;
     } else {
       console.error('Docente no encontrado');
@@ -313,48 +335,52 @@ export class DocenteAdminComponent implements OnInit{
   }
 
   guardarEdicion(): void {
-    const idEditarCadena = this.idEditar.toString().trim();
+    const rutEditarCadena = this.idEditar?.toString().trim();
 
-    if (!idEditarCadena) {
-      alert('Por favor, ingrese un ID válido.');
+    if (!rutEditarCadena) {
+      alert('Por favor, ingrese un RUT válido.');
       return;
     }
-
-    //const docenteExistente = this.docentes.find(docente => docente.id === idEditarCadena);
-    /*
-    if (!docenteExistente) {
-      alert('No se encontró un docente con el ID ingresado.');
-      return;
-    }*/
 
     const nombre = this.nombreEditar?.trim();
-    console.log('Nombre recibido:', nombre);
+    const apellidoPaterno = this.apellidoPEditar?.trim();
+    const apellidoMaterno = this.apellidoMEditar?.trim();
+    const rut = this.rutEditar?.trim();
+    const titulo = this.tituloEditar?.trim();
+    const gradoMax = this.gradoEditar?.trim();
 
-    if (!nombre) {
-      alert('Debe ingresar un nombre.');
+    if (!nombre || !apellidoPaterno || !apellidoMaterno || !titulo || !gradoMax) {
+      alert('Por favor, complete todos los campos.');
       return;
     }
 
-    let docenteActualizado: Docente;
-    docenteActualizado = {
-      nombre: nombre,
-      apellidoPaterno: this.apellidoPEditar,
-      apellidoMaterno: this.apellidoMEditar,
-      rut: this.rutEditar,
-      titulo: this.tituloEditar,
-      gradoMax: this.gradoEditar,
-      id: this.idEditar
+    const docenteActualizado: Docente = {
+      id: this.idEditar,
+      nombre,
+      apellidoPaterno,
+      apellidoMaterno,
+      rut,
+      titulo,
+      gradoMax
     };
 
     this.http.post('http://localhost:8080/profesor/update', docenteActualizado).subscribe(
       (response) => {
+        console.log('Respuesta del backend:', response);
         alert('Docente actualizado con éxito.');
         this.getDocentes();
-        this.cerrarModal();
+        this.cerrarModalEditar();
       },
       (error) => {
+        console.log(docenteActualizado);
         console.error('Error al actualizar el docente:', error);
-        alert('Ocurrió un error al actualizar el docente.');
+        console.error('Código de error:', error.status);
+        console.error('Mensaje de error:', error.message);
+        if (error.status === 404) {
+          alert('No se pudo encontrar el recurso solicitado.');
+        } else {
+          alert('Ocurrió un error inesperado al actualizar el docente.');
+        }
       }
     );
   }

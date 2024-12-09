@@ -14,4 +14,6 @@ public interface RepositorioEstudiante extends MongoRepository<Estudiante, Strin
     Optional<Estudiante> findByRut(String rut);
 
     boolean existsByMatricula(String matricula);
+
+    Optional<Estudiante> findByMatricula(String matricula);
 }

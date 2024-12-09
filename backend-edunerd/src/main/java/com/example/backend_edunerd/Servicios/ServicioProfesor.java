@@ -44,6 +44,7 @@ public class ServicioProfesor {
     @Transactional
     public Profesor updateProfesor(ProfesorDTO2 profesorDTO2){
         Optional<Profesor> profesor = repositorioProfesor.findById(profesorDTO2.getId());
+        System.out.println("hola"+profesor.get().getNombre());
         if(profesor.isPresent()){
             repositorioProfesor.delete(profesor.get());
             if(exists(new Profesor(profesorDTO2))) {
