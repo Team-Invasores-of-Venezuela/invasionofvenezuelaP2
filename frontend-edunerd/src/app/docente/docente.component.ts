@@ -56,6 +56,11 @@ export class DocenteComponent implements OnInit{
   nombreProfesor: string | null ='';
   claro:boolean = false;
 
+  reportes: any;
+  reportesFiltrados: any;
+  mostrarModalEstadisticas: boolean = false;
+  topReportes: { observacion: string; cantidad: number }[] = [];
+
   constructor(private router: Router, private authService: AuthService, private http: HttpClient) {
     for (let year = 2016; year <= 2024; year++) {
       for (let semester = 1; semester <= 2; semester++) {
@@ -242,6 +247,80 @@ export class DocenteComponent implements OnInit{
     console.log("ALUMNOS SELECCIONADOS", this.alumnosSeleccionados)
   }
 
+  verEstadisticas(curso: any){
+    this.mostrarModalEstadisticas = true;
+    this.calcularEstadisticas();
+
+    // Dibujar el gráfico
+    this.dibujarGrafico();
+  }
+
+  cerrarModalEstadisticas() {
+    this.mostrarModalEstadisticas = false;
+  }
+
+  calcularEstadisticas(): void {
+    const observacionCount: { [key: string]: number } = {};
+    this.reportesFiltrados.forEach((reporte: { descripcion: string | number; }) => {
+      observacionCount[reporte.descripcion] = (observacionCount[reporte.descripcion] || 0) + 1;
+    });
+
+    this.topReportes = Object.entries(observacionCount)
+      .map(([observacion, cantidad]) => ({ observacion, cantidad }))
+      .sort((a, b) => b.cantidad - a.cantidad)
+      .slice(0, 5);
+  }
+
+  getReportesCurso(curso: any): void {
+    this.http.get<any[]>(`http://localhost:8080/reporte/getreportes`)
+      .subscribe(
+        (data: any[]) => {
+          console.log('Reportes obtenidos', data);
+          this.reportes = data;
+          for(let i=0; i< this.reportes.length; i++) {
+            if(this.reportes[i].cursoId == curso.id){
+              this.reportesFiltrados.push(this.reportes[i]);
+            }
+          }
+        },
+        (error: any) => {
+          console.error('Error al obtener los estudiantes', error);
+        }
+      );
+  }
+
+  dibujarGrafico(): void {
+    const canvas = document.getElementById('graficoEstadisticas') as HTMLCanvasElement;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const labels = this.topReportes.map((reporte) => reporte.observacion);
+    const data = this.topReportes.map((reporte) => reporte.cantidad);
+
+    // Limpiar el canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Dibujar el gráfico de barras
+    const barWidth = 50;
+    const barSpacing = 20;
+    const maxData = Math.max(...data);
+    const chartHeight = canvas.height - 50;
+
+    data.forEach((value, index) => {
+      const x = index * (barWidth + barSpacing) + 50;
+      const barHeight = (value / maxData) * chartHeight;
+
+      // Dibujar la barra
+      ctx.fillStyle = '#4caf50';
+      ctx.fillRect(x, canvas.height - barHeight - 30, barWidth, barHeight);
+
+      // Dibujar etiqueta del eje X
+      ctx.fillStyle = '#000';
+      ctx.font = '12px Arial';
+      ctx.fillText(labels[index], x, canvas.height - 10);
+      console.log("ALOOOOOOOOOOOOOOOOOOOOOO")
+    });
+  }
 
   protected readonly info = info;
 }

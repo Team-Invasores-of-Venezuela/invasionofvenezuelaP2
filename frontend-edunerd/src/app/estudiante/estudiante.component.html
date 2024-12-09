@@ -18,15 +18,15 @@
     </div>
     <div class="grid grid-cols-3 gap-6 text-center">
       <div>
-        <p class="text-3xl font-bold text-primary">8</p>
+        <p class="text-3xl font-bold text-primary">{{positivas}}</p>
         <p class="text-gray-500">Positivas</p>
       </div>
       <div>
-        <p class="text-3xl font-bold text-primary">7</p>
+        <p class="text-3xl font-bold text-primary">{{negativas}}</p>
         <p class="text-gray-500">Negativas</p>
       </div>
-      <div>
-        <p class="text-3xl font-bold text-primary">10</p>
+      <div [ngClass]="{'bg-green-200 text-green-800': total >= 0, 'bg-red-200 text-red-800': total < 0}" class="p-4 rounded-md -mt-4">
+        <p class="text-3xl font-bold">{{total}}</p>
         <p class="text-gray-500">Puntaje Total</p>
       </div>
     </div>
@@ -43,7 +43,7 @@
   <!-- Botón para ver observaciones -->
   <div class="text-center mb-4">
     <button
-      (click)="mostrarObservaciones = !mostrarObservaciones"
+      (click)="(mostrarObservaciones = !mostrarObservaciones); getReportes(numMatricula)"
       class="bg-secondary text-white px-6 py-3 rounded hover:bg-tertiary hover:text-primary transition text-lg">
       {{ mostrarObservaciones ? 'Dejar de Ver Observaciones' : 'Ver Observaciones' }}
     </button>
@@ -54,7 +54,7 @@
     <h2 class="text-xl font-bold mb-4 text-gray-800">Observaciones</h2>
     <ul class="space-y-4">
       <li *ngFor="let obs of reportes" class="flex justify-between items-center border-b pb-2">
-        <p>{{ obs.observacion }}</p>
+        <p>{{ obs.descripcion }}</p>
         <p [class.text-green-500]="obs.puntaje > 0" [class.text-red-500]="obs.puntaje < 0" class="font-bold">
           {{ obs.puntaje > 0 ? '+' : '' }}{{ obs.puntaje }}
         </p>
