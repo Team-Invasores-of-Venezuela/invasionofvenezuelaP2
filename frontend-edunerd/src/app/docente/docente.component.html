@@ -1,98 +1,120 @@
 <div class="min-h-screen dark:bg-claro bg-secondary flex flex-col">
-  <header class="dark:bg-celeste bg-primary text-white p-4 flex items-center justify-between">
-    <h1 class="text-white text-xl dark:text-claro font-medium">
+  <!-- Encabezado -->
+  <header class="dark:bg-celeste bg-primary text-white p-4 flex flex-col md:flex-row md:justify-between md:items-center">
+    <h1 class="text-white text-xl dark:text-claro font-medium mb-4 md:mb-0">
       Bienvenido(a) <a *ngIf="nombre" class="font-light">{{ nombreProfesor }}</a>
     </h1>
-    <button (click)="cerrarSesion()" class="dark:text-claro font-medium text-tertiary">Cerrar sesión</button>
-    <button (click)="modoOscuro()" class=" dark:bg-celeste dark:bg-opacity-30 dark:text-primary absolute right-0 mt-28 text-sm px-2  rounded-md font-semibold bg-primary text-white hover:bg-secondary transition-colors">
-      {{ claro ? 'Modo Oscuro' : 'Modo Claro' }}
-    </button>
+    <div class="flex gap-4 items-center">
+      <button (click)="cerrarSesion()" class="dark:text-claro font-medium text-tertiary">
+        Cerrar sesión
+      </button>
+      <button
+        (click)="modoOscuro()"
+        class="dark:bg-celeste dark:bg-opacity-30 dark:text-primary text-sm px-2 rounded-md font-semibold bg-primary text-white hover:bg-secondary transition-colors">
+        {{ claro ? 'Modo Oscuro' : 'Modo Claro' }}
+      </button>
+    </div>
   </header>
 
-  <div class="ml-10 mr-10 dark:bg-azulClaro max-w-full mx-auto p-4 lg:p-6 rounded-lg mt-14 bg-secondary shadow-2xl">
-
+  <!-- Contenedor principal -->
+  <div class="mx-auto p-4 lg:p-6 rounded-lg mt-14 bg-secondary shadow-2xl max-w-7xl dark:bg-azulClaro">
     <h2 class="text-xl md:text-2xl font-semibold text-tertiary mb-4 dark:text-azul">Cursos</h2>
 
+    <!-- Botones de los periodos -->
+    <div class="flex justify-center items-center">
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-9 gap-6 bg-white p-6 rounded-lg shadow-md">
+        <button
+          *ngFor="let periodo of periodos"
+          (click)="filtraCursos(periodo.anio, periodo.semestre)"
+          class="bg-secondary hover:bg-blue-700 text-white w-full font-bold py-2 px-4 rounded transition-transform hover:scale-105 hover:bg-midSecondary">
+          {{ periodo.anio }}-{{ periodo.semestre }}
+        </button>
+      </div>
+    </div>
 
-      <!-- Botones de los periodos -->
-      <div class="flex justify-center items-center min-h-screen -m-96">
-        <div class="grid grid-cols-9 gap-6 bg-white p-6 rounded-lg shadow-md">
-          <!-- Generar los botones con un bucle -->
-          <button *ngFor="let periodo of periodos" (click)="filtraCursos(periodo.anio, periodo.semestre)"
-                  class="bg-secondary hover:bg-blue-700 text-white w-40 font-bold py-2 px-4 rounded transition-transform hover:scale-105 hover:bg-midSecondary ">
-            {{ periodo.anio }}-{{ periodo.semestre }}
+    <!-- Mensaje en caso de que no haya cursos -->
+    <div *ngIf="!general || cursosFiltrados.length === 0" class="text-lg md:text-2xl text-center mt-10 text-tertiary dark:text-white">
+      No hay cursos disponibles para este periodo.
+    </div>
+
+    <!-- Cursos disponibles -->
+    <div *ngIf="general && cursosFiltrados.length > 0" class="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div
+        *ngFor="let curso of cursosFiltrados"
+        class="rounded overflow-hidden shadow-lg bg-midSecondary text-white p-6 flex flex-col justify-between">
+        <div>
+          <h3 class="font-extrabold text-lg mb-1">{{ curso.nombre }}</h3>
+          <p class="text-sm text-gray-300 mb-2">Sección: {{ curso.seccion }}</p>
+          <p class="font-medium">Carrera: {{ curso.carrera }}</p>
+        </div>
+        <div class="flex gap-4 mt-4">
+          <button
+            (click)="abrirModal(curso); mapAlumnos(curso)"
+            class="bg-primary hover:bg-secondary text-white font-bold py-2 px-4 rounded shadow-2xl">
+            Ver alumnos
+          </button>
+          <button
+            (click)="verEstadisticas(curso)"
+            class="bg-primary hover:bg-secondary text-white font-bold py-2 px-4 rounded shadow-2xl">
+            Estadísticas
           </button>
         </div>
       </div>
+    </div>
 
-      <!-- Mensaje en caso de que no hayan cursos en el periodo seleccionado -->
-      <div *ngIf="hayCursos" class="text-3xl ml-20 px-4 py-2 mt-10">
-        No hay cursos disponibles para este periodo.
-      </div>
-
-      <!-- Cursos correspondientes al periodo seleccionado -->
-      <div *ngIf="general" class="flex justify-center items-center bg-secondary rounded m-20 p-5">
-        <div class="grid grid-cols-6 gap-6">
-          <div *ngFor="let curso of cursosFiltrados" class="w-96 h-50 rounded overflow-hidden shadow-lg bg-midSecondary text-white">
-            <div class="px-6 py-4">
-              <!-- Nombre del curso -->
-              <div class="font-extrabold text-xl mb-1">
-                {{ curso.nombre }}
-              </div>
-              <!-- Sección -->
-              <div class="text-sm text-gray-300 mb-2">
-                Sección: {{ curso.seccion }}
-              </div>
-              <!-- Carrera -->
-              <div class="font-medium text-white">
-                Carrera: {{ curso.carrera }}
-              </div>
-              <!-- Botón para abrir modal -->
-              <div class="flex justify-center mt-4">
-                <button  (click)="abrirModal(curso); mapAlumnos(curso);" class="bg-primary hover:bg-secondary text-white font-bold py-2 px-4 rounded shadow-2xl">
-                  Ver alumnos
-                </button>
-              </div>
-            </div>
-          </div>
+    <!-- Modal de alumnos -->
+    <div *ngIf="mostrarModal" class="fixed inset-0 bg-primary bg-opacity-50 flex justify-center items-center z-50 p-4">
+      <div class="bg-secondary rounded-lg shadow-2xl p-6 w-full sm:w-3/4 md:w-1/2 lg:w-1/3 text-white">
+        <h2 class="text-xl font-bold mb-6 border-b border-tertiary pb-2">
+          Alumnos de {{ cursoSeleccionado?.nombre }}
+        </h2>
+        <div class="overflow-y-auto max-h-60vh">
+          <ul class="list-disc pl-6 text-white space-y-4">
+            <li
+              *ngFor="let alumno of alumnosSeleccionados"
+              class="flex justify-between border-b border-b-tertiary gap-4 p-2">
+              {{ alumno.nombre }} {{ alumno.apellidoPaterno }} {{ alumno.apellidoMaterno }}
+              <button
+                (click)="navegaEstudiante(alumno.nombre, alumno.apellidoPaterno, alumno.apellidoMaterno,
+                                          alumno.rut, alumno.matricula, alumno.fechaIngreso,
+                                          alumno.urlfoto, alumno.contadorPositivo, alumno.contadorNegativo)"
+                class="bg-midSecondary text-white px-4 rounded hover:bg-primary transition">
+                Ver historial
+              </button>
+            </li>
+          </ul>
         </div>
+        <button
+          (click)="cerrarModal()"
+          class="bg-primary text-white hover:bg-tertiary font-semibold py-2 px-6 rounded shadow-md transition mt-4">
+          Cerrar
+        </button>
       </div>
+    </div>
 
-
-      <!-- Modal -->
-      <div *ngIf="mostrarModal" class="fixed inset-0 bg-primary bg-opacity-50 flex justify-center items-center z-50">
-        <div class="bg-secondary rounded-lg shadow-2xl p-8 w-1/3 relative text-white">
-          <!-- Título -->
-          <h2 class="text-3xl font-bold mb-6 border-b border-tertiary pb-2">
-            Alumnos de {{ cursoSeleccionado?.nombre }}
-          </h2>
-
-          <!-- Lista de alumnos con scroll -->
-          <div class="overflow-y-auto max-h-[60vh]">
-            <ul class="list-disc pl-6 text-white">
-              <li
-                *ngFor="let alumno of alumnosSeleccionados"
-                class="flex justify-between border-b border-b-tertiary gap-x-6 p-5">
-                {{ alumno.nombre }} {{ alumno.apellidoPaterno }} {{ alumno.apellidoMaterno }}
-                <button (click)="navegaEstudiante(alumno.nombre,alumno.apellidoPaterno,alumno.apellidoMaterno,
-                                                  alumno.rut, alumno.matricula, alumno.fechaIngreso,
-                                                  alumno.urlfoto, alumno.contadorPositivo, alumno.contadorNegativo);
-                " class="bg-midSecondary text-white px-4 rounded hover:bg-primary transition">
-                  Ver historial
-                </button>
-              </li>
-            </ul>
-          </div>
-
-          <!-- Botón cerrar -->
-          <div class="flex justify-end mt-6">
-            <button
-              (click)="cerrarModal()"
-              class="bg-primary text-white hover:bg-tertiary text-secondary font-semibold py-2 px-6 rounded shadow-md transition-all duration-200">
-              Cerrar
-            </button>
-          </div>
+    <!-- Modal de estadísticas -->
+    <div *ngIf="mostrarModalEstadisticas" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
+      <div class="bg-white rounded-lg shadow-lg w-full sm:w-3/4 md:w-2/3 lg:w-1/2 p-6">
+        <div class="flex justify-between items-center border-b pb-4 mb-6">
+          <h2 class="text-lg font-bold">Estadísticas del Curso: {{ cursoSeleccionado?.nombre }}</h2>
+          <button
+            (click)="cerrarModalEstadisticas()"
+            class="text-gray-500 hover:text-gray-800">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
         </div>
+        <div class="flex justify-center mb-6">
+          <canvas id="graficoEstadisticas" class="rounded-lg border"></canvas>
+        </div>
+        <ul class="space-y-2">
+          <li *ngFor="let reporte of topReportes" class="flex justify-between p-3 bg-gray-100 rounded-lg">
+            <span>{{ reporte.observacion }}</span>
+            <span class="font-semibold">{{ reporte.cantidad }}</span>
+          </li>
+        </ul>
       </div>
+    </div>
   </div>
 </div>
