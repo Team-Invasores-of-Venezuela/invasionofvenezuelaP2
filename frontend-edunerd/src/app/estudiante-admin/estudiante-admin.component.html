@@ -64,6 +64,7 @@
       <button class="dark:bg-transparent dark:border-b-2 dark:border-opacity-60 dark:border-celeste dark:text-azul mt-2 bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light h-10" (click)="abrirEditarEstudianteModal(estudiante)">
         Editar
       </button>
+
     </li>
   </ul>
 </div>
@@ -101,61 +102,138 @@
   </div>
 </div>
 
+
+
 <!-- Modal para agregar un estudiante manualmente -->
 <div *ngIf="verManual" id="manual" class="dark:bg-azul dark:bg-opacity-60 fixed inset-0 flex items-center justify-center bg-secondary bg-opacity-50 shadow-2xl">
+  <div class="max-h-screen w-1/4 overflow-y-auto bg-primary dark:bg-azulClaro rounded-lg p-6 shadow-lg">
+    <form (ngSubmit)="onSubmit()" class="space-y-6 text-white">
+      <button class="dark:text-azul text-white -mt-30 ml-60" (click)="cerrarModalManual()">X</button>
 
-  <form (ngSubmit)="onSubmit()" class="dark:bg-white w-1/4 mx-auto p-6 bg-white shadow-lg rounded-lg space-y-6 text-white">
-    <button class="dark:text-azul text-primary -mt-30 ml-60" (click)="cerrarModalManual()">X</button>
-    <!-- Campo: Nombre -->
-    <div>
-      <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre</label>
-      <input
-        id="nombre"
-        name="nombre"
-        [(ngModel)]="estudiante.nombre"
-        type="text"
-        required
-        class="text-primary dark:bg-claro mt-1 block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-accent focus:border-accent bg-claro"
-        placeholder="Ingresa el nombre completo"
-      />
-    </div>
+      <!-- Campo: Nombre -->
+      <div>
+        <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre</label>
+        <input
+          id="nombre"
+          name="nombre"
+          [(ngModel)]="estudiante.nombre"
+          type="text"
+          required
+          class="text-primary dark:bg-claro mt-1 block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-accent focus:border-accent bg-secondary"
+          placeholder="Ingresa el nombre"
+        />
+      </div>
 
-    <!-- Campo: Número de matrícula -->
-    <div>
-      <label for="matricula" class="block text-sm font-medium text-gray-700">Número de Matrícula</label>
-      <input
-        id="matricula"
-        name="matricula"
-        [(ngModel)]="estudiante.matricula"
-        type="text"
-        required
-        class=" text-primary dark:bg-claro mt-1 block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-accent focus:border-accent bg-claro"
-        placeholder="Ingresa el número de matrícula"
-      />
-    </div>
+      <!-- Campo: Apellido Paterno -->
+      <div>
+        <label for="apellidoPaterno" class="block text-sm font-medium text-gray-700">Apellido Paterno</label>
+        <input
+          id="apellidoPaterno"
+          name="apellidoPaterno"
+          [(ngModel)]="estudiante.apellidoPaterno"
+          type="text"
+          required
+          class="text-primary dark:bg-claro mt-1 block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-accent focus:border-accent bg-secondary"
+          placeholder="Ingresa el apellido paterno"
+        />
+      </div>
 
-    <!-- Campo: Año de ingreso -->
-    <div>
-      <label for="anioIngreso" class="block text-sm font-medium text-gray-700">Año de Ingreso</label>
-      <input
-        id="anioIngreso"
-        name="anioIngreso"
-        [(ngModel)]="estudiante.anoIngreso"
-        type="number"
-        required
-        class="text-primary dark:bg-claro mt-1 block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-accent focus:border-accent bg-claro"
-        placeholder="Ingresa el año de ingreso del estudiante"
-      />
-    </div>
+      <!-- Campo: Apellido Materno -->
+      <div>
+        <label for="apellidoMaterno" class="block text-sm font-medium text-gray-700">Apellido Materno</label>
+        <input
+          id="apellidoMaterno"
+          name="apellidoMaterno"
+          [(ngModel)]="estudiante.apellidoMaterno"
+          type="text"
+          required
+          class="text-primary dark:bg-claro mt-1 block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-accent focus:border-accent bg-secondary"
+          placeholder="Ingresa el apellido materno"
+        />
+      </div>
 
-    <!-- Botón: Enviar -->
-    <div class="text-center">
-      <button type="submit" class="dark:bg-celeste bg-primary font-medium text-white px-6 py-2 rounded-lg hover:bg-accent-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent" (click)="modalManual()">
-        Agregar Estudiante
-      </button>
-    </div>
-  </form>
+      <!-- Campo: RUT -->
+      <div>
+        <label for="rutagregar" class="block text-sm font-medium text-gray-700">RUT</label>
+        <input
+          id="rutagregar"
+          name="rut"
+          [(ngModel)]="estudiante.rut"
+          type="text"
+          required
+          class="text-primary dark:bg-claro mt-1 block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-accent focus:border-accent bg-secondary"
+          placeholder="Ingresa el RUT"
+        />
+      </div>
+
+      <!-- Campo: Matrícula -->
+      <div>
+        <label for="matricula" class="block text-sm font-medium text-gray-700">Matrícula</label>
+        <input
+          id="matricula"
+          name="matricula"
+          [(ngModel)]="estudiante.matricula"
+          type="text"
+          required
+          class="text-primary dark:bg-claro mt-1 block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-accent focus:border-accent bg-secondary"
+          placeholder="Ingresa la matrícula"
+        />
+      </div>
+
+      <!-- Campo: Fecha de Nacimiento -->
+      <div>
+        <label for="fechaNacimiento" class="block text-sm font-medium text-gray-700">Fecha de Nacimiento</label>
+        <input
+          id="fechaNacimiento"
+          name="fechaNacimiento"
+          [(ngModel)]="estudiante.fechaNacimiento"
+          type="date"
+          required
+          class="text-primary dark:bg-claro mt-1 block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-accent focus:border-accent bg-secondary"
+        />
+      </div>
+
+      <!-- Campo: Fecha de Ingreso -->
+      <div>
+        <label for="fechaIngreso" class="block text-sm font-medium text-gray-700">Fecha de Ingreso</label>
+        <input
+          id="fechaIngreso"
+          name="fechaIngreso"
+          [(ngModel)]="estudiante.fechaIngreso"
+          type="date"
+          required
+          class="text-primary dark:bg-claro mt-1 block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-accent focus:border-accent bg-secondary"
+        />
+      </div>
+
+      <!-- Campo: URL Foto -->
+      <div>
+        <label for="urlfotoagregar" class="block text-sm font-medium text-gray-700">URL Foto</label>
+        <input
+          id="urlfotoagregar"
+          name="urlfoto"
+          [(ngModel)]="estudiante.urlfoto"
+          type="text"
+          class="text-primary dark:bg-claro mt-1 block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-accent focus:border-accent bg-secondary"
+          placeholder="Ingresa la URL de la foto"
+        />
+      </div>
+
+      <!-- Botón: Enviar -->
+      <div class="text-center">
+        <button type="submit" class="dark:bg-celeste bg-midSecondary font-medium text-white px-6 py-2 rounded-lg hover:bg-accent-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent">
+          Agregar Estudiante
+        </button>
+      </div>
+    </form>
+  </div>
 </div>
+
+
+
+
+
+
 
 
 <!-- Modal para eliminar un estudiante -->
@@ -218,6 +296,9 @@
   </div>
 </div>
 
+
+
+
 <!-- Modal de edición -->
 <div *ngIf="verEditarEstudianteModal" id="editarModal" class="dark:bg-azul dark:bg-opacity-60 fixed inset-0 flex items-center justify-center bg-primary bg-opacity-50">
   <div class="dark:bg-white bg-midSecondary h-auto w-auto shadow-2xl rounded p-10 flex flex-col items-center space-y-4 relative">
@@ -225,18 +306,37 @@
     <h2 class="dark:text-azul text-xl font-bold text-white">Editar Estudiante</h2>
     <!-- Formulario de edición -->
     <form (ngSubmit)="editarEstudiante()">
+      <!-- Campo: Nombre -->
       <div class="mb-4">
-        <label for="nombre" class="dark:text-azul block text-white">Nombre:</label>
-        <input id="nombre1" [(ngModel)]="estudianteEditado.nombre" name="nombre" class="mt-1 p-2 w-64 rounded" required />
+        <label for="nombreEditar" class="dark:text-azul block text-white">Nombre:</label>
+        <input id="nombreEditar" [(ngModel)]="estudianteEditado.nombre" name="nombreEditar" class="mt-1 p-2 w-64 rounded" required />
       </div>
+      <!-- Campo: Apellido Paterno -->
       <div class="mb-4">
-        <label for="matricula" class="dark:text-azul block text-white">Matrícula:</label>
-        <input id="matricula1" [(ngModel)]="estudianteEditado.matricula" name="matricula" class="mt-1 p-2 w-64 rounded" required />
+        <label for="apellidoPaternoEditar" class="dark:text-azul block text-white">Apellido Paterno:</label>
+        <input id="apellidoPaternoEditar" [(ngModel)]="estudianteEditado.apellidoPaterno" name="apellidoPaternoEditar" class="mt-1 p-2 w-64 rounded" required />
       </div>
+      <!-- Campo: Apellido Materno -->
       <div class="mb-4">
-        <label for="anoIngreso" class="dark:text-azul block text-white">Año de Ingreso:</label>
-        <input id="anoIngreso" [(ngModel)]="estudianteEditado.anoIngreso" name="anoIngreso" class="mt-1 p-2 w-64 rounded" required />
+        <label for="apellidoMaternoEditar" class="dark:text-azul block text-white">Apellido Materno:</label>
+        <input id="apellidoMaternoEditar" [(ngModel)]="estudianteEditado.apellidoMaterno" name="apellidoMaternoEditar" class="mt-1 p-2 w-64 rounded" required />
       </div>
+      <!-- Campo: Matrícula -->
+      <div class="mb-4">
+        <label for="matriculaEditar" class="dark:text-azul block text-white">Matrícula:</label>
+        <input id="matriculaEditar" [(ngModel)]="estudianteEditado.matricula" name="matriculaEditar" class="mt-1 p-2 w-64 rounded" required />
+      </div>
+      <!-- Campo: RUT -->
+      <div class="mb-4">
+        <label for="rut" class="dark:text-azul block text-white">RUT:</label>
+        <input id="rut" [(ngModel)]="estudianteEditado.rut" name="rut" class="mt-1 p-2 w-64 rounded" required />
+      </div>
+      <!-- Campo: URL Foto -->
+      <div class="mb-4">
+        <label for="urlfoto" class="dark:text-azul block text-white">URL Foto:</label>
+        <input id="urlfoto" [(ngModel)]="estudianteEditado.urlfoto" name="urlfoto" class="mt-1 p-2 w-64 rounded" />
+      </div>
+      <!-- Botón Guardar -->
       <div class="flex justify-center w-full">
         <button type="submit" class="items-center dark:text-claro font-medium dark:bg-celeste bg-secondary text-white px-4 py-2 rounded-2xl hover:bg-secondary-light w-48">
           Guardar cambios
@@ -245,4 +345,8 @@
     </form>
   </div>
 </div>
+
+
+
+
 

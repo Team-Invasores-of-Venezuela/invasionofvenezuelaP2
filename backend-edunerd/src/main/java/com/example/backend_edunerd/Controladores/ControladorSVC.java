@@ -4,6 +4,7 @@ import com.example.backend_edunerd.Servicios.ServicioSVC;
 import com.example.backend_edunerd.Servicios.ServicioSVCOutput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -102,5 +103,15 @@ public class ControladorSVC {
     public ResponseEntity<byte[]> generarExcelProfesores() {
         byte[] excel = servicioSVCOutput.exportarProfesores();
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=docentes.xlsx").contentType(MediaType.APPLICATION_OCTET_STREAM).body(excel);
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/descargarpdf")
+    public ResponseEntity<byte[]> generarPDF(@RequestParam("matricula") String matricula) {
+        byte[] pdf = servicioSVCOutput.generarPDF(matricula);
+        if(pdf == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=CartaSumario.pdf").contentType(MediaType.APPLICATION_PDF).body(pdf);
     }
 }

@@ -27,7 +27,13 @@
         <button class="absolute top-4 right-4 text-2xl font-medium text-white dark:text-claro" (click)="CerrartoggleSidebar()">X</button>
         <h2 class="text-2xl font-semibold text-white mb-4 dark:text-claro">Opciones</h2>
         <button class="dark:bg-azulClaro dark:text-azul w-full px-4 py-2 text-lg font-semibold text-primary bg-white rounded-full shadow-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white mb-4" (click)="abrirModal()">Subir Excel</button>
-        <button class="dark:bg-azulClaro dark:text-azul w-full px-4 py-2 text-lg font-semibold text-primary bg-white rounded-full shadow-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white mb-4" (click)="abrir()">Agregar curso</button>
+
+        <button
+          class="dark:bg-azulClaro dark:text-azul w-full px-4 py-2 text-lg font-semibold text-primary bg-white rounded-full shadow-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white mb-4"
+          (click)="abrirModalAgregar()">
+          Agregar curso
+        </button>
+
         <button class="dark:bg-azulClaro dark:text-azul w-full px-4 py-2 text-lg font-semibold text-primary bg-white rounded-full shadow-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white mb-4" (click)="descargarExcel()">Generar Excel</button>
       </div>
     </div>
@@ -209,6 +215,141 @@
               </form>
             </div>
           </div>
+
+          <!-- Modal Agregar Curso -->
+          <div
+            *ngIf="mostrarModalAgregar"
+            class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+          >
+            <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
+              <h2 class="text-xl font-semibold mb-4 text-center text-primary">Agregar Curso</h2>
+
+              <!-- Formulario -->
+              <form (ngSubmit)="agregarCurso()" class="space-y-4">
+                <div>
+                  <label for="carrera" class="block mb-2 text-sm font-medium text-gray-700">
+                    Carrera:
+                  </label>
+                  <input
+                    id="carrera"
+                    type="text"
+                    [(ngModel)]="cursosTotales.carrera"
+                    name="carrera"
+                    class="w-full border-gray-300 rounded-lg shadow-sm p-2 focus:ring-secondary focus:border-secondary"
+                    placeholder="Ingresa el nombre de la carrera"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label for="nombre" class="block mb-2 text-sm font-medium text-gray-700">
+                    Nombre:
+                  </label>
+                  <input
+                    id="nombre"
+                    type="text"
+                    [(ngModel)]="cursosTotales.nombre"
+                    name="nombre"
+                    class="w-full border-gray-300 rounded-lg shadow-sm p-2 focus:ring-secondary focus:border-secondary"
+                    placeholder="Ingresa el nombre del curso"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label for="ano" class="block mb-2 text-sm font-medium text-gray-700">
+                    Año:
+                  </label>
+                  <input
+                    id="ano"
+                    type="number"
+                    [(ngModel)]="cursosTotales.ano"
+                    name="ano"
+                    class="w-full border-gray-300 rounded-lg shadow-sm p-2 focus:ring-secondary focus:border-secondary"
+                    placeholder="Ingresa el año del curso"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label for="semestre" class="block mb-2 text-sm font-medium text-gray-700">
+                    Semestre:
+                  </label>
+                  <input
+                    id="semestre"
+                    type="number"
+                    [(ngModel)]="cursosTotales.semestre"
+                    name="semestre"
+                    class="w-full border-gray-300 rounded-lg shadow-sm p-2 focus:ring-secondary focus:border-secondary"
+                    placeholder="Ingresa el semestre del curso"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label for="seccion" class="block mb-2 text-sm font-medium text-gray-700">
+                    Sección:
+                  </label>
+                  <input
+                    id="seccion"
+                    type="text"
+                    [(ngModel)]="cursosTotales.seccion"
+                    name="seccion"
+                    class="w-full border-gray-300 rounded-lg shadow-sm p-2 focus:ring-secondary focus:border-secondary"
+                    placeholder="Ingresa la sección del curso"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label for="alumnos" class="block mb-2 text-sm font-medium text-gray-700">
+                    Alumnos (matrículas separadas por comas):
+                  </label>
+                  <input
+                    id="alumnos"
+                    type="text"
+                    [(ngModel)]="cursosTotales.alumnos"
+                    name="alumnos"
+                    class="w-full border-gray-300 rounded-lg shadow-sm p-2 focus:ring-secondary focus:border-secondary"
+                    placeholder="Ingresa las matrículas de los alumnos"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label for="profesor" class="block mb-2 text-sm font-medium text-gray-700">
+                    Profesor:
+                  </label>
+                  <input
+                    id="profesor"
+                    type="text"
+                    [(ngModel)]="cursosTotales.profesor"
+                    name="profesor"
+                    class="w-full border-gray-300 rounded-lg shadow-sm p-2 focus:ring-secondary focus:border-secondary"
+                    placeholder="Ingresa el rut del profesor"
+                    required
+                  />
+                </div>
+
+                <!-- Botones -->
+                <div class="flex justify-end space-x-4">
+                  <button
+                    type="button"
+                    class="bg-tertiary text-white px-4 py-2 rounded hover:bg-red-600"
+                    (click)="cerrarModalAgregar()">
+                    Cancelar
+                  </button>
+                  <button
+                    type="submit"
+                    class="bg-secondary text-white px-4 py-2 rounded hover:bg-primary">
+                    Agregar
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+
 
 
         </div>

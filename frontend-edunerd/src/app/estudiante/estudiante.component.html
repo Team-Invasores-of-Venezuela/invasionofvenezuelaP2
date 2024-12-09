@@ -16,6 +16,45 @@
       class="dark:bg-transparent dark:text-primary text-lg sm:text-xl px-4 py-2 rounded-md font-normal text-tertiary hover:bg-secondary transition-colors">
       {{ claro ? 'Modo Oscuro' : 'Modo Claro' }}
     </button>
+
+    <!-- Botón para crear un reporte -->
+    <button
+      (click)="mostrarFormulario = !mostrarFormulario"
+      class="bg-secondary text-white px-6 py-3 rounded hover:bg-green-600 hover:text-gray-100 transition text-lg">
+      {{ mostrarFormulario ? 'Cancelar' : 'Crear Reporte' }}
+    </button>
+
+    <button
+      (click)="mostrarModalConReportes()"
+      class="bg-secondary text-white px-6 py-3 rounded hover:bg-green-600 hover:text-gray-100 transition text-lg">
+      Mostrar Reportes
+    </button>
+
+    <button
+      (click)="descargarCartaPDF()"
+      class="bg-secondary text-white px-6 py-3 rounded hover:bg-green-600 hover:text-gray-100 transition text-lg">
+      Descargar Carta
+    </button>
+
+  </div>
+
+  <!-- Formulario para crear un nuevo reporte -->
+  <div *ngIf="mostrarFormulario" class="bg-gray-50 rounded-lg shadow-inner p-6 mt-4">
+    <h2 class="text-xl font-bold mb-4 text-gray-800">Nuevo Reporte</h2>
+    <form (ngSubmit)="crearReporte()">
+      <div class="mb-4">
+        <label class="block text-gray-700" for="puntaje">Puntaje:</label>
+        <select id="puntaje" [(ngModel)]="nuevoReporte.puntaje" name="puntaje" required class="border rounded w-full py-2 px-3 text-gray-700">
+          <option value="" disabled selected>Selecciona un puntaje</option>
+          <option *ngFor="let option of puntajeOptions" [value]="option.value">{{ option.label }}</option>
+        </select>
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700" for="descripcion">Descripción:</label>
+        <textarea id="descripcion" [(ngModel)]="nuevoReporte.descripcion" name="descripcion" required class="border rounded w-full py-2 px-3 text-gray-700"></textarea>
+      </div>
+      <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">Crear Reporte</button>
+    </form>
   </div>
 
   <!-- Contenido Principal -->
@@ -77,3 +116,47 @@
   </div>
 </div>
 </body>
+
+<!-- Modal -->
+<div
+  *ngIf="mostrarModal"
+  class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
+  <div class="bg-white rounded-lg shadow-lg p-6 w-1/2">
+    <h2 class="text-2xl font-bold mb-4 text-center">Reportes del Estudiante</h2>
+
+    <!-- Si no hay reportes -->
+    <div *ngIf="reportes.length === 0" class="text-center">
+      <p class="text-gray-600">El estudiante no tiene reportes.</p>
+      <button
+        (click)="cerrarModal()"
+        class="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">
+        Cerrar
+      </button>
+    </div>
+
+    <!-- Si hay reportes -->
+    <div *ngIf="reportes.length > 0">
+      <table class="table-auto w-full border-collapse border border-gray-300">
+        <thead>
+        <tr class="bg-gray-200">
+          <th class="border px-4 py-2">Descripción</th>
+          <th class="border px-4 py-2">Puntaje</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let reporte of reportes">
+          <td class="border px-4 py-2">{{ reporte.descripcion }}</td>
+          <td class="border px-4 py-2">{{ reporte.puntaje }}</td>
+        </tr>
+        </tbody>
+      </table>
+      <div class="text-center mt-4">
+        <button
+          (click)="cerrarModal()"
+          class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
