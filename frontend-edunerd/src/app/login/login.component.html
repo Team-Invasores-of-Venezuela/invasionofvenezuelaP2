@@ -1,7 +1,7 @@
 <div [ngClass]="{ 'bg-white text-white': claro, 'bg-primary text-white': !claro }"
      class="min-h-screen flex items-center justify-center p-4 sm:p-0 transition-colors duration-300 relative">
 
-  <button (click)="modoOscuro()" class="dark:bg-transparent dark:text-primary absolute top-4 right-4 px-4 py-2 rounded-md font-semibold bg-primary text-white hover:bg-secondary transition-colors">
+  <button (click)="modoOscuro()" class="dark:bg-transparent dark:text-celeste absolute top-4 right-4 px-4 py-2 rounded-md font-semibold bg-primary text-white hover:bg-secondary transition-colors">
     {{ claro ? 'Modo Oscuro' : 'Modo Claro' }}
   </button>
 
@@ -107,7 +107,7 @@
         <button type="submit" class="dark:bg-celeste w-full font-bold py-2 rounded-lg mb-4 bg-primary text-[#ECEFF1] transition-transform transform hover:scale-105 hover:bg-[#37474F]">
           Inicia sesión
         </button>
-        <p class="text-center text-sm dark:text-blue-500 cursor-pointer text-primary" (click)="showModal()">
+        <p class="text-center text-sm dark:text-celeste cursor-pointer text-primary" (click)="showModal()">
           ¿Olvidaste tu contraseña?
         </p>
 

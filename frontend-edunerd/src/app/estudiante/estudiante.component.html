@@ -1,65 +1,79 @@
-<body class="bg-primary flex justify-center items-center min-h-screen">
-<!-- Botón Volver -->
-<button
-  (click)="navegarDocente()"
-  class="absolute top-4 left-4 bg-gray-100 text-gray-800 px-4 py-2 rounded-lg shadow hover:bg-gray-200 transition">
-  Volver
-</button>
-<div class="bg-white rounded-lg shadow-lg p-10 w-4/5 max-w-6xl relative">
-
-  <!-- Cabecera del perfil -->
-  <div class="flex items-center justify-between mb-8">
-    <div class="flex items-center gap-6">
-      <img src="{{imagen}}" alt="Foto del estudiante" class="w-40 h-40 rounded-full shadow-md">
-      <div>
-        <h1 class="text-4xl font-bold text-gray-800">{{nombre}} {{apellidoPaterno}} {{apellidoMaterno}}</h1>
-        <p class="text-lg text-gray-600">Rut: {{rut}}</p>
-      </div>
-    </div>
-    <div class="grid grid-cols-3 gap-6 text-center">
-      <div>
-        <p class="text-3xl font-bold text-primary">8</p>
-        <p class="text-gray-500">Positivas</p>
-      </div>
-      <div>
-        <p class="text-3xl font-bold text-primary">7</p>
-        <p class="text-gray-500">Negativas</p>
-      </div>
-      <div>
-        <p class="text-3xl font-bold text-primary">10</p>
-        <p class="text-gray-500">Puntaje Total</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Información adicional del estudiante -->
-  <div class="grid grid-cols-2 gap-8 mb-8">
-    <div>
-      <p class="text-lg"><span class="font-semibold">Número de Matrícula:</span> {{numMatricula}}</p>
-      <p class="text-lg"><span class="font-semibold">Fecha de Ingreso:</span> {{fecIngreso}}</p>
-    </div>
-  </div>
-
-  <!-- Botón para ver observaciones -->
-  <div class="text-center mb-4">
+<body class="dark:bg-azulClaro bg-primary flex justify-center items-center min-h-screen">
+<!-- Contenedor Principal -->
+<div class="w-full max-w-6xl p-4">
+  <!-- Contenedor de los Botones -->
+  <div class="flex justify-between items-center mb-6">
+    <!-- Botón Volver -->
     <button
-      (click)="mostrarObservaciones = !mostrarObservaciones"
-      class="bg-secondary text-white px-6 py-3 rounded hover:bg-tertiary hover:text-primary transition text-lg">
-      {{ mostrarObservaciones ? 'Dejar de Ver Observaciones' : 'Ver Observaciones' }}
+      (click)="navegarDocente()"
+      class="dark:bg-celeste dark:text-claro bg-gray-100 text-gray-800 px-4 py-2 rounded-lg shadow hover:bg-gray-200 transition">
+      Volver
+    </button>
+
+    <!-- Botón Modo Oscuro -->
+    <button
+      (click)="modoOscuro()"
+      class="dark:bg-transparent dark:text-primary text-lg sm:text-xl px-4 py-2 rounded-md font-normal text-tertiary hover:bg-secondary transition-colors">
+      {{ claro ? 'Modo Oscuro' : 'Modo Claro' }}
     </button>
   </div>
 
-  <!-- Lista de observaciones -->
-  <div *ngIf="mostrarObservaciones" class="bg-gray-50 rounded-lg shadow-inner p-6 mt-4">
-    <h2 class="text-xl font-bold mb-4 text-gray-800">Observaciones</h2>
-    <ul class="space-y-4">
-      <li *ngFor="let obs of reportes" class="flex justify-between items-center border-b pb-2">
-        <p>{{ obs.observacion }}</p>
-        <p [class.text-green-500]="obs.puntaje > 0" [class.text-red-500]="obs.puntaje < 0" class="font-bold">
-          {{ obs.puntaje > 0 ? '+' : '' }}{{ obs.puntaje }}
-        </p>
-      </li>
-    </ul>
+  <!-- Contenido Principal -->
+  <div class="dark:bg-claro bg-white rounded-lg shadow-lg p-10 relative">
+    <!-- Cabecera del Perfil -->
+    <div class="flex items-center justify-between mb-8">
+      <div class="flex items-center gap-6">
+        <img src="{{imagen}}" alt="Foto del estudiante" class="w-40 h-40 rounded-full shadow-md">
+        <div>
+          <h1 class="text-4xl font-bold text-gray-800">{{nombre}} {{apellidoPaterno}} {{apellidoMaterno}}</h1>
+          <p class="text-lg text-gray-600">Rut: {{rut}}</p>
+        </div>
+      </div>
+      <div class="grid grid-cols-3 gap-6 text-center">
+        <div>
+          <p class="text-3xl font-bold text-primary">8</p>
+          <p class="text-gray-500">Positivas</p>
+        </div>
+        <div>
+          <p class="text-3xl font-bold text-primary">7</p>
+          <p class="text-gray-500">Negativas</p>
+        </div>
+        <div>
+          <p class="text-3xl font-bold text-primary">10</p>
+          <p class="text-gray-500">Puntaje Total</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Información Adicional -->
+    <div class="grid grid-cols-2 gap-8 mb-8">
+      <div>
+        <p class="text-lg"><span class="font-semibold">Número de Matrícula:</span> {{numMatricula}}</p>
+        <p class="text-lg"><span class="font-semibold">Fecha de Ingreso:</span> {{fecIngreso}}</p>
+      </div>
+    </div>
+
+    <!-- Botón de Observaciones -->
+    <div class="text-center mb-4">
+      <button
+        (click)="mostrarObservaciones = !mostrarObservaciones"
+        class="dark:bg-celeste dark:text-claro bg-secondary text-white px-6 py-3 rounded hover:bg-tertiary hover:text-primary transition text-lg">
+        {{ mostrarObservaciones ? 'Dejar de Ver Observaciones' : 'Ver Observaciones' }}
+      </button>
+    </div>
+
+    <!-- Lista de Observaciones -->
+    <div *ngIf="mostrarObservaciones" class="bg-gray-50 rounded-lg shadow-inner p-6 mt-4">
+      <h2 class="text-xl font-bold mb-4 text-gray-800">Observaciones</h2>
+      <ul class="space-y-4">
+        <li *ngFor="let obs of reportes" class="flex justify-between items-center border-b pb-2">
+          <p>{{ obs.observacion }}</p>
+          <p [class.text-green-500]="obs.puntaje > 0" [class.text-red-500]="obs.puntaje < 0" class="font-bold">
+            {{ obs.puntaje > 0 ? '+' : '' }}{{ obs.puntaje }}
+          </p>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
 </body>
